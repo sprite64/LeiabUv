@@ -69,7 +69,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -78,12 +80,8 @@
       <Name>LeiabUv.Models</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="App_Data\LeiabUv.DataLayer.Context-.mdf" />
-    <Content Include="App_Data\LeiabUv.DataLayer.Context-_log.ldf">
-      <DependentUpon>LeiabUv.DataLayer.Context-.mdf</DependentUpon>
-    </Content>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
