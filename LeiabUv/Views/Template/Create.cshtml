@@ -1,0 +1,310 @@
+﻿@{
+    ViewBag.Title = "Mall";
+}
+
+
+    
+<!-- Glyphicon animation css -->
+
+<style>
+
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @@-webkit-keyframes spin2 {
+        from { -webkit-transform: rotate(0deg);}
+        to { -webkit-transform: rotate(360deg);}
+    }
+
+    @@keyframes spin {
+        from { transform: scale(1) rotate(0deg);}
+        to { transform: scale(1) rotate(360deg);}
+    }
+
+</style>
+
+
+<!-- Init elements  -->
+
+<div class="container">
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+
+                <h4 style="color: #ccc">Meny</h4>
+
+                <button id="btnOpenEditor" class="btn btn-success active" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Ny</button>
+                <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Avbryt</button>
+
+                <!-- Reset/New button -->
+                <!-- button id="btnNewTemplateQuery" class="btn btn-success active" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Ny</!--button -->
+                
+                <!-- Modal save button -->
+                <!-- button type="button" class="btn btn-info" data-toggle="modal" data-target="#mdlSaveTemplate" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Spara</!--button -->
+                <!-- button id="btnSaveTemplateQuery" class="btn btn-info" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Sparabutton -->
+
+                <!-- Perhaps a useless cancle button, could redirect to template gallery -->
+                <!-- button id="btnCancelTemplateQuery" class="btn btn-warning" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Avbryt</!--button -->
+
+                <!--
+
+                <button id="btnOpenEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Open</button>
+                <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Close</button>
+                <button id="btnResetEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Reset</button>
+
+                -->
+
+                <!-- button id="btnSaveTest" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Save</button -->
+
+            </div>
+        </div>
+
+
+
+        <!-- HTML5 Canvas -->
+        <div class="col-md-6" style="min-height: 500px; min-width: 584px;">
+
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
+                
+                <canvas id="TemplateCanvas" width="534" height="400" style="visibility: hidden;">
+                    Your browser doesn't support HTML5 canvas tag.
+                </canvas>
+
+                <div id="TemplateSaveControl" class="form-group" style="margin-right: 10px; margin-top: 20px; visibility: hidden;">
+                    
+                    <input type="text" maxlength="32" class="form-control" id="inTemplateName" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="display: inline;">
+                    <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
+                    
+                    <span id="saveLoadingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 20px; visibility: hidden;"></span>
+
+                    <div id="alertSuccessMessage" class="alert alert-success" style="margin-top: 10px; padding: 5px; visibility: hidden; display: none;">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        <span>Mallen har sparats!</span>
+                        <a href="/Template/Show" style="float: right;"><span>Visa mallar</span></a>
+                    </div>
+
+                    <div id="alertErrorMessage" class="alert alert-danger" role="alert" style="margin-top: 10px; padding: 5px; visibility: hidden;">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        <span id="alertErrorMessageParagraph"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Controls -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <!-- Frame/Karm control -->
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
+
+                <h4 style="color: #ccc">Luft</h4>
+
+                <!-- Row 1 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <div style="width: 40px; height: auto; display: inline; padding-left: 12px; padding-right: 11px; color: #ddd;">
+                        <span class="glyphicon glyphicon-minus" style="margin: 0px;"></span>
+                    </div>
+
+                    <button id="btnDecreaseFrameRow" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </button>
+
+                    <span style="width: 40px;"></span>
+
+                </div>
+
+                <!-- Row 2 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <button id="btnDecreaseFrameColumn" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+
+                    <div style="width: 40px; height: 40px; display: inline; padding-left: 36px;"></div>
+
+                    <button id="btnIncreaseFrameColumn" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+
+                </div>
+
+                <!-- Row 3 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <div style="width: 40px; height: 40px; display: inline; padding-left: 40px;"></div>
+
+                    <button id="btnIncreaseFrameRow" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
+
+                    <div style="width: 40px; height: auto; display: inline; padding-left: 12px; padding-right: 0px; color: #ddd;">
+                        <span class="glyphicon glyphicon-plus" style="margin: 0px;"></span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Pane/Luft controls -->
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
+
+                <h4 style="color: #ccc">Post</h4>
+
+                <!-- Row 1 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <div style="width: 40px; height: auto; display: inline; padding-left: 12px; padding-right: 11px; color: #ddd;">
+                        <span class="glyphicon glyphicon-minus" style="margin: 0px;"></span>
+                    </div>
+
+                    <button id="btnDecreasePaneRow" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-up"></span>
+                    </button>
+
+                    <span style="width: 40px;"></span>
+
+                </div>
+
+                <!-- Row 2 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <button id="btnDecreasePaneColumn" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+
+                    <div style="width: 40px; height: 40px; display: inline; padding-left: 36px;"></div>
+
+                    <button id="btnIncreasePaneColumn" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+
+                </div>
+
+                <!-- Row 3 -->
+
+                <div style="width: 150px; height: auto;">
+
+                    <div style="width: 40px; height: 40px; display: inline; padding-left: 40px;"></div>
+
+                    <button id="btnIncreasePaneRow" class="btn btn-default" style="width: 40px; height: 40px; padding: 0px;">
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </button>
+
+                    <div style="width: 40px; height: auto; display: inline; padding-left: 12px; padding-right: 0px; color: #ddd;">
+                        <span class="glyphicon glyphicon-plus" style="margin: 0px;"></span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Throw or Save modal -->
+<div id="mdlThrowOrSaveTemplate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ny mall</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Kasta aktuell mall?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSaveTemplateConfirm" type="button" class="btn btn-success">Spara</button>       <!-- Name thus -->
+                <button id="btnThrowTemplateConfirm" type="button" class="btn btn-warning" data-dismiss="modal">Kasta</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Save modal -->
+<div id="mdlSaveTemplate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Spara mall</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Descritpiomn</p>
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnSaveTemplateConfirm" type="button" class="btn btn-success">Spara</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Cancel modal -->
+<div id="mdlCancelTemplate" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Avbryt</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>Kasta mall?</p>
+            </div>
+
+            <div class="modal-footer">
+                <!-- button type="button" class="btn btn-success">Spara</!--button -->
+                <button id="btnCancelTemplateConfirm" type="button" class="btn btn-warning">Kasta</button>
+                <!-- "btnCancelTemplateQuery" -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Avbryt</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <!-- Scripts -->
+<!--
+    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    -->
+
+    <script src="~/ScriptsLeiab/TemplateConstants.js"></script>     <!-- Template constants -->
+
+    <script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic object constructors -->
+    <script src="~/ScriptsLeiab/TemplateObjects.js"></script> 		<!-- Template object constructors -->
+
+    <script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
+    <script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
+    <script src="~/ScriptsLeiab/TemplateInit.js"></script>          <!-- Template initiation -->
+

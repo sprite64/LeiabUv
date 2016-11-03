@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "ShowTemplates";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- 
+<script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    -->
+
+<div class="container">
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+
+                <h4 style="color: #ccc">Meny</h4>
+
+                <span style="color: #ccc">Välj mall</span>
+
+                @{
+                    if (Int32.Parse(ViewBag.templateList[0].Value) >= 0)
+                    {
+                        @Html.DropDownList("templateList")
+                    }
+                   
+
+                }
+                
+
+            </div>
+        </div>
+
+
+
+        <!-- HTML5 Canvas -->
+        <div class="col-md-6" style="min-height: 500px; min-width: 584px;">
+
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
+
+                <canvas id="TemplateCanvas" width="534" height="400" style="visibility: hidden;">
+                    Your browser doesn't support HTML5 canvas tag.
+                </canvas>
+
+                <div id="TemplateSaveControl" class="form-group" style="margin-right: 10px; margin-top: 20px; visibility: hidden;">
+
+                    <!--
+                    <input type="text" maxlength="32" class="form-control" id="inTemplateName" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="display: inline;">
+                    <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
+                        -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Controls -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <!-- Frame/Karm control -->
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
+
+                <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Använd</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(function () {
+
+        $("#templateList").change(function () {
+           
+            var selected = $(this).val();
+            $.getJSON("/Template/GetTemplate/" + selected, function (data) {
+                
+                //{
+                //    "Id": 2,
+                //    "Name": "ytr",
+                //    "columns": 2,
+                //    "rows": 2,
+                //    "panes": [
+                //      {
+                //          "Id": 10,
+                //          "xIndex": 0,
+                //          "yIndex": 0,
+                //          "colSpan": 1,
+                //          "rowSpan": 1
+                //      },
+                //      {
+                //          "Id": 11,
+                //          "xIndex": 0,
+                //          "yIndex": 0,
+                //          "colSpan": 1,
+                //          "rowSpan": 1
+                //      },
+                //      {
+                //          "Id": 12,
+                //          "xIndex": 0,
+                //          "yIndex": 0,
+                //          "colSpan": 1,
+                //          "rowSpan": 1
+                //      },
+                //      {
+                //          "Id": 13,
+                //          "xIndex": 0,
+                //          "yIndex": 0,
+                //          "colSpan": 1,
+                //          "rowSpan": 1
+                //      }
+                //    ],
+                //    "CreatedBy": null,
+                //    "Created": "/Date(-62135596800000)/",
+                //    "ModifiedBy": null,
+                //    "Modified": "/Date(-62135596800000)/"
+                //}
+                
+                alert(data.panes[0].colSpan);
+            });
+        });
+    });
+
+</script>
