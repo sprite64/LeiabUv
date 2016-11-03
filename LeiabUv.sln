@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeiabUv", "LeiabUv\LeiabUv.csproj", "{8B7C0F37-97DA-49EC-B306-F81798620F85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeiabUv.Models", "LeiabUv.Models\LeiabUv.Models.csproj", "{D388F0D8-8D8C-42FE-A0EB-FE1D88854E8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeiabUv.DataLayer", "DataLayer\LeiabUv.DataLayer.csproj", "{49F2F603-5D16-451E-872F-829C58575B1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B7C0F37-97DA-49EC-B306-F81798620F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7C0F37-97DA-49EC-B306-F81798620F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7C0F37-97DA-49EC-B306-F81798620F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7C0F37-97DA-49EC-B306-F81798620F85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D388F0D8-8D8C-42FE-A0EB-FE1D88854E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D388F0D8-8D8C-42FE-A0EB-FE1D88854E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D388F0D8-8D8C-42FE-A0EB-FE1D88854E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D388F0D8-8D8C-42FE-A0EB-FE1D88854E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49F2F603-5D16-451E-872F-829C58575B1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49F2F603-5D16-451E-872F-829C58575B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49F2F603-5D16-451E-872F-829C58575B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49F2F603-5D16-451E-872F-829C58575B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
