@@ -34,7 +34,10 @@
 // The "New" button should be pressed to do this, otherwise, m is just nothing or "undefined"
 
 //var m = lbCreateTemplate(1, 1);
-var template = lbCreateTemplate(1, 1);
+//var template = lbCreateTemplate(1, 1);
+
+//var template = new lbTemplateEditor();
+
 
 //var m = lbCreateTemplate(LB_TemplateMaxColumns, LB_TemplateMaxRows);
 
@@ -53,7 +56,7 @@ $(function () {
 
     //lbTemplateUpdate(template, "");
 
-    lbTemplateUpdateAndRender(template, "");
+    lbTemplateUpdateAndRender("");
 
 
     // Mouse button down event
@@ -64,7 +67,7 @@ $(function () {
 
     // Mouse button up event
     function handleMouseUp(e) {
-        lbTemplateUpdateAndRender(template, "mouseUp");      // Handle mouse-clicks
+        lbTemplateUpdateAndRender("mouseUp");      // Handle mouse-clicks
     }
 
 
@@ -76,7 +79,7 @@ $(function () {
     function handleMouseMove(e) {
 
         lbUpdateMousePosition(e);
-        lbTemplateUpdateAndRender(template, "mouseMove");
+        lbTemplateUpdateAndRender("mouseMove");
     }
 
 
@@ -88,20 +91,20 @@ $(function () {
 
 
     /* Button events and control */
-    $("#btnOpenEditor").click(function () { template = lbOpenEditor(template); lbTemplateUpdateAndRender(template, ""); });         // Main test functions for editor
-    $("#btnCloseEditor").click(function () { template = lbCloseEditor(template); lbTemplateUpdateAndRender(template, ""); });
-    $("#btnResetEditor").click(function () { template = lbResetEditor(template); lbTemplateUpdateAndRender(template, ""); });
+    $("#btnOpenEditor").click(function () { lbOpenEditor(); lbTemplateUpdateAndRender(""); });         // Main test functions for editor
+    $("#btnCloseEditor").click(function () { lbCloseEditor(); lbTemplateUpdateAndRender(""); });
+    $("#btnResetEditor").click(function () { lbResetEditor(); lbTemplateUpdateAndRender(""); });
 
-    $("#btnSaveTemplate").click(function () { template = lbSaveTemplate(template); });
+    $("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
 
 
-    $("#btnNewTemplateQuery").click(function () { template = lbHandleNewTemplateQuery(template); });               // Work this in first
-    $("#btnThrowTemplateConfirm").click(function () { template = lbHandleThrowTemplateConfirm(template); });       // Throw current template
+    $("#btnNewTemplateQuery").click(function () { lbHandleNewTemplateQuery(); });               // Work this in first
+    $("#btnThrowTemplateConfirm").click(function () { lbHandleThrowTemplateConfirm(); });       // Throw current template
 
-    $("#btnSaveTemplateQuery").click(function () { lbHandleSaveTemplateQuery(template); });
+    $("#btnSaveTemplateQuery").click(function () { lbHandleSaveTemplateQuery(); });
 
-    $("#btnCancelTemplateQuery").click(function () { lbHandleCancelTemplateQuery(template); });         // Cancel template query
-    $("#btnCancelTemplateConfirm").click(function () { lbHandleCancelTemplateConfirm(template); });     // Cancel template confirm
+    $("#btnCancelTemplateQuery").click(function () { lbHandleCancelTemplateQuery(); });         // Cancel template query
+    $("#btnCancelTemplateConfirm").click(function () { lbHandleCancelTemplateConfirm(); });     // Cancel template confirm
 
 
     /*
@@ -125,21 +128,21 @@ $(function () {
     */
 
     /* Frame control click events */
-    $("#btnIncreaseFrameColumn").click(function () {    template = lbIncreaseFrameColumn(template); lbTemplateUpdateAndRender(template, ""); });
-    $("#btnIncreaseFrameRow").click(function () {       template = lbIncreaseFrameRow(template);    lbTemplateUpdateAndRender(template, ""); });
+    $("#btnIncreaseFrameColumn").click(function () {    lbIncreaseFrameColumn(); lbTemplateUpdateAndRender(""); });
+    $("#btnIncreaseFrameRow").click(function () {       lbIncreaseFrameRow();    lbTemplateUpdateAndRender(""); });
 
-    $("#btnDecreaseFrameColumn").click(function () {    template = lbDecreaseFrameColumn(template); lbTemplateUpdateAndRender(template, ""); });
-    $("#btnDecreaseFrameRow").click(function () {       template = lbDecreaseFrameRow(template);    lbTemplateUpdateAndRender(template, ""); });
+    $("#btnDecreaseFrameColumn").click(function () {    lbDecreaseFrameColumn(); lbTemplateUpdateAndRender(""); });
+    $("#btnDecreaseFrameRow").click(function () {       lbDecreaseFrameRow();    lbTemplateUpdateAndRender(""); });
     
 
     /* Pane control click events */
-    $("#btnIncreasePaneColumn").click(function () {     lbIncreasePaneColumn(template); lbTemplateUpdateAndRender(template, ""); });
-    $("#btnIncreasePaneRow").click(function () {        lbIncreasePaneRow(template);    lbTemplateUpdateAndRender(template, ""); });
+    $("#btnIncreasePaneColumn").click(function () {     lbIncreasePaneColumn(); lbTemplateUpdateAndRender(""); });
+    $("#btnIncreasePaneRow").click(function () {        lbIncreasePaneRow();    lbTemplateUpdateAndRender(""); });
 
-    $("#btnDecreasePaneColumn").click(function () {     lbDecreasePaneColumn(template); lbTemplateUpdateAndRender(template, ""); });
-    $("#btnDecreasePaneRow").click(function () {        lbDecreasePaneRow(template);    lbTemplateUpdateAndRender(template, ""); });
+    $("#btnDecreasePaneColumn").click(function () {     lbDecreasePaneColumn(); lbTemplateUpdateAndRender(""); });
+    $("#btnDecreasePaneRow").click(function () {        lbDecreasePaneRow();    lbTemplateUpdateAndRender(""); });
 });
 
 
-setInterval(function () { lbTemplateUpdateAndRender(template, ""); }, 300);
+setInterval(function () { lbTemplateUpdateAndRender(""); }, 300);
 

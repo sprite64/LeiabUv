@@ -14,37 +14,42 @@
 
 
 // Get outer Frame recrtangle
-function lbGetOuterFrameRect(template) {
+function lbGetOuterFrameRect() {
 
     var x = 0;
     var y = 0;
 
-    var w = template.cols * template.cellWidth; 					// Width of cells
-    w += template.mainBorderSize * 2; 							// Main border width
-    w += template.cellBorderSize * 2 * (template.cols - 1); 	// Cell border width
-    w += 4 + (template.cols - 1) * 3; 							// Single pixel borders/lines
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
-    var h = template.rows * template.cellHeight; 					// Same as above but for height
-    h += template.mainBorderSize * 2;
-    h += template.cellBorderSize * 2 * (template.rows - 1);
-    h += 4 + (template.rows - 1) * 3;
+    var w = template.cols * gfxSettings.paneWidth;
+    w += gfxSettings.mainBorderSize * 2;
+    w += gfxSettings.cellBorderSize * 2 * (template.cols - 1);
+    w += 4 * (template.cols - 1) * 3;
 
-    var rect = lbCreateRect(x, y, w, h);
+    var h = template.rows * gfxSettings.paneHeight;
+    h += gfxSettings.mainBorderSize * 2;
+    h += gfxSettings.cellBorderSize * 2 * (template.rows - 1);
+    h += 4 * (template.rows - 1) * 3;
 
-    return rect;
+    // Return rect object
+    return new lbCreateRect(x, y, w, h);
 }
 
 
 // Get inner Frame rectangle
-function lbGetInnerFrameRect(template) {
+function lbGetInnerFrameRect() {
 
-    var rect = lbGetOuterFrameRect(template);
+    var rect = lbGetOuterFrameRect();
 
-    rect.x = template.mainBorderSize + 2; 			// Top left coordinate
-    rect.y = template.mainBorderSize + 2;
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+    
+    rect.x = gfxSettings.mainBorderSize + 2;
+    rect.y = gfxSettings.mainBorderSize + 2;
 
-    rect.w -= (template.mainBorderSize * 2 + 4); 	// Bottom right coordinate
-    rect.h -= (template.mainBorderSize * 2 + 4);
+    rect.w -= (gfxSettings.mainBorderSize * 2 + 4);
+    rect.h -= (gfxSettings.mainBorderSize * 2 + 4);
 
     return rect;
 }
@@ -52,13 +57,16 @@ function lbGetInnerFrameRect(template) {
 
 // Get Pane X split
 // Used to get width/space between Posts/Poster
-function lbGetPaneXSplit(template, index) {
+function lbGetPaneXSplit(index) {
 
     if (index == -1) { return 0; }
 
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
     var x = 0;
-    x = template.cellWidth + template.cellBorderSize + 1;
-    x += index * (template.cellWidth + template.cellBorderSize * 2 + 3);
+    x = gfxSettings.paneWidth + gfxSettings.cellBorderSize + 1;
+    x += index * (gfxSettings.paneWidth + gfxSettings.paneBorderSize * 2 + 3);
 
     return x;
 }
@@ -66,23 +74,26 @@ function lbGetPaneXSplit(template, index) {
 
 // Get Pane Y split
 // Used to get height/space between Posts/Poster
-function lbGetPaneYSplit(template, index) {
+function lbGetPaneYSplit(index) {
 
     if (index == -1) { return 0; }
 
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
     var y = 0;
-    y = template.cellHeight + template.cellBorderSize + 1;
-    y += index * (template.cellHeight + template.cellBorderSize * 2 + 3);
+    y = gfxSettings.paneHeight + gfxSettings.paneBorderSize + 1;
+    y += index * (gfxSettings.paneHeight + gfxSettings.paneBorderSize * 2 + 3);
 
     return y;
 }
 
 
 // Determines if a Pane is a parent, returns true/false
-function lbIsParent(template, xIndex, yIndex) {
-
-    if (template[xIndex][yIndex].parentCellX != -1) { return false; }
-    if (template[xIndex][yIndex].parentCellY != -1) { return false; }
+function lbIsParent(xIndex, yIndex) {
+    
+    if (template.grid[xIndex][yIndex].parentCellX != -1) { return false; }
+    if (template.grid[xIndex][yIndex].parentCellY != -1) { return false; }
 
     return true;
 }
@@ -90,28 +101,29 @@ function lbIsParent(template, xIndex, yIndex) {
 
 // Returns the indice of parent cell OR the same indice parameters if already a parent
 // Get parent Pane/Luft (if not already a parent)
-function lbGetParent(template, xIndex, yIndex) {
+function lbGetParent(xIndex, yIndex) {
 
-    if (lbIsParent(template, xIndex, yIndex) == true) { 		// Return cell indice as is
-        return lbCreatePosition(xIndex, yIndex);
+    if (lbIsParent(xIndex, yIndex) == true) { 		// Return cell indice as is
+        return new lbCreatePosition(xIndex, yIndex);
+        //return lbCreatePosition(xIndex, yIndex);
     }
 
     var x = template[xIndex][yIndex].parentCellX; 			// Get childs parent cell indice
     var y = template[xIndex][yIndex].parentCellY;
 
-    return lbCreatePosition(x, y);
+    return new lbCreatePosition(x, y);
 }
 
 
-// 
-function lbGetParentCount(tempalte) {
+// Counts parent panes
+function lbGetParentCount() {
 
     var count = 0;
 
     for (var x = 0; x < template.cols; x++) {
         for (var y = 0; y < template.rows; y++) {
-            if (template[x][y].parentCellX == -1) {
-                count ++;
+            if (template.grid[x][y].parentCellX == -1) {
+                count++;
             }
         }
     }
@@ -122,88 +134,66 @@ function lbGetParentCount(tempalte) {
 
 // Functions for changing grid rows and cols 	***************************************************************************************************************************************
 // It works but is quierky, for instance it doesn't take the cells span if any.
-// Increase Frame/Karm column
-function lbIncreaseFrameColumn(template) {
+// Increase Pane column
+function lbIncreaseFrameColumn() {
 
-    if (template.cols >= LB_TemplateMaxColumns) { return template; }   // Restrict maximum columns
+    if (template.cols >= LB_TemplateMaxColumns) { return; }     // Restrict maximum columns
 
-    var nTemplate = lbCreateTemplate(template.cols + 1, template.rows);
+    template.cols++;        // Increase columns
 
-    // Copy span/parent data
-    for (var ny = 0; ny < template.rows; ny++) {
-        for (var nx = 0; nx < template.cols; nx++) {
-            nTemplate[nx][ny] = template[nx][ny];
-        }
+    for (var y = 0; y < template.rows; y++) {                   // Reset new panes
+        template.grid[template.cols][y].colSpan = 1;
+        template.grid[template.cols][y].rowSpan = 1;
+        template.grid[template.cols][y].parentCellX = -1;
+        template.grid[template.cols][y].parentCellY = -1;
     }
-
-    return nTemplate; 		// Return new model
 }
 
 
-// Increase Frame/Karm row
-function lbIncreaseFrameRow(template) {
+// Increase Pane row
+function lbIncreaseFrameRow() {
 
-    if (template.rows >= LB_TemplateMaxRows) { return template; }
+    if (template.rows >= LB_TemplateMaxRows) { return; }
 
-    var nTemplate = lbCreateTemplate(template.cols, template.rows + 1);
+    template.rows++;        // Increase rows
 
-    // Copy span/parent data
-    for (var ny = 0; ny < template.rows; ny++) {
-        for (var nx = 0; nx < template.cols; nx++) {
-            nTemplate[nx][ny] = template[nx][ny];
-        }
+    for (var x = 0; x < template.cols; x++) {
+        template.grid[x][template.rows].colSpan = 1;
+        template.grid[x][template.rows].rowSpan = 1;
+        template.grid[x][template.rows].parentCellX = -1;
+        template.grid[x][template.rows].parentcelly = -1;
     }
-
-    return nTemplate;
 }
 
 
 // Decrease Frame/Karm column
-function lbDecreaseFrameColumn(template) {
+function lbDecreaseFrameColumn() {
 
-    if (template.cols <= 1) { return template; }
+    if (template.cols <= 1) { return; }
 
-    var nTemplate = lbCreateTemplate(template.cols - 1, template.rows);
-
-    // Copy span/parent data
-    for (var ny = 0; ny < template.rows; ny++) {
-        for (var nx = 0; nx < template.cols - 1; nx++) {
-            nTemplate[nx][ny] = template[nx][ny];
-
-            // Reduce out of bounds cellspans
-            if (lbIsParent(template, nx, ny)) {
-                if (nTemplate[nx][ny].colSpan + nx > nTemplate.cols) {
-                    nTemplate[nx][ny].colSpan--;
-                }
-            }
-        }
+    for (var y = 0; y < template.rows; y++) {                   // Reset unused panes
+        template.grid[template.cols][y].colSpan = 1;
+        template.grid[template.cols][y].rowSpan = 1;
+        template.grid[template.cols][y].parentCellX = -1;
+        template.grid[template.cols][y].parentCellY = -1;
     }
 
-    return nTemplate;
+    template.cols--;        // Decrease columns
 }
 
 // Decrease Frame/Karm row
-function lbDecreaseFrameRow(template) {
+function lbDecreaseFrameRow() {
 
-    if (template.rows <= 1) { return template; }
+    if (template.rows <= 1) { return; }
 
-    var nTemplate = lbCreateTemplate(template.cols, template.rows - 1);
-
-    // Copy span/parent data
-    for (var ny = 0; ny < template.rows - 1; ny++) {
-        for (var nx = 0; nx < template.cols; nx++) {
-            nTemplate[nx][ny] = template[nx][ny];
-
-            // Reduce out of bound spans
-            if (lbIsParent(template, nx, ny)) {
-                if (nTemplate[nx][ny].rowSpan + ny > nTemplate.rows) {
-                    nTemplate[nx][ny].rowSpan--;
-                }
-            }
-        }
+    for (var x = 0; x < template.cols; x++) {
+        template.grid[x][template.rows].colSpan = 1;
+        template.grid[x][template.rows].rowSpan = 1;
+        template.grid[x][template.rows].parentCellX = -1;
+        template.grid[x][template.rows].parentCellY = -1;
     }
 
-    return nTemplate;
+    template.rows--;
 }
 
 
@@ -211,18 +201,21 @@ function lbDecreaseFrameRow(template) {
 
 
 // Get Pane/Luft rectangle (redirects a child to parent cell if indices indicate a child)
-function lbGetPaneRect(template, xIndex, yIndex) {
+function lbGetPaneRect(xIndex, yIndex) {
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
     // Update cell index to parent if any
-    if (lbIsParent(template, xIndex, yIndex) == false) {
+    if (lbIsParent(xIndex, yIndex) == false) {
 
-        var pos = lbGetParent(template, xIndex, yIndex);
+        var pos = lbGetParent(xIndex, yIndex);
         xIndex = pos.x;
         yIndex = pos.y;
     }
     
-    var x = lbGetPaneXSplit(template, xIndex - 1); 		// Get rect position
-    var y = lbGetPaneYSplit(template, yIndex - 1);
+    var x = lbGetPaneXSplit(xIndex - 1); 		// Get rect position
+    var y = lbGetPaneYSplit(yIndex - 1);
 
     if (x > 0) { x++; }
     if (y > 0) { y++; }
@@ -231,104 +224,52 @@ function lbGetPaneRect(template, xIndex, yIndex) {
     var h = 0;
 
     if (template.cols == 1) {
-        w = template.cellWidth; // Adjust size because of space anomaly when there's only one row or column
+        w = gfxSettings.paneWidth; // Adjust size because of space anomaly when there's only one row or column
     } else {
-        for (var nx = 0; nx < template[xIndex][yIndex].colSpan; nx++) { 			// Accumulate cell spans
+        for (var nx = 0; nx < template.grid[xIndex][yIndex].colSpan; nx++) { 			// Accumulate cell spans
             if (xIndex + nx == 0 || xIndex + nx == template.cols - 1) {
-                w += lbGetPaneXSplit(template, 0);
+                w += lbGetPaneXSplit(0);
             } else {
-                w += lbGetPaneXSplit(template, 1) - lbGetPaneXSplit(template, 0) - 1;
+                w += lbGetPaneXSplit(1) - lbGetPaneXSplit(0) - 1;
             }
         }
     }
 
-    w += template[xIndex][yIndex].colSpan - 1; 									// Include single pixel borders
+    w += template.grid[xIndex][yIndex].colSpan - 1; 									// Include single pixel borders
 
     if (template.rows == 1) {
-        h = template.cellHeight; // Adjust size because of space anomaly when there's only one row or column
+        h = gfxSettings.paneHeight; // Adjust size because of space anomaly when there's only one row or column
     } else {
-        for (var ny = 0; ny < template[xIndex][yIndex].rowSpan; ny++) { 			// Accumulate cell spans
+        for (var ny = 0; ny < template.grid[xIndex][yIndex].rowSpan; ny++) { 			// Accumulate cell spans
             if (yIndex + ny == 0 || yIndex + ny == template.rows - 1) {
-                h += lbGetPaneYSplit(template, 0);
+                h += lbGetPaneYSplit(0);
             } else {
-                h += lbGetPaneYSplit(template, 1) - lbGetPaneYSplit(template, 0) - 1;
+                h += lbGetPaneYSplit(1) - lbGetPaneYSplit(0) - 1;
             }
         }
     }
 
-    h += template[xIndex][yIndex].rowSpan - 1; 								// Include single pixel borders
+    h += template.grid[xIndex][yIndex].rowSpan - 1; 								// Include single pixel borders
 
 
-    return lbCreateRect(x, y, w, h); 											// Create and return rectangle
-}
-
-
-// This is for the moment NEVER used, consider removing it further down the way
-// Get single Pane/Luft rectangle
-function lbGetSinglePaneRect(template, xIndex, yIndex) {
-
-    var x = lbGetPaneXSplit(template, xIndex - 1);
-    var y = lbGetPaneYSplit(template, yIndex - 1);
-
-    if (x > 0) { x++; }
-    if (y > 0) { y++; }
-
-    var w = 0;
-    var h = 0;
-
-    // Single cell/no spans
-    if (template[xIndex][yIndex].colSpan > 1 || template[xIndex][yIndex].rowSpan > 1) {
-
-
-        if (xIndex == 0 || xIndex == template.cols - 1) {
-            w = lbGetPaneXSplit(template, 0);
-        } else {
-            w = lbGetPaneXSplit(template, 1) - lbGetPaneXSplit(template, 0) - 1;
-        }
-
-        if (yIndex == 0 || yIndex == template.rows - 1) {
-            h = lbGetPaneYSplit(template, 0);
-        } else {
-            h = lbGetPaneYSplit(template, 1) - lbGetPaneYSplit(template, 0) - 1;
-        }
-
-
-    } else {
-
-        if (xIndex == 0 || xIndex == template.cols - 1) {
-            w = lbGetPaneXSplit(template, 0);
-        } else {
-            w = lbGetPaneXSplit(template, 1) - lbGetPaneXSplit(template, 0) - 1;
-        }
-
-        if (yIndex == 0 || yIndex == template.rows - 1) {
-            h = lbGetPaneYSplit(template, 0);
-        } else {
-            h = lbGetPaneYSplit(template, 1) - lbGetPaneYSplit(template, 0) - 1;
-        }
-    }
-
-
-
-    var rect = lbCreateRect(x, y, w, h);
-
-    return rect;
+    return new lbCreateRect(x, y, w, h);
+    //return lbCreateRect(x, y, w, h); 											// Create and return rectangle
 }
 
 
 // Increase Pane/Luft column
-function lbIncreasePaneColumn(template) {
+function lbIncreasePaneColumn() {
 
     // Check data validity
     if (template.selectedCellX < 0 || template.selectedCellY < 0) { return; } 		// Check selected cell
     var xIndex = template.selectedCellX;
     var yIndex = template.selectedCellY;
 
-    if (xIndex < 0 || xIndex + template[xIndex][yIndex].colSpan >= template.cols) { return; }
+    if (xIndex < 0 || xIndex + template.grid[xIndex][yIndex].colSpan >= template.cols) { return; }
     if (yIndex < 0) { return; }
     
     // Init
-    var x = xIndex + template[xIndex][yIndex].colSpan;
+    var x = xIndex + template.grid[xIndex][yIndex].colSpan;
     var y = yIndex;
 
     //if (y > 0) { y --; }
@@ -339,25 +280,25 @@ function lbIncreasePaneColumn(template) {
     // My best guess is that not ONLY do you need to check the new occpied cells but also by the width of it
     // This loop needs to be for(y) for(x) <logic>
     //
-    for (var ny = 0; ny < template[xIndex][yIndex].rowSpan; ny++) { 			// Cancel if the cellspan increase overlapps any other cell than one with 1x1 span
-        if (template[x][y + ny].colSpan != 1) { return; }
-        if (template[x][y + ny].rowSpan != 1) { return; }
+    for (var ny = 0; ny < template.grid[xIndex][yIndex].rowSpan; ny++) { 			// Cancel if the cellspan increase overlapps any other cell than one with 1x1 span
+        if (template.grid[x][y + ny].colSpan != 1) { return; }
+        if (template.grid[x][y + ny].rowSpan != 1) { return; }
 
-        if (template[x][y + ny].parentCellX >= 0) { return; }                   // Bugfix: Without this, you can overlapp parented panes/lufts
+        if (template.grid[x][y + ny].parentCellX >= 0) { return; }                   // Bugfix: Without this, you can overlapp parented panes/lufts
     }
 
-    template[xIndex][yIndex].colSpan++; 										// Increase column span
+    template.grid[xIndex][yIndex].colSpan++; 										// Increase column span
 
-    for (var ny = 0; ny < template[xIndex][yIndex].rowSpan; ny++) { 			// Update all child cells
+    for (var ny = 0; ny < template.grid[xIndex][yIndex].rowSpan; ny++) { 			// Update all child cells
 
-        template[x][y + ny].parentCellX = xIndex;
-        template[x][y + ny].parentCellY = yIndex;
+        template.grid[x][y + ny].parentCellX = xIndex;
+        template.grid[x][y + ny].parentCellY = yIndex;
     }
 }
 
 
 // Increase Pane/Luft row
-function lbIncreasePaneRow(template, xIndex, yIndex) {
+function lbIncreasePaneRow() {
 
     // Check data validity
     if (template.selectedCellX < 0 || template.selectedCellY < 0) { return; }
@@ -365,31 +306,31 @@ function lbIncreasePaneRow(template, xIndex, yIndex) {
     var yIndex = template.selectedCellY;
 
     if (xIndex < 0) { return; }
-    if (yIndex < 0 || yIndex + template[xIndex][yIndex].rowSpan >= template.rows) { return; }
+    if (yIndex < 0 || yIndex + template.grid[xIndex][yIndex].rowSpan >= template.rows) { return; }
 
     // Init
     var x = xIndex;
-    var y = yIndex + template[xIndex][yIndex].rowSpan;
+    var y = yIndex + template.grid[xIndex][yIndex].rowSpan;
 
-    for (var nx = 0; nx < template[xIndex][yIndex].colSpan; nx++) { 		// Cancel if the cellspan increase overlaps any other cell than one with 1x1 span
-        if (template[x + nx][y].colSpan != 1) { return; }
-        if (template[x + nx][y].rowSpan != 1) { return; }
+    for (var nx = 0; nx < template.grid[xIndex][yIndex].colSpan; nx++) { 		// Cancel if the cellspan increase overlaps any other cell than one with 1x1 span
+        if (template.grid[x + nx][y].colSpan != 1) { return; }
+        if (template.grid[x + nx][y].rowSpan != 1) { return; }
 
-        if (template[x + nx][y].parentCellY >= 0) { return; }               // Bugfix: Without this, you can overlapp parented panes/lufts
+        if (template.grid[x + nx][y].parentCellY >= 0) { return; }               // Bugfix: Without this, you can overlapp parented panes/lufts
     }
 
-    template[xIndex][yIndex].rowSpan++; 						// Increase row span
+    template.grid[xIndex][yIndex].rowSpan++; 						// Increase row span
 
-    for (var nx = 0; nx < template[xIndex][yIndex].colSpan; nx++) { 		// Update child cells
+    for (var nx = 0; nx < template.grid[xIndex][yIndex].colSpan; nx++) { 		// Update child cells
 
-        template[x + nx][y].parentCellX = xIndex;
-        template[x + nx][y].parentCellY = yIndex;
+        template.grid[x + nx][y].parentCellX = xIndex;
+        template.grid[x + nx][y].parentCellY = yIndex;
     }
 }
 
 
 // Decrease Pane/Luft column
-function lbDecreasePaneColumn(template) {
+function lbDecreasePaneColumn() {
 
     // Check data validity
     if (template.selectedCellX < 0 || template.selectedCellY < 0) { return; } 		// Check selected cell
@@ -399,20 +340,20 @@ function lbDecreasePaneColumn(template) {
     // Get parent
     var pos = lbGetParent(template, template.selectedCellX, template.selectedCellY);
 
-    if (template[pos.x][pos.y].colSpan <= 1) { return; } 						// Check rows
+    if (template.grid[pos.x][pos.y].colSpan <= 1) { return; } 						// Check rows
 
-    var tmpCol = template[pos.x][pos.y].colSpan - 1;
-    for (var ny = pos.y; ny < pos.y + template[pos.x][pos.y].rowSpan; ny++) {
-        template[pos.x + tmpCol][ny].parentCellX = -1;
-        template[pos.x + tmpCol][ny].parentCellY = -1;
+    var tmpCol = template.grid[pos.x][pos.y].colSpan - 1;
+    for (var ny = pos.y; ny < pos.y + template.grid[pos.x][pos.y].rowSpan; ny++) {
+        template.grid[pos.x + tmpCol][ny].parentCellX = -1;
+        template.grid[pos.x + tmpCol][ny].parentCellY = -1;
     }
 
-    template[pos.x][pos.y].colSpan -= 1; 			// Update column span
+    template.grid[pos.x][pos.y].colSpan -= 1; 			// Update column span
 }
 
 
 // Decrease Pane/Luft row
-function lbDecreasePaneRow(template) {
+function lbDecreasePaneRow() {
 
     // Check data validity
     if (template.selectedCellX < 0 || template.selectedCellY < 0) { return; } 		// Check selected cell
@@ -422,16 +363,16 @@ function lbDecreasePaneRow(template) {
     // Get parent
     var pos = lbGetParent(template, template.selectedCellX, template.selectedCellY);
 
-    if (template[pos.x][pos.y].rowSpan <= 1) { return; } 						// Check rows
+    if (template.grid[pos.x][pos.y].rowSpan <= 1) { return; } 						// Check rows
 
     //for(var nx = pos.x; nx < pos.x + model[xIndex][yIndex].colSpan; nx ++) {
-    var tmpRow = template[pos.x][pos.y].rowSpan - 1;
-    for (var nx = pos.x; nx < pos.x + template[pos.x][pos.y].colSpan; nx++) {
-        template[nx][pos.y + tmpRow].parentCellX = -1;
-        template[nx][pos.y + tmpRow].parentCellY = -1;
+    var tmpRow = template.grid[pos.x][pos.y].rowSpan - 1;
+    for (var nx = pos.x; nx < pos.x + template.grid[pos.x][pos.y].colSpan; nx++) {
+        template.grid[nx][pos.y + tmpRow].parentCellX = -1;
+        template.grid[nx][pos.y + tmpRow].parentCellY = -1;
     }
 
-    template[pos.x][pos.y].rowSpan -= 1; 			// Update column span
+    template.grid[pos.x][pos.y].rowSpan -= 1; 			// Update column span
 }
 
 
@@ -451,7 +392,7 @@ function lbUpdateMousePosition(e) {
 // Main update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
 // Main Update function
-function lbTemplateUpdate(template, action) {
+function lbTemplateUpdate(action) {
 
     // Init
     var rect;
@@ -469,7 +410,7 @@ function lbTemplateUpdate(template, action) {
             // Loop through cells (not including spans and shtuff)
             for (var nx = 0; nx < template.cols; nx++) {
                 for (var ny = 0; ny < template.rows; ny++) {
-                    rect = lbGetPaneRect(template, nx, ny);
+                    rect = lbGetPaneRect(nx, ny);
 
                     rect.x += template.offsetX + template.mainBorderSize + 2;
                     rect.y += template.offsetY + template.mainBorderSize + 2;
@@ -496,7 +437,7 @@ function lbTemplateUpdate(template, action) {
                 var y = template.hoverCellY;
 
                 // Select single cell
-                if (template[x][y].parentCellX == -1 && template[x][y].parentCellY == -1) {
+                if (template.grid[x][y].parentCellX == -1 && template.grid[x][y].parentCellY == -1) {
 
                     template.selectedCellX = template.hoverCellX; 			// Update selected cell
                     template.selectedCellY = template.hoverCellY;
@@ -504,8 +445,8 @@ function lbTemplateUpdate(template, action) {
                     // Select spanned cell
                 } else {
 
-                    template.selectedCellX = template[x][y].parentCellX;
-                    template.selectedCellY = template[x][y].parentCellY;
+                    template.selectedCellX = template.grid[x][y].parentCellX;
+                    template.selectedCellY = template.grid[x][y].parentCellY;
                 }
 
             // Deselect cell
@@ -519,10 +460,10 @@ function lbTemplateUpdate(template, action) {
 }
 
 
-function lbTemplateUpdateAndRender(template, action) {
+function lbTemplateUpdateAndRender(action) {
 
-    lbTemplateUpdate(template, action);
-    lbTemplateRender(template);
+    lbTemplateUpdate(action);
+    lbTemplateRender();
 }
 
 
@@ -550,12 +491,12 @@ function lbHideEditor() {
 
 
 
-function lbOpenEditor(template) {
+function lbOpenEditor() {
 
     if (template.state == LB_TemplateStateInactive) {
         lbShowEditor();
         template.state = LB_TemplateStateActive;
-        template = lbCreateTemplate(1, 1);
+        //template = lbCreateTemplate(1, 1);
     }
 
     // Reset template name
@@ -568,11 +509,11 @@ function lbOpenEditor(template) {
     document.getElementById("alertErrorMessage").style.visibility = "hidden";
     document.getElementById("alertSuccessMessage").style.visibility = "hidden";
     
-    return template;
+    //return template;
 }
 
 
-function lbCloseEditor(template) {
+function lbCloseEditor() {
 
     lbHideEditor();
     template.state = LB_TemplateStateInactive;
@@ -586,13 +527,13 @@ function lbCloseEditor(template) {
 
     document.getElementById("saveLoadingGlyphicon").style.visibility = "hidden";
 
-    return template;
+    //return template;
 }
 
 
-function lbResetEditor(template) {
+function lbResetEditor() {
 
-    template = lbCreateTemplate(1, 1);
+    //template = lbCreateTemplate(1, 1);
     template.state = LB_TemplateStateActive;
 
     // Hide/Show alert elements
@@ -604,11 +545,11 @@ function lbResetEditor(template) {
 
     document.getElementById("saveLoadingGlyphicon").style.visibility = "hidden";
 
-    return template;
+    //return template;
 }
 
 
-function lbSaveTemplate(template) {
+function lbSaveTemplate() {
 
     // Check if editor is open
     var canvas = lbGetTemplateCanvas();
@@ -616,7 +557,7 @@ function lbSaveTemplate(template) {
         return template;
     }
 
-    var nt = new lbTemplate(template);          // Create simplified template object
+    var nt = new lbTemplateData(template);          // Create simplified template object
     
     var j = JSON.stringify(nt);                 // Create JSON object
 
@@ -660,13 +601,15 @@ function lbSaveTemplate(template) {
         //alert(data);
     });
 
-    return template;
+    //return template;
 }
 
 
+/*** PROBABLUY UNUSED BULLSHIT TO BE REMOVED!!! */
+
 
 /* Handle template editor main events *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-function lbHandleNewTemplateQuery(template) {
+function lbHandleNewTemplateQuery() {
 
     //alert("Handle new!");                         
                                                                 // The logic here is flawed, not sure how or why but it's an error of my own.
@@ -697,7 +640,7 @@ function lbHandleNewTemplateQuery(template) {
 }
 
 
-function lbHandleThrowTemplateConfirm(template) {
+function lbHandleThrowTemplateConfirm() {
 
     template = lbCreateTemplate(1, 1);
     template.state = LB_TemplateStateActive;
@@ -706,7 +649,7 @@ function lbHandleThrowTemplateConfirm(template) {
 }
 
 
-function lbHandleSaveTemplateQuery(template) {
+function lbHandleSaveTemplateQuery() {
 
     if (template.state == LB_TemplateStateActive) {             // Open Save modal
 
@@ -716,7 +659,7 @@ function lbHandleSaveTemplateQuery(template) {
 }
 
 
-function lbHandleCancelTemplateQuery(template) {                        // Fires off the cancel modal
+function lbHandleCancelTemplateQuery() {                        // Fires off the cancel modal
 
     if (template.state == LB_TemplateStateActive) {
         $("#mdlCancelTemplate").modal();
@@ -724,7 +667,7 @@ function lbHandleCancelTemplateQuery(template) {                        // Fires
 }
 
 
-function lbHandleCancelTemplateConfirm(template) {
+function lbHandleCancelTemplateConfirm() {
 
     var canvas = lbGetTemplateCanvas();
     

@@ -26,24 +26,31 @@ function lbGetTemplateCanvasContext() {
 
 
 // lbRender Frame/Karm
-function lbRenderFrame(template) {
+function lbRenderFrame() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
 
-    var outerRect = lbGetOuterFrameRect(template);
-    var innerRect = lbGetInnerFrameRect(template);
+    var outerRect = lbGetOuterFrameRect();
+    var innerRect = lbGetInnerFrameRect();
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+    
+    // Draw dummy
+    ctx.fillStyle = "#f00";
+    ctx.fillRect(10, 10, 16, 16);
 
     // Draw outer rect
-    ctx.fillStyle = LB_FrameBorderColor;
-    ctx.fillRect(template.offsetX + outerRect.x, template.offsetY + outerRect.y, outerRect.w, outerRect.h);
+    ctx.fillStyle = gfxSettings.frameBorderColor;
+    ctx.fillRect(gfxSettings.offsetX + outerRect.x, gfxSettings.offsetY + outerRect.y, outerRect.width, outerRect.height);
 
     // Draw inner rect
-    ctx.fillStyle = LB_BackgroundColor;
-    ctx.fillRect(template.offsetX + innerRect.x, template.offsetY + innerRect.y, innerRect.w, innerRect.h);
+    ctx.fillStyle = gfxSettings.backgroundColor;
+    ctx.fillRect(template.offsetX + innerRect.x, template.offsetY + innerRect.y, innerRect.width, innerRect.height);
 
     // Draw main border
-    ctx.fillStyle = LB_FrameBackgroundColor;
+    ctx.fillStyle = gfxSettings.frameBackgroundColor;
 
     var x = 1; var y = 1; 										// Init for horizontal main borders
     var w = outerRect.w - 2; var h = template.mainBorderSize;
@@ -64,16 +71,23 @@ function lbRenderFrame(template) {
 
 
 // Render Posts/Poster
-function lbRenderPosts(template) {
+function lbRenderPosts() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
-    ctx.fillStyle = LB_PostBackgroundColor;
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
+    //ctx.fillStyle = LB_PostBackgroundColor;
+    ctx.fillStyle = gfxSettings.postBackgroundColor;
 
     var rect;
 
-    var offsetX = template.mainBorderSize + 2 + template.offsetX;
-    var offsetY = template.mainBorderSize + 2 + template.offsetY;
+    var offsetX = gfxSettings.mainBorderSize + 2 + gfxSettings.offsetx;
+    var offsetY = gfxSettings.mainBorderSize + 2 + gfxSettings.offsetY;
+    //var offsetX = template.mainBorderSize + 2 + template.offsetX;
+    //var offsetY = template.mainBorderSize + 2 + template.offsetY;
 
     var tmpX;
     var tmpY;
@@ -85,7 +99,7 @@ function lbRenderPosts(template) {
         for (var nx = 0; nx < template.cols; nx++) {
 
             // Only lbRender parent cells
-            if (lbIsParent(template, nx, ny) == true) {
+            if (lbIsParent(nx, ny) == true) {
 
                 //var tmpSpan = lbGetParentSpanSize(model, nx, ny);
 
@@ -94,7 +108,7 @@ function lbRenderPosts(template) {
 
                 //alert("TmpSpan " + tmpSpan.x + ", " + tmpSpan.y);
 
-                rect = lbGetPaneRect(template, nx, ny);
+                rect = lbGetPaneRect(nx, ny);
 
                 // lbRender left & right borders
                 // model.cellBorderSize
@@ -103,21 +117,19 @@ function lbRenderPosts(template) {
                 //ctx.fillStyle = "#faf";
 
                 tmpX = offsetX + rect.x; 							// Left border
-                tmpW = template.cellBorderSize;
+                tmpW = gfxSettings.paneBorderSize;
 
                 tmpY = offsetY + rect.y;
-                tmpH = rect.h - template.cellBorderSize * 0;
+                tmpH = rect.h - gfxSettings.paneBorderSize * 0;
 
                 if (nx > 0 && nx < template.cols) { ctx.fillRect(tmpX, tmpY, tmpW, tmpH); }
 
 
                 //ctx.fillStyle = "#aaf"; 							// Right border ****
 
-                tmpX += rect.w - template.cellBorderSize;
+                tmpX += rect.w - gfxSettings.paneBorderSize;
 
-                if (nx >= 0 && nx < template.cols - template[nx][ny].colSpan) {
-
-
+                if (nx >= 0 && nx < template.cols - template.grid[nx][ny].colSpan) {
 
                     //if(nx + tmpSpan.x < model.colSpan) { 			// Extra border adjustment
                     ctx.fillRect(tmpX, tmpY, tmpW, tmpH);
@@ -132,16 +144,16 @@ function lbRenderPosts(template) {
                 tmpW = rect.w;
 
                 tmpY = offsetY + rect.y;
-                tmpH = template.cellBorderSize;
+                tmpH = gfxSettings.paneBorderSize;
 
                 if (ny > 0 && ny <= template.rows) { ctx.fillRect(tmpX, tmpY, tmpW, tmpH); }
 
                 //ctx.fillStyle = "#faa"; 							// Bottom border ****
 
-                tmpY += rect.h - template.cellBorderSize;
+                tmpY += rect.h - gfxSettings.paneBorderSize;
 
                 //if(nx >= 0 && nx < model.cols - model[nx][ny].colSpan) {
-                if (ny >= 0 && ny < template.rows - template[nx][ny].rowSpan) {
+                if (ny >= 0 && ny < template.rows - template.grid[nx][ny].rowSpan) {
                     ctx.fillRect(tmpX, tmpY, tmpW, tmpH);
                 }
             }
@@ -152,27 +164,30 @@ function lbRenderPosts(template) {
 
 
 // Render Pane grid
-function lbRenderPaneGrid(template) {
+function lbRenderPaneGrid() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
 
-    var innerRect = lbGetInnerFrameRect(template);
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
-    var x = template.offsetX + innerRect.x + 0.5;
-    var y = template.offsetY + innerRect.y;
+    var innerRect = lbGetInnerFrameRect();
+
+    var x = gfxSettings.offsetX + innerRect.x + 0.5;
+    var y = gfxSettings.offsetY + innerRect.y;
 
     var w = x;
     var h = y + innerRect.h;
 
     var span = 0;
 
-    ctx.strokeStyle = LB_PaneGridColor;
+    ctx.strokeStyle = gfxSettings.paneGridColor;
     ctx.lineWidth = 1;
 
     for (var gx = 1; gx < template.cols; gx++) { 				// lbRender verticals
 
-        span = lbGetPaneXSplit(template, gx - 1);
+        span = lbGetPaneXSplit(gx - 1);
 
         ctx.beginPath();
         ctx.moveTo(x + span, y);
@@ -186,7 +201,7 @@ function lbRenderPaneGrid(template) {
 
     for (var gy = 1; gy < template.rows; gy++) { 				// lbRender horizontals
 
-        span = lbGetPaneYSplit(template, gy - 1);
+        span = lbGetPaneYSplit(gy - 1);
 
         ctx.beginPath();
         ctx.moveTo(x, y + span);
@@ -197,28 +212,31 @@ function lbRenderPaneGrid(template) {
 
 
 // Render select and hover Panes
-function lbRenderActivePanes(template) {
+function lbRenderActivePanes() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
     var rect = lbCreateRect(0, 0, 0, 0);
     var tmpRect = lbCreateRect(0, 0, 0, 0);
 
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
     var x = 0; var y = 0;
 
     // lbRender hovered pane
     if (template.hovering == true && template.hoverCellX >= 0 && template.hoverCellY >= 0) {
 
-        rect = lbGetPaneRect(template, template.hoverCellX, template.hoverCellY);
+        rect = lbGetPaneRect(template.hoverCellX, template.hoverCellY);
 
-        rect.x += template.offsetX + template.mainBorderSize + 2;
-        rect.y += template.offsetY + template.mainBorderSize + 2;
+        rect.x += gfxSettings.offsetX + gfxSettings.mainBorderSize + 2;
+        rect.y += gfxSettings.offsetY + gfxSettings.mainBorderSize + 2;
 
         x = template.hoverCellX;
         y = template.hoverCellY;
 
         // Draw hovered cell
-        ctx.fillStyle = LB_HoveredPaneColor;
+        ctx.fillStyle = gfxSettings.hoveredPaneColor;
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
 
@@ -231,36 +249,33 @@ function lbRenderActivePanes(template) {
         rect.y += template.offsetY + template.mainBorderSize + 2;
 
         // Draw selected cell
-        ctx.fillStyle = LB_SelectedPaneColor;
+        ctx.fillStyle = gfxSettings.selectedPaneColor;
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
     }
 }
 
 
 // Render Template/Mall to canvas
-function lbTemplateRender(template) {
+function lbTemplateRender() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
     var canvas = lbGetTemplateCanvas();
     var cWidth = canvas.offsetWidth;
     var cHeight = canvas.offsetHeight;
 
-
     // Clear screen
-    ctx.fillStyle = LB_BackgroundColor;
+    ctx.fillStyle = gfxSettings.backgroundColor;
     ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 
-
     // Draw components
-    lbRenderFrame(template);
-
-    lbRenderActivePanes(template);
-
-    lbRenderPosts(template);
-
-    lbRenderPaneGrid(template);
-
+    lbRenderFrame();
+    //lbRenderActivePanes();
+    //lbRenderPosts();
+    //lbRenderPaneGrid();
 }
 

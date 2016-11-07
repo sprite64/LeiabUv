@@ -16,16 +16,82 @@
 */
 
 
-// lbPane and lbTemplate work as a transition from the bulky template/editor object
-function lbPane(x, y, colSpan, rowSpan) {
-    this.x = x;
-    this.y = y;
-    this.colSpan = colSpan;
-    this.rowSpan = rowSpan;
+// Graphics settings for icon and editor
+function lbCreateGraphicsSettings(type) {
+
+
+    this.type = type;                   // Type of gfx settings
+    
+    var self = this;
+    if (type == "editor") {             // Editor graphical settings *** ***
+
+        self.offsetX = 20;                       // Units/Misc settings
+        self.offsetY = 20;
+
+        self.paneWidth = 20;
+        self.paneHeight = 20;
+
+        self.frameBorderSize = 8;
+        self.paneBorderSize = 6;
+
+
+        self.backgroundColor = "#fff";          // Color settings
+
+        self.frameBorderColor = "#000";
+        self.frameBackgroundColor = "#ddd";
+
+        self.postBackgroundColor = "#bbb";
+
+        self.paneGridColor = "#ddd";
+
+        self.hoveredPaneColor = "#aaf";
+        self.selectedPaneColor = "#ffa";
+
+        self.mainBorderSize = 8;
+        self.cellBorderSize = 6;
+
+    } else if (type = "icon") {         // Icon graphical settings *** ***
+
+        self.offsetx = 0;                       // Units/Misc settings
+        self.offsety = 0;
+
+        self.paneWidth = 10;
+        self.paneHeight = 10;
+
+        self.frameBorderSize = 8;
+        self.paneBorderSize = 6;
+
+
+        self.backgroundColor = "#fff";          // Color settings
+
+        self.frameBorderColor = "#000";
+        self.frameBackgroundColor = "#ddd";
+
+        self.postBackgroundColor = "#bbb";
+
+        self.paneGridColor = "#ddd";
+
+        self.hoveredPaneColor = "#aaf";
+        self.selectedPaneColor = "#ffa";
+
+        self.mainBorderSize = 8;
+        self.cellBorderSize = 6;
+    }
 }
 
 
-function lbTemplate(template) {
+// lbPane and lbTemplate work as a transition from the bulky template/editor object
+function lbPane() {
+    this.colSpan = 1;
+    this.rowSpan = 1;
+    this.parentCellX = - 1;
+    this.parentCellY = - 1;
+}
+
+
+// Slightly confusing but, this class is a middlehand between the editor template object 
+// and template only data to be stored in the database
+function lbTemplateData() {
 
     this.name = $("#inTemplateName").val();
 
@@ -42,9 +108,9 @@ function lbTemplate(template) {
     for (var x = 0; x < template.cols; x++) {           // Create pane objects
         for (var y = 0; y < template.rows; y++) {
 
-            if (template[x][y].parentCellX == -1) {     // Add pane to array
+            if (template.grid[x][y].parentCellX == -1) {     // Add pane to array
 
-                this.panes[pi] = new lbPane(x, y, template[x][y].colSpan, template[x][y].rowSpan);
+                this.panes[pi] = new lbPane(x, y, template.grid[x][y].colSpan, template.grid[x][y].rowSpan);
                 pi ++;
             }
         }
@@ -52,56 +118,48 @@ function lbTemplate(template) {
 }
 
 
-// Create Pane/Luft
-function lbCreatePane() {
+// Template editor data
+function lbTemplateEditor() {
 
-    var pane = new Object();
+    // Create grid with max cols and rows
+    //this.grid = new lbCreate2DArray(LB_TemplateMaxColumns, LB_TemplateMaxRows);
+    this.grid = lbCreate2DArray(LB_TemplateMaxColumns, LB_TemplateMaxRows);
+    
+    this.cols = 1;
+    this.rows = 1;
 
-    pane.colSpan = 1;
-    pane.rowSpan = 1;
+    this.maxCols = LB_TemplateMaxColumns;
+    this.maxRows = LB_TemplateMaxRows;
 
-    pane.parentCellX = -1;
-    pane.parentCellY = -1;
+    this.state = LB_TemplateStateInactive;
 
-    return pane;
-}
+    // Graphics settings
+    this.activeGfxSettings = "editor";
 
+    //this.editorGfxSettings = new lbCreateGraphicsSettings("editor");
+    //this.iconGfxSettings = new lbCreateGraphicsSettings("icon");
 
-// Create Template/Mall
-function lbCreateTemplate(cols, rows) {
+    this.mouseX = 0;
+    this.mouseY = 0;
 
-    var template = lbCreate2DArray(cols, rows); 	// Create grid
-    template.cols = cols;
-    template.rows = rows;
-
-    template.state = LB_TemplateStateInactive;      // State of editor
-
-    template.offsetX = LB_ModelOffsetX;             // Render offset
-    template.offsetY = LB_ModelOffsetY;
-
-    for (var y = 0; y < rows; y++) { 		        // Add cells to grid
-        for (var x = 0; x < cols; x++) {
-            template[x][y] = lbCreatePane();
+    // Occupy grid with panes
+    for (var y = 0; y < this.maxRows; y++) {
+        for (var x = 0; x < this.maxCols; x++) {
+            this.grid[x][y] = new lbPane();
         }
     }
 
-    template.mouseX = 0;
-    template.mouseY = 0;
+    // Init interactive properties
+    this.selectedCellX = -1; 			    	
+    this.selectedCellY = -1;
 
-    template.cellWidth = LB_ModelPaneWidth; 	    // Set proportional settings
-    template.cellHeight = LB_ModelPaneHeight;
-
-    template.mainBorderSize = LB_ModelFrameBorderSize;
-    template.cellBorderSize = LB_ModelPaneBorderSize;
-    
-
-    template.selectedCellX = -1; 			    	// Init interactive properties
-    template.selectedCellY = -1;
-
-    template.hoverCellX = -1;
-    template.hoverCellY = -1;
-    template.hovering = false;
-
-    return template; 							    // Return window model object
+    this.hoverCellX = -1;
+    this.hoverCellY = -1;
+    this.hovering = false;
 }
+
+
+// Global template editor
+var template = new lbTemplateEditor();
+
 
