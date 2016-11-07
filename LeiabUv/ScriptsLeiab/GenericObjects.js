@@ -17,7 +17,7 @@
 
 
 // Create Position/Point
-function lbCreatePoint2(x, y) {
+function lbCreatePoint(x, y) {
     this.x = x;
     this.y = y;
 }
