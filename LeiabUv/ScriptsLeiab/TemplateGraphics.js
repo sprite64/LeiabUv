@@ -40,33 +40,34 @@ function lbRenderFrame() {
     // Draw dummy
     ctx.fillStyle = "#f00";
     ctx.fillRect(10, 10, 16, 16);
-
+    
     // Draw outer rect
     ctx.fillStyle = gfxSettings.frameBorderColor;
     ctx.fillRect(gfxSettings.offsetX + outerRect.x, gfxSettings.offsetY + outerRect.y, outerRect.width, outerRect.height);
 
     // Draw inner rect
     ctx.fillStyle = gfxSettings.backgroundColor;
-    ctx.fillRect(template.offsetX + innerRect.x, template.offsetY + innerRect.y, innerRect.width, innerRect.height);
+    ctx.fillRect(gfxSettings.offsetX + innerRect.x, gfxSettings.offsetY + innerRect.y, innerRect.width, innerRect.height);
 
+    
     // Draw main border
     ctx.fillStyle = gfxSettings.frameBackgroundColor;
 
-    var x = 1; var y = 1; 										// Init for horizontal main borders
-    var w = outerRect.w - 2; var h = template.mainBorderSize;
+    var x = 1; var y = 1; 										                        // Init for horizontal main borders
+    var w = outerRect.width - 2; var h = gfxSettings.frameBorderSize;
 
-    ctx.fillRect(template.offsetX + x, template.offsetY + y, w, h); 				// Top main border
+    ctx.fillRect(gfxSettings.offsetX + x, gfxSettings.offsetY + y, w, h); 				// Top main border
 
-    y += innerRect.h + template.mainBorderSize + 2; 				// Bottom main border
-    ctx.fillRect(template.offsetX + x, template.offsetY + y, w, h);
+    y += innerRect.height + gfxSettings.frameBorderSize + 2; 				            // Bottom main border
+    ctx.fillRect(gfxSettings.offsetX + x, gfxSettings.offsetY + y, w, h);
 
-    x = 1; y = template.mainBorderSize + 2; 						// Init for vertical main borders
-    w = template.mainBorderSize; h = innerRect.h;
+    x = 1; y = gfxSettings.frameBorderSize + 2; 						                // Init for vertical main borders
+    w = gfxSettings.frameBorderSize; h = innerRect.height;
 
-    ctx.fillRect(template.offsetX + x, template.offsetY + y, w, h); 				// Left main border
+    ctx.fillRect(gfxSettings.offsetX + x, gfxSettings.offsetY + y, w, h); 				// Left main border
 
-    x = outerRect.w - (template.mainBorderSize + 1); 				// Right main border
-    ctx.fillRect(template.offsetX + x, template.offsetY + y, w, h);
+    x = outerRect.width - (gfxSettings.frameBorderSize + 1); 				            // Right main border
+    ctx.fillRect(gfxSettings.offsetX + x, gfxSettings.offsetY + y, w, h);
 }
 
 
@@ -84,8 +85,8 @@ function lbRenderPosts() {
 
     var rect;
 
-    var offsetX = gfxSettings.mainBorderSize + 2 + gfxSettings.offsetx;
-    var offsetY = gfxSettings.mainBorderSize + 2 + gfxSettings.offsetY;
+    var offsetX = gfxSettings.frameBorderSize + 2 + gfxSettings.offsetX;
+    var offsetY = gfxSettings.frameBorderSize + 2 + gfxSettings.offsetY;
     //var offsetX = template.mainBorderSize + 2 + template.offsetX;
     //var offsetY = template.mainBorderSize + 2 + template.offsetY;
 
@@ -120,14 +121,14 @@ function lbRenderPosts() {
                 tmpW = gfxSettings.paneBorderSize;
 
                 tmpY = offsetY + rect.y;
-                tmpH = rect.h - gfxSettings.paneBorderSize * 0;
+                tmpH = rect.height - gfxSettings.paneBorderSize * 0;
 
                 if (nx > 0 && nx < template.cols) { ctx.fillRect(tmpX, tmpY, tmpW, tmpH); }
 
 
                 //ctx.fillStyle = "#aaf"; 							// Right border ****
 
-                tmpX += rect.w - gfxSettings.paneBorderSize;
+                tmpX += rect.width - gfxSettings.paneBorderSize;
 
                 if (nx >= 0 && nx < template.cols - template.grid[nx][ny].colSpan) {
 
@@ -141,7 +142,7 @@ function lbRenderPosts() {
                 //ctx.fillStyle = "#aff"; 			 				// Top border
 
                 tmpX = rect.x + offsetX;
-                tmpW = rect.w;
+                tmpW = rect.width;
 
                 tmpY = offsetY + rect.y;
                 tmpH = gfxSettings.paneBorderSize;
@@ -150,7 +151,7 @@ function lbRenderPosts() {
 
                 //ctx.fillStyle = "#faa"; 							// Bottom border ****
 
-                tmpY += rect.h - gfxSettings.paneBorderSize;
+                tmpY += rect.height - gfxSettings.paneBorderSize;
 
                 //if(nx >= 0 && nx < model.cols - model[nx][ny].colSpan) {
                 if (ny >= 0 && ny < template.rows - template.grid[nx][ny].rowSpan) {
@@ -178,7 +179,7 @@ function lbRenderPaneGrid() {
     var y = gfxSettings.offsetY + innerRect.y;
 
     var w = x;
-    var h = y + innerRect.h;
+    var h = y + innerRect.height;
 
     var span = 0;
 
@@ -196,7 +197,7 @@ function lbRenderPaneGrid() {
     }
 
     y += 0.5;
-    w = x + innerRect.w - 1;
+    w = x + innerRect.width - 1;
     h = y;
 
     for (var gy = 1; gy < template.rows; gy++) { 				// lbRender horizontals
@@ -216,8 +217,8 @@ function lbRenderActivePanes() {
 
     // Init
     var ctx = lbGetTemplateCanvasContext();
-    var rect = lbCreateRect(0, 0, 0, 0);
-    var tmpRect = lbCreateRect(0, 0, 0, 0);
+    var rect = new lbCreateRect(0, 0, 0, 0);
+    //var tmpRect = new lbCreateRect(0, 0, 0, 0);
 
     // Get graphics settings for active gfx settings
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
@@ -229,28 +230,31 @@ function lbRenderActivePanes() {
 
         rect = lbGetPaneRect(template.hoverCellX, template.hoverCellY);
 
-        rect.x += gfxSettings.offsetX + gfxSettings.mainBorderSize + 2;
-        rect.y += gfxSettings.offsetY + gfxSettings.mainBorderSize + 2;
+        rect.x += gfxSettings.offsetX + gfxSettings.frameBorderSize + 2;
+        rect.y += gfxSettings.offsetY + gfxSettings.frameBorderSize + 2;
 
         x = template.hoverCellX;
         y = template.hoverCellY;
 
         // Draw hovered cell
         ctx.fillStyle = gfxSettings.hoveredPaneColor;
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
     }
 
     // lbRender selected pane
     if (template.selectedCellX != -1 && template.selectedCellY != -1) {
 
-        rect = lbGetPaneRect(template, template.selectedCellX, template.selectedCellY);
+        rect = lbGetPaneRect(template.selectedCellX, template.selectedCellY);
 
-        rect.x += template.offsetX + template.mainBorderSize + 2;
-        rect.y += template.offsetY + template.mainBorderSize + 2;
-
+        rect.x += gfxSettings.offsetX + gfxSettings.frameBorderSize + 2;
+        rect.y += gfxSettings.offsetY + gfxSettings.frameBorderSize + 2;
+        
         // Draw selected cell
         ctx.fillStyle = gfxSettings.selectedPaneColor;
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
+        //ctx.fillStyle = "#ff0";
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+
+        //alert("seledt pane" + rect.x + ", " + rect.y + ", " + rect.width + ", " + rect.height)
     }
 }
 
@@ -274,8 +278,8 @@ function lbTemplateRender() {
 
     // Draw components
     lbRenderFrame();
-    //lbRenderActivePanes();
-    //lbRenderPosts();
-    //lbRenderPaneGrid();
+    lbRenderActivePanes();
+    lbRenderPosts();
+    lbRenderPaneGrid();
 }
 

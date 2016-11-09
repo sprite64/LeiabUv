@@ -23,14 +23,14 @@ function lbGetOuterFrameRect() {
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
     var w = template.cols * gfxSettings.paneWidth;
-    w += gfxSettings.mainBorderSize * 2;
-    w += gfxSettings.cellBorderSize * 2 * (template.cols - 1);
-    w += 4 * (template.cols - 1) * 3;
+    w += gfxSettings.frameBorderSize * 2;
+    w += gfxSettings.paneBorderSize * 2 * (template.cols - 1);
+    w += 4 + (template.cols - 1) * 3;
 
     var h = template.rows * gfxSettings.paneHeight;
-    h += gfxSettings.mainBorderSize * 2;
-    h += gfxSettings.cellBorderSize * 2 * (template.rows - 1);
-    h += 4 * (template.rows - 1) * 3;
+    h += gfxSettings.frameBorderSize * 2;
+    h += gfxSettings.paneBorderSize * 2 * (template.rows - 1);
+    h += 4 + (template.rows - 1) * 3;
 
     // Return rect object
     return new lbCreateRect(x, y, w, h);
@@ -45,11 +45,12 @@ function lbGetInnerFrameRect() {
     // Get graphics settings for active gfx settings
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
     
-    rect.x = gfxSettings.mainBorderSize + 2;
-    rect.y = gfxSettings.mainBorderSize + 2;
-
-    rect.w -= (gfxSettings.mainBorderSize * 2 + 4);
-    rect.h -= (gfxSettings.mainBorderSize * 2 + 4);
+    
+    rect.x = gfxSettings.frameBorderSize + 2;
+    rect.y = gfxSettings.frameBorderSize + 2;
+    
+    rect.width -= (gfxSettings.frameBorderSize * 2 + 4);
+    rect.height -= (gfxSettings.frameBorderSize * 2 + 4);
 
     return rect;
 }
@@ -91,7 +92,7 @@ function lbGetPaneYSplit(index) {
 
 // Determines if a Pane is a parent, returns true/false
 function lbIsParent(xIndex, yIndex) {
-    
+    //alert("IsParent: " + xIndex + ", " + yIndex);
     if (template.grid[xIndex][yIndex].parentCellX != -1) { return false; }
     if (template.grid[xIndex][yIndex].parentCellY != -1) { return false; }
 
@@ -108,8 +109,8 @@ function lbGetParent(xIndex, yIndex) {
         //return lbCreatePosition(xIndex, yIndex);
     }
 
-    var x = template[xIndex][yIndex].parentCellX; 			// Get childs parent cell indice
-    var y = template[xIndex][yIndex].parentCellY;
+    var x = template.grid[xIndex][yIndex].parentCellX; 			// Get childs parent cell indice
+    var y = template.grid[xIndex][yIndex].parentCellY;
 
     return new lbCreatePosition(x, y);
 }
@@ -384,8 +385,8 @@ function lbUpdateMousePosition(e) {
 
     var canvasOffset = $("#" + LB_TemplateCanvasId).offset();       // Get canvas element offset
 
-    template.mouseX = mouseX - canvasOffset.left;                   // Update mouse position
-    template.mouseY = mouseY - canvasOffset.top;
+    template.mouseX = Math.round(mouseX - canvasOffset.left);                   // Update mouse position
+    template.mouseY = Math.round(mouseY - canvasOffset.top);                    // Using round because at some times mouseX will return a float
 }
 
 
@@ -396,6 +397,9 @@ function lbTemplateUpdate(action) {
 
     // Init
     var rect;
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
 
     // Actions
     switch (action) {
@@ -412,15 +416,17 @@ function lbTemplateUpdate(action) {
                 for (var ny = 0; ny < template.rows; ny++) {
                     rect = lbGetPaneRect(nx, ny);
 
-                    rect.x += template.offsetX + template.mainBorderSize + 2;
-                    rect.y += template.offsetY + template.mainBorderSize + 2;
+                    rect.x += gfxSettings.offsetX + gfxSettings.frameBorderSize + 2;
+                    rect.y += gfxSettings.offsetY + gfxSettings.frameBorderSize + 2;
 
                     // Check collision
-                    if (template.mouseX >= rect.x && template.mouseX < rect.x + rect.w) {
-                        if (template.mouseY >= rect.y && template.mouseY < rect.y + rect.h) {
+                    if (template.mouseX >= rect.x && template.mouseX < rect.x + rect.width) {
+                        if (template.mouseY >= rect.y && template.mouseY < rect.y + rect.height) {
                             template.hovering = true;
                             template.hoverCellX = nx;
                             template.hoverCellY = ny;
+
+                            //alert("collision! " + template.hoverCellX + ", " + template.hoverCellY);
                         }
                     }
 

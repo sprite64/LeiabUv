@@ -51,14 +51,3 @@ function lbCreate2DArray(cols, rows) {
     return grid;
 }
 
-
-// Create 2D Array
-/*function lbCreate2DArray(cols, rows) {
-
-    var grid = new Array(cols);
-    for (var i = 0; i < cols; i++) {
-        grid[i] = new Array(rows);
-    }
-
-    return grid;
-}*/

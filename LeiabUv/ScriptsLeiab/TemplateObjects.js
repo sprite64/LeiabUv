@@ -28,8 +28,8 @@ function lbCreateGraphicsSettings(type) {
         self.offsetX = 20;                       // Units/Misc settings
         self.offsetY = 20;
 
-        self.paneWidth = 20;
-        self.paneHeight = 20;
+        self.paneWidth = 40;
+        self.paneHeight = 40;
 
         self.frameBorderSize = 8;
         self.paneBorderSize = 6;
