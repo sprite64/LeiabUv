@@ -37,6 +37,30 @@ function lbGetOuterFrameRect() {
 }
 
 
+// Get outer Frame recrtangle
+function lbGetMaxOuterFrameRect() {
+
+    var x = 0;
+    var y = 0;
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
+    var w = template.maxCols * gfxSettings.paneWidth;
+    w += gfxSettings.frameBorderSize * 2;
+    w += gfxSettings.paneBorderSize * 2 * (template.maxCols - 1);
+    w += 4 + (template.maxCols - 1) * 3;
+
+    var h = template.maxRows * gfxSettings.paneHeight;
+    h += gfxSettings.frameBorderSize * 2;
+    h += gfxSettings.paneBorderSize * 2 * (template.maxRows - 1);
+    h += 4 + (template.maxRows - 1) * 3;
+
+    // Return rect object
+    return new lbCreateRect(x, y, w, h);
+}
+
+
 // Get inner Frame rectangle
 function lbGetInnerFrameRect() {
 
@@ -90,12 +114,20 @@ function lbGetPaneYSplit(index) {
 }
 
 
+
+
+
 // Determines if a Pane is a parent, returns true/false
 function lbIsParent(xIndex, yIndex) {
     //alert("IsParent: " + xIndex + ", " + yIndex);
-    if (template.grid[xIndex][yIndex].parentCellX != -1) { return false; }
-    if (template.grid[xIndex][yIndex].parentCellY != -1) { return false; }
 
+    if (xIndex < template.maxCols && yIndex < template.maxRows) {
+        if (template.grid[xIndex][yIndex].parentCellX != -1) { return false; }
+        if (template.grid[xIndex][yIndex].parentCellY != -1) { return false; }
+    } else {
+        alert("IsParent(): Out of bounds");
+    }
+    
     return true;
 }
 
@@ -133,20 +165,67 @@ function lbGetParentCount() {
 }
 
 
+// Cleans pane data during edits
+function lbCleanPaneData() {
+
+    for(var y = 0; y < template.rows; y++) {    // Clean pane data
+        for (var x = 0; x < template.cols; x++) {
+
+            if (lbIsParent(x, y)) {
+
+                // Correct column span
+                if (template.grid[x][y].colSpan + x > template.cols) {
+                    template.grid[x][y].colSpan -= (template.grid[x][y].colSpan + x) - template.cols;
+                }
+
+                // Correct row span
+                if (template.grid[x][y].rowSpan + y > template.rows) {
+                    template.grid[x][y].rowSpan -= (template.grid[x][y].rowSpan + y) - template.rows;
+                }
+            }
+        }
+    }
+
+    // Clean editor data
+    if (template.selectedCellX != -1) {
+        if (template.selectedCellX >= template.cols) {
+            template.selectedCellX = -1;
+            template.selectedCellY = -1;
+        }
+    }
+
+    if (template.selectedCellY != -1) {
+        if (template.selectedCellY >= template.rows) {
+            template.selectedCellX = -1;
+            template.selectedCellY = -1;
+        }
+    }
+
+    /*
+    this.selectedCellX = -1; 			    	
+    this.selectedCellY = -1;
+
+    this.hoverCellX = -1;
+    this.hoverCellY = -1;
+    this.hovering = false;
+    */
+}
+
+
 // Functions for changing grid rows and cols 	***************************************************************************************************************************************
 // It works but is quierky, for instance it doesn't take the cells span if any.
 // Increase Pane column
 function lbIncreaseFrameColumn() {
 
-    if (template.cols >= LB_TemplateMaxColumns) { return; }     // Restrict maximum columns
+    if (template.cols < template.maxCols) {
+        for (var y = 0; y < template.rows; y++) {                   // Reset new panes
+            template.grid[template.cols][y].colSpan = 1;
+            template.grid[template.cols][y].rowSpan = 1;
+            template.grid[template.cols][y].parentCellX = -1;
+            template.grid[template.cols][y].parentCellY = -1;
+        }
 
-    template.cols++;        // Increase columns
-
-    for (var y = 0; y < template.rows; y++) {                   // Reset new panes
-        template.grid[template.cols][y].colSpan = 1;
-        template.grid[template.cols][y].rowSpan = 1;
-        template.grid[template.cols][y].parentCellX = -1;
-        template.grid[template.cols][y].parentCellY = -1;
+        template.cols++;
     }
 }
 
@@ -154,15 +233,15 @@ function lbIncreaseFrameColumn() {
 // Increase Pane row
 function lbIncreaseFrameRow() {
 
-    if (template.rows >= LB_TemplateMaxRows) { return; }
+    if (template.rows < template.maxRows) {
+        for (var x = 0; x < template.cols; x++) {
+            template.grid[x][template.rows].colSpan = 1;
+            template.grid[x][template.rows].rowSpan = 1;
+            template.grid[x][template.rows].parentCellX = -1;
+            template.grid[x][template.rows].parentcelly = -1;
+        }
 
-    template.rows++;        // Increase rows
-
-    for (var x = 0; x < template.cols; x++) {
-        template.grid[x][template.rows].colSpan = 1;
-        template.grid[x][template.rows].rowSpan = 1;
-        template.grid[x][template.rows].parentCellX = -1;
-        template.grid[x][template.rows].parentcelly = -1;
+        template.rows++;        // Increase rows
     }
 }
 
@@ -170,31 +249,36 @@ function lbIncreaseFrameRow() {
 // Decrease Frame/Karm column
 function lbDecreaseFrameColumn() {
 
-    if (template.cols <= 1) { return; }
+    if (template.cols > 1) {
+        template.cols--;
 
-    for (var y = 0; y < template.rows; y++) {                   // Reset unused panes
-        template.grid[template.cols][y].colSpan = 1;
-        template.grid[template.cols][y].rowSpan = 1;
-        template.grid[template.cols][y].parentCellX = -1;
-        template.grid[template.cols][y].parentCellY = -1;
+        for (var y = 0; y < template.rows; y++) {                   // Reset unused panes
+            template.grid[template.cols][y].colSpan = 1;
+            template.grid[template.cols][y].rowSpan = 1;
+            template.grid[template.cols][y].parentCellX = -1;
+            template.grid[template.cols][y].parentCellY = -1;
+        }
     }
 
-    template.cols--;        // Decrease columns
+    lbCleanPaneData()
 }
+
 
 // Decrease Frame/Karm row
 function lbDecreaseFrameRow() {
 
-    if (template.rows <= 1) { return; }
+    if (template.rows > 1) {
+        template.rows--;
 
-    for (var x = 0; x < template.cols; x++) {
-        template.grid[x][template.rows].colSpan = 1;
-        template.grid[x][template.rows].rowSpan = 1;
-        template.grid[x][template.rows].parentCellX = -1;
-        template.grid[x][template.rows].parentCellY = -1;
+        for (var x = 0; x < template.cols; x++) {
+            template.grid[x][template.rows].colSpan = 1;
+            template.grid[x][template.rows].rowSpan = 1;
+            template.grid[x][template.rows].parentCellX = -1;
+            template.grid[x][template.rows].parentCellY = -1;
+        }
     }
 
-    template.rows--;
+    lbCleanPaneData()
 }
 
 
@@ -215,6 +299,64 @@ function lbGetPaneRect(xIndex, yIndex) {
         yIndex = pos.y;
     }
     
+    var x = lbGetPaneXSplit(xIndex - 1); 		// Get rect position
+    var y = lbGetPaneYSplit(yIndex - 1);
+
+    if (x > 0) { x++; }
+    if (y > 0) { y++; }
+
+    var w = 0;
+    var h = 0;
+
+    if (template.cols == 1) {
+        w = gfxSettings.paneWidth; // Adjust size because of space anomaly when there's only one row or column
+    } else {
+        for (var nx = 0; nx < template.grid[xIndex][yIndex].colSpan; nx++) { 			// Accumulate cell spans
+            if (xIndex + nx == 0 || xIndex + nx == template.cols - 1) {
+                w += lbGetPaneXSplit(0);
+            } else {
+                w += lbGetPaneXSplit(1) - lbGetPaneXSplit(0) - 1;
+            }
+        }
+    }
+
+    w += template.grid[xIndex][yIndex].colSpan - 1; 									// Include single pixel borders
+
+    if (template.rows == 1) {
+        h = gfxSettings.paneHeight; // Adjust size because of space anomaly when there's only one row or column
+    } else {
+        for (var ny = 0; ny < template.grid[xIndex][yIndex].rowSpan; ny++) { 			// Accumulate cell spans
+            if (yIndex + ny == 0 || yIndex + ny == template.rows - 1) {
+                h += lbGetPaneYSplit(0);
+            } else {
+                h += lbGetPaneYSplit(1) - lbGetPaneYSplit(0) - 1;
+            }
+        }
+    }
+
+    h += template.grid[xIndex][yIndex].rowSpan - 1; 								// Include single pixel borders
+
+
+    return new lbCreateRect(x, y, w, h);
+    //return lbCreateRect(x, y, w, h); 											// Create and return rectangle
+}
+
+
+// Get Pane/Luft rectangle
+// In contrast to lbGetPaneRect, lbGetAnyPaneRect returns child panes as well and does not redirect to its parent
+function lbGetAnyPaneRect(xIndex, yIndex) {
+
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
+    // Update cell index to parent if any
+    /*if (lbIsParent(xIndex, yIndex) == false) {
+
+        var pos = lbGetParent(xIndex, yIndex);
+        xIndex = pos.x;
+        yIndex = pos.y;
+    } */
+
     var x = lbGetPaneXSplit(xIndex - 1); 		// Get rect position
     var y = lbGetPaneYSplit(yIndex - 1);
 
@@ -339,11 +481,12 @@ function lbDecreasePaneColumn() {
     var yIndex = template.selectedCellY;
 
     // Get parent
-    var pos = lbGetParent(template, template.selectedCellX, template.selectedCellY);
+    var pos = lbGetParent(template.selectedCellX, template.selectedCellY);
 
     if (template.grid[pos.x][pos.y].colSpan <= 1) { return; } 						// Check rows
 
     var tmpCol = template.grid[pos.x][pos.y].colSpan - 1;
+
     for (var ny = pos.y; ny < pos.y + template.grid[pos.x][pos.y].rowSpan; ny++) {
         template.grid[pos.x + tmpCol][ny].parentCellX = -1;
         template.grid[pos.x + tmpCol][ny].parentCellY = -1;
@@ -362,7 +505,7 @@ function lbDecreasePaneRow() {
     var yIndex = template.selectedCellY;
 
     // Get parent
-    var pos = lbGetParent(template, template.selectedCellX, template.selectedCellY);
+    var pos = lbGetParent(template.selectedCellX, template.selectedCellY);
 
     if (template.grid[pos.x][pos.y].rowSpan <= 1) { return; } 						// Check rows
 
@@ -374,6 +517,53 @@ function lbDecreasePaneRow() {
     }
 
     template.grid[pos.x][pos.y].rowSpan -= 1; 			// Update column span
+}
+
+
+// Reset Template Editor
+function lbResetTemplateEditor() {
+
+    template.cols = 1;
+    template.rows = 1;
+
+    template.maxCols = LB_TemplateMaxColumns;
+    template.maxRows = LB_TemplateMaxRows;
+
+    // Reset panes
+    for (var y = 0; y < template.maxRows; y++) {
+        for (var x = 0; x < template.maxCols; x++) {
+            template.grid[x][y].colSpan = 1;
+            template.grid[x][y].rowSpan = 1;
+            template.grid[x][y].parentCellX = -1;
+            template.grid[x][y].parentCellY = -1;
+        }
+    }
+
+    template.state = LB_TemplateStateInactive;
+
+    // Graphics settings
+    template.activeGfxSettings = "editor";
+
+    //this.editorGfxSettings = new lbCreateGraphicsSettings("editor");
+    //this.iconGfxSettings = new lbCreateGraphicsSettings("icon");
+
+    template.mouseX = 0;
+    template.mouseY = 0;
+
+    // Occupy grid with panes
+    for (var y = 0; y < template.maxRows; y++) {
+        for (var x = 0; x < template.maxCols; x++) {
+            template.grid[x][y] = new lbPane();
+        }
+    }
+
+    // Init interactive properties
+    template.selectedCellX = -1;
+    template.selectedCellY = -1;
+
+    template.hoverCellX = -1;
+    template.hoverCellY = -1;
+    template.hovering = false;
 }
 
 
@@ -515,7 +705,7 @@ function lbOpenEditor() {
     document.getElementById("alertErrorMessage").style.visibility = "hidden";
     document.getElementById("alertSuccessMessage").style.visibility = "hidden";
     
-    //return template;
+    lbResetTemplateEditor();    // Reset editor data
 }
 
 
@@ -533,7 +723,7 @@ function lbCloseEditor() {
 
     document.getElementById("saveLoadingGlyphicon").style.visibility = "hidden";
 
-    //return template;
+    lbResetTemplateEditor();    // Reset editor data
 }
 
 
@@ -563,7 +753,7 @@ function lbSaveTemplate() {
         return template;
     }
 
-    var nt = new lbTemplateData(template);          // Create simplified template object
+    var nt = new lbTemplateData();          // Create simplified template object
     
     var j = JSON.stringify(nt);                 // Create JSON object
 

@@ -259,6 +259,88 @@ function lbRenderActivePanes() {
 }
 
 
+
+// Render Pane grid
+function lbRenderDebug() {
+
+    // Init
+    var ctx = lbGetTemplateCanvasContext();
+    
+    // Get graphics settings for active gfx settings
+    var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
+
+    var innerRect = lbGetInnerFrameRect();
+
+    var x = gfxSettings.offsetX + innerRect.x + 0.5;
+    var y = gfxSettings.offsetY;
+
+    var w = x;
+    var h = y + innerRect.height;
+
+    var outerRect = lbGetMaxOuterFrameRect();
+    
+    var span = 0;
+
+    // Render complete grid
+    ctx.strokeStyle = gfxSettings.paneGridColor;
+    ctx.strokeStyle = "#f40";
+    ctx.lineWidth = 1;
+
+    for (var gx = 1; gx < template.maxCols; gx++) { 				// lbRender verticals
+
+        span = lbGetPaneXSplit(gx - 1);
+
+        ctx.beginPath();
+        ctx.moveTo(x + span, y);
+        ctx.lineTo(x + span, y + outerRect.height);
+        ctx.stroke();
+    }
+
+    x = gfxSettings.offsetX;
+    y += 0.5 + innerRect.y;
+    w = x;
+    h = y;
+
+    for (var gy = 1; gy < template.maxRows; gy++) { 				// lbRender horizontals
+
+        span = lbGetPaneYSplit(gy - 1);
+
+        ctx.beginPath();
+        ctx.moveTo(x, y + span);
+        ctx.lineTo(w + outerRect.width, h + span);
+        ctx.stroke();
+    }
+
+    // Render pane data
+
+    //ctx.strokeStyle = "#f40";
+    x = 0;
+    y = 0;
+    var paneRect;
+    var debugText = "";
+
+    ctx.fillStyle = "#f40";
+    ctx.fillStyle = "#000";
+    ctx.font = "10px";
+
+    for (var gy = 0; gy < template.maxRows; gy++) {
+        for (var gx = 0; gx < template.maxCols; gx++) {
+
+            paneRect = lbGetAnyPaneRect(gx, gy);
+
+            debugText = "I: " + gx + ", " + gy;
+            ctx.fillText(debugText, paneRect.x + gfxSettings.offsetX + gfxSettings.frameBorderSize + 4, paneRect.y + gfxSettings.offsetY + gfxSettings.frameBorderSize + 14);
+
+            debugText = "P: " + template.grid[gx][gy].parentCellX + ", " + template.grid[gx][gy].parentCellY;
+            ctx.fillText(debugText, paneRect.x + gfxSettings.offsetX + gfxSettings.frameBorderSize + 4, paneRect.y + gfxSettings.offsetY + gfxSettings.frameBorderSize + 14 + 12 + 12);
+
+            debugText = "S: " + template.grid[gx][gy].colSpan + ", " + template.grid[gx][gy].rowSpan;
+            ctx.fillText(debugText, paneRect.x + gfxSettings.offsetX + gfxSettings.frameBorderSize + 4, paneRect.y + gfxSettings.offsetY + gfxSettings.frameBorderSize + 14 + 12);
+        }
+    }
+}
+
+
 // Render Template/Mall to canvas
 function lbTemplateRender() {
 
@@ -281,5 +363,6 @@ function lbTemplateRender() {
     lbRenderActivePanes();
     lbRenderPosts();
     lbRenderPaneGrid();
+    lbRenderDebug();
 }
 

@@ -99,7 +99,7 @@ function lbTemplateData() {
     this.rows = template.rows;
 
     var pi = 0;         // Pane index
-    var paneCount = lbGetParentCount(template);
+    var paneCount = lbGetParentCount();
 
     this.paneCount = paneCount;
 
