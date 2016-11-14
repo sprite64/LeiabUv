@@ -89,6 +89,14 @@ function lbPane() {
 }
 
 
+function lbPaneData(xIndex, yIndex, colSpan, rowSpan) {
+    this.xIndex = xIndex;
+    this.yIndex = yIndex;
+    this.colSpan = colSpan;
+    this.rowSpan = rowSpan;
+}
+
+
 // Slightly confusing but, this class is a middlehand between the editor template object 
 // and template only data to be stored in the database
 function lbTemplateData() {
@@ -110,7 +118,7 @@ function lbTemplateData() {
 
             if (template.grid[x][y].parentCellX == -1) {     // Add pane to array
 
-                this.panes[pi] = new lbPane(x, y, template.grid[x][y].colSpan, template.grid[x][y].rowSpan);
+                this.panes[pi] = new lbPaneData(x, y, template.grid[x][y].colSpan, template.grid[x][y].rowSpan);
                 pi ++;
             }
         }

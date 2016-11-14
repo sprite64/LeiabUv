@@ -757,7 +757,7 @@ function lbSaveTemplate() {
     
     var j = JSON.stringify(nt);                 // Create JSON object
 
-    //alert(j);
+    alert(j);
 
     // Hide/Show alert elements and loading glyph
     document.getElementById("alertSuccessMessage").style.display = "none";
