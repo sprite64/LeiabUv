@@ -38,8 +38,11 @@ namespace LeiabUv.Controllers
             {
                 return Json("Fyll i beteckning!", JsonRequestBehavior.AllowGet);
             }
-            
-            if(ctx.Templates.Any(d => d.Name == t.Name))
+
+            // A exception of type 'System.Data.SqlClient.SqlException' occurred in 
+            //      EntityFramework.dll but was not handled in user code
+            // Additional information: Login failed for user 'Sprite-PC\Sprite'.
+            if (ctx.Templates.Any(d => d.Name == t.Name))
             {
                 return Json("Beteckningen används redan, välj en unik beteckning.", JsonRequestBehavior.AllowGet);
             }
