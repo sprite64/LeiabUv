@@ -52,14 +52,14 @@ function lbCreateGraphicsSettings(type) {
 
     } else if (type = "icon") {         // Icon graphical settings *** ***
 
-        self.offsetx = 0;                       // Units/Misc settings
-        self.offsety = 0;
+        self.offsetX = 20;                       // Units/Misc settings
+        self.offsetY = 305;
 
         self.paneWidth = 10;
         self.paneHeight = 10;
 
-        self.frameBorderSize = 8;
-        self.paneBorderSize = 6;
+        self.frameBorderSize = 4;
+        self.paneBorderSize = 2;
 
 
         self.backgroundColor = "#fff";          // Color settings
@@ -74,8 +74,8 @@ function lbCreateGraphicsSettings(type) {
         self.hoveredPaneColor = "#aaf";
         self.selectedPaneColor = "#ffa";
 
-        self.mainBorderSize = 8;
-        self.cellBorderSize = 6;
+        self.mainBorderSize = 4;
+        self.cellBorderSize = 2;
     }
 }
 
@@ -168,6 +168,6 @@ function lbTemplateEditor() {
 
 
 // Global template editor
-var template = new lbTemplateEditor();
+var     template = new lbTemplateEditor();
 
 

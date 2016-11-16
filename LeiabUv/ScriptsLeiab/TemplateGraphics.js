@@ -38,8 +38,8 @@ function lbRenderFrame() {
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
     
     // Draw dummy
-    ctx.fillStyle = "#f00";
-    ctx.fillRect(10, 10, 16, 16);
+    //ctx.fillStyle = "#f00";
+    //ctx.fillRect(10, 10, 16, 16);
     
     // Draw outer rect
     ctx.fillStyle = gfxSettings.frameBorderColor;
@@ -359,10 +359,23 @@ function lbTemplateRender() {
     ctx.fillRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
 
     // Draw components
+    
+    template.activeGfxSettings = "icon";
+
     lbRenderFrame();
     lbRenderActivePanes();
     lbRenderPosts();
     lbRenderPaneGrid();
-    lbRenderDebug();
+    //lbRenderDebug();
+
+    template.activeGfxSettings = "editor";
+
+    
+    lbRenderFrame();
+    lbRenderActivePanes();
+    lbRenderPosts();
+    lbRenderPaneGrid();
+
+    //template.activeGfxSettings = "editor";
 }
 

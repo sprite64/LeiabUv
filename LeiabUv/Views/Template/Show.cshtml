@@ -21,11 +21,16 @@
                 <span style="color: #ccc">Välj mall</span>
 
                 @{
+                    //ViewBag.templateList[0].Name;
+                    
+                    /*
                     if (Int32.Parse(ViewBag.templateList[0].Value) >= 0)
                     {
+
+
                         @Html.DropDownList("templateList")
                     }
-                   
+                    */
 
                 }
                 
@@ -52,6 +57,22 @@
                         -->
                 </div>
             </div>
+
+
+            <div id="templateIcons">
+
+                <!-- To be used as partial views for the template icons -->
+                <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
+                    <canvas id="test" width="120" height="80" style=""></canvas>
+                    <p>ARV2</p>
+                </div>
+
+                <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
+                    <canvas id="test" width="120" height="80" style=""></canvas>
+                    <p>ARV2</p>
+                </div>
+                
+            </div>
         </div>
 
 
@@ -75,11 +96,27 @@
 
     $(function () {
 
-        $("#templateList").change(function () {
-           
-            var selected = $(this).val();
-            $.getJSON("/Template/GetTemplate/" + selected, function (data) {
+
+        $.getJSON("/Template/GetTemplates/", function (data) {
+
+            //alert(data.length);
+            
+
+            for (var i = 0; i < data.length; i++) {
                 
+                //$("#templateIcons").append("<div style='background-color: #aaa;'>" + i + ": " + data[i].Name + "</div>");
+
+                $("#templateIcons").append("<div style=\"background-color: #aaa;\">" +
+                    "<canvas id=\"Icon" + i + "\ style=\"width: 64px; height: 48px;\"></canvas>" +
+                    "<p>" + data[i].Name + "</p></div>");
+
+
+                // Echo out template icons
+            }
+
+        });
+
+
                 //{
                 //    "Id": 2,
                 //    "Name": "ytr",
@@ -121,9 +158,6 @@
                 //    "Modified": "/Date(-62135596800000)/"
                 //}
                 
-                alert(data.panes[0].colSpan);
-            });
-        });
     });
 
 </script>
