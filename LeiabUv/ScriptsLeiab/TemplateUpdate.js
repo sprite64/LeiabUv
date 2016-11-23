@@ -160,7 +160,7 @@ function lbGetParentCount() {
             }
         }
     }
-
+    
     return count;
 }
 
@@ -238,7 +238,7 @@ function lbIncreaseFrameRow() {
             template.grid[x][template.rows].colSpan = 1;
             template.grid[x][template.rows].rowSpan = 1;
             template.grid[x][template.rows].parentCellX = -1;
-            template.grid[x][template.rows].parentcelly = -1;
+            template.grid[x][template.rows].parentcellY = -1;
         }
 
         template.rows++;        // Increase rows
@@ -577,6 +577,121 @@ function lbUpdateMousePosition(e) {
 
     template.mouseX = Math.round(mouseX - canvasOffset.left);                   // Update mouse position
     template.mouseY = Math.round(mouseY - canvasOffset.top);                    // Using round because at some times mouseX will return a float
+}
+
+
+function lbBackupTemplateEditor() {
+
+    for (var y = 0; y < backupTemplate.maxRows; y++) {
+        for (var x = 0; x < backupTemplate.maxCols; x++) {
+            backupTemplate.grid[x][y] = template.grid[x][y];
+        }
+    }
+
+    backupTemplate.cols = template.cols;
+    backupTemplate.rows = template.rows;
+
+    backupTemplate.maxCols = template.maxCols;
+    backupTemplate.maxRows = template.maxRows;
+
+    backupTemplate.state = template.state;
+
+    backupTemplate.activeGfxSettings = template.activeGfxSettings;
+    backupTemplate.activeCanvasId = template.activeCanvasId;
+
+    backupTemplate.mouseX = template.mouseX;
+    backupTemplate.mouseY = template.mouseY;
+
+    backupTemplate.selectedCellX = template.selectedCellX;
+    backupTemplate.selectedCellY = template.selectedCellY;
+
+    backupTemplate.hoverCellX = template.hoverCellX;
+    backupTemplate.hoverCellY = template.hoverCellY;
+    backupTemplate.hovering = template.hovering;
+
+}
+
+function lbRestoreTemplateEditor() {
+
+    for (var y = 0; y < template.maxRows; y++) {
+        for (var x = 0; x < template.maxCols; x++) {
+            template.grid[x][y] = backupTemplate.grid[x][y];
+        }
+    }
+
+    template.cols = backupTemplate.cols;
+    template.rows = backupTemplate.rows;
+
+    template.maxCols = backupTemplate.maxCols;
+    template.maxRows = backupTemplate.maxRows;
+
+    template.state = backupTemplate.state;
+
+    template.activeGfxSettings = backupTemplate.activeGfxSettings;
+    template.activeCanvasId = backupTemplate.activeCanvasId;
+
+    template.mouseX = backupTemplate.mouseX;
+    template.mouseY = backupTemplate.mouseY;
+
+    template.selectedCellX = backupTemplate.selectedCellX;
+    template.selectedCellY = backupTemplate.selectedCellY;
+
+    template.hoverCellX = backupTemplate.hoverCellX;
+    template.hoverCellY = backupTemplate.hoverCellY;
+    template.hovering = backupTemplate.hovering;
+}
+
+
+function lbUpdateTemplateEditorFromDB(templateData) {
+
+    template.Id = templateData.Id;
+
+    // Reset pane grid
+    for (var y = 0; y < template.maxRows; y++) {
+        for (var x = 0; x < template.maxCols; x++) {
+            template.grid[x][y].colSpan = 1;
+            template.grid[x][y].rowSpan = 1;
+            template.grid[x][y].parentCellX = -1;
+            template.grid[x][y].parentCellY = -1;
+        }
+    }
+
+    for (var i = 0; i < templateData.panes.length; i++) {
+
+        var tx = templateData.panes[i].xIndex;
+        var ty = templateData.panes[i].yIndex;
+
+        template.grid[tx][ty].colSpan = templateData.panes[i].colSpan;
+        template.grid[tx][ty].rowSpan = templateData.panes[i].rowSpan;
+
+        for (var y = 0; y < templateData.panes[i].rowSpan; y++) {       // Copy parent panes and initialize child panes
+            for (var x = 0; x < templateData.panes[i].colSpan; x++) {
+                if (x + y != 0) {
+                    template.grid[tx + x][ty + y].parentCellX = tx;
+                    template.grid[tx + x][ty + y].parentCellY = ty;
+                }
+            }
+        }
+        
+
+    }
+
+    template.cols = templateData.columns;
+    template.rows = templateData.rows;
+
+    template.maxCols = LB_TemplateMaxColumns;
+    template.maxRows = LB_TemplateMaxRows;
+
+    template.selectedCellX = -1;
+    template.selectedCellY = -1;
+
+    template.hoverCellX = -1;
+    template.hoverCellY = -1;
+    template.hovering = false;
+
+    template.mouseX = 0;
+    template.mouseY = 0;
+
 }
 
 

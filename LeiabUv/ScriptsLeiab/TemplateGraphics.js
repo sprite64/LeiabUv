@@ -14,7 +14,7 @@
 
 // Get HTML5 canvas object area
 function lbGetTemplateCanvas() {
-    return document.getElementById(LB_TemplateCanvasId);
+    return document.getElementById(template.activeCanvasId)
 }
 
 
@@ -360,12 +360,14 @@ function lbTemplateRender() {
 
     // Draw components
     
+    /*
     template.activeGfxSettings = "icon";
 
     lbRenderFrame();
     lbRenderActivePanes();
     lbRenderPosts();
     lbRenderPaneGrid();
+    */
     //lbRenderDebug();
 
     template.activeGfxSettings = "editor";

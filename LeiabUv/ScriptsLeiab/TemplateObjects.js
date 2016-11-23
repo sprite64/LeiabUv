@@ -52,8 +52,8 @@ function lbCreateGraphicsSettings(type) {
 
     } else if (type = "icon") {         // Icon graphical settings *** ***
 
-        self.offsetX = 20;                       // Units/Misc settings
-        self.offsetY = 305;
+        self.offsetX = 1;                       // Units/Misc settings
+        self.offsetY = 1;
 
         self.paneWidth = 10;
         self.paneHeight = 10;
@@ -100,7 +100,7 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan) {
 // Slightly confusing but, this class is a middlehand between the editor template object 
 // and template only data to be stored in the database
 function lbTemplateData() {
-
+    
     this.name = $("#inTemplateName").val();
 
     this.columns = template.cols;
@@ -110,8 +110,9 @@ function lbTemplateData() {
     var paneCount = lbGetParentCount();
 
     this.paneCount = paneCount;
-
+    
     this.panes = new Array(paneCount);
+    
 
     for (var x = 0; x < template.cols; x++) {           // Create pane objects
         for (var y = 0; y < template.rows; y++) {
@@ -123,6 +124,24 @@ function lbTemplateData() {
             }
         }
     }
+}
+
+function lbAlertTemplateDate(td) {
+    var output = "TemplateData: " + td.Name + ", cols: " + td.columns + ", rows: " + td.rows + ", paneCount: " + td.panes.length;
+
+    for (var i = 0; i < td.panes.length; i++) {
+        output += ", xIndex " + td.panes[i].xIndex + ", yIndex " + td.panes[i].yIndex;
+        output += ", cSpan " + td.panes[i].colSpan + ", rSpan " + td.panes[i].rowSpan;
+    }
+
+    alert(output);
+}
+
+function lbAlertTemplateEditor() {
+
+    var output = "TEditor cols " + template.cols + ", " + template.rows + ", " + template.maxCols + ", " + template.maxRows + 
+        ", " + template.state + ", " + template.activeGfxSettings + ", " + template.activeCanvasId;
+    alert(output);
 }
 
 
@@ -143,6 +162,8 @@ function lbTemplateEditor() {
 
     // Graphics settings
     this.activeGfxSettings = "editor";
+    this.activeCanvasId = LB_TemplateCanvasId;
+    //this.activeCanvasId = LB_IconCanvasId;
 
     //this.editorGfxSettings = new lbCreateGraphicsSettings("editor");
     //this.iconGfxSettings = new lbCreateGraphicsSettings("icon");
@@ -168,6 +189,6 @@ function lbTemplateEditor() {
 
 
 // Global template editor
-var     template = new lbTemplateEditor();
-
+var template = new lbTemplateEditor();                  // Actual editor
+var backupTemplate = new lbTemplateEditor();            // Store data between rendering a template and icons
 

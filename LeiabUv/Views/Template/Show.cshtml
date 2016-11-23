@@ -1,8 +1,15 @@
 ﻿
+@model LeiabUv.Models.TemplateViewModel
+
 @{
     ViewBag.Title = "ShowTemplates";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+
+
+
 
 <!-- 
 <script src="~/Scripts/jquery-3.1.0.min.js"></script>
@@ -20,21 +27,6 @@
 
                 <span style="color: #ccc">Välj mall</span>
 
-                @{
-                    //ViewBag.templateList[0].Name;
-                    
-                    /*
-                    if (Int32.Parse(ViewBag.templateList[0].Value) >= 0)
-                    {
-
-
-                        @Html.DropDownList("templateList")
-                    }
-                    */
-
-                }
-                
-
             </div>
         </div>
 
@@ -45,7 +37,7 @@
 
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
 
-                <canvas id="TemplateCanvas" width="534" height="400" style="visibility: hidden;">
+                <canvas id="TemplateCanvas" width="534" height="400">
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
@@ -59,9 +51,12 @@
             </div>
 
 
-            <div id="templateIcons">
+            <div id="TemplateIcons">
+
 
                 <!-- To be used as partial views for the template icons -->
+               
+                <!-- 
                 <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
                     <canvas id="test" width="120" height="80" style=""></canvas>
                     <p>ARV2</p>
@@ -70,7 +65,9 @@
                 <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
                     <canvas id="test" width="120" height="80" style=""></canvas>
                     <p>ARV2</p>
-                </div>
+                </div> -->
+
+                <p id="output"></p>
                 
             </div>
         </div>
@@ -96,29 +93,74 @@
 
     $(function () {
 
+        //var ctx = lbGetTemplateCanvasContext();
+        
+
+        // Get canvas 2D context
+        //function lbGetTemplateCanvasContext() {
+            //var canvas = lbGetTemplateCanvas();
+            //return canvas.getContext("2d");
 
         $.getJSON("/Template/GetTemplates/", function (data) {
 
             //alert(data.length);
             
 
+            // Append icon elements to #TemplateIcons
             for (var i = 0; i < data.length; i++) {
                 
-                //$("#templateIcons").append("<div style='background-color: #aaa;'>" + i + ": " + data[i].Name + "</div>");
+                var output = '<div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">'
+                    output += '<canvas id="IconCanvas' + data[i].Id + '" width="120" height="80" style=""></canvas>'
+                    output += '<p>' + data[i].Name + '</p>'
+                    output += '</div>'
+                
+                $("#TemplateIcons").append(output);
 
-                $("#templateIcons").append("<div style=\"background-color: #aaa;\">" +
-                    "<canvas id=\"Icon" + i + "\ style=\"width: 64px; height: 48px;\"></canvas>" +
-                    "<p>" + data[i].Name + "</p></div></br></br>");
-
-                /*
-                $"#templateIcons").append("<div style=\"width: 120px; height: 80px; display: inline-block; margin-right: 10px;\">" +
-                    "<canvas id=\"test\" width=\"120\" height=\"80\" style=\"\"></canvas>""
-                    <p>ARV2</p>
-                </div>");
-                */
-
-                // Echo out template icons
             }
+
+
+            // This section is messy but it works well enough, so far there are no bugs anyway.
+
+            // Render template icons
+            lbBackupTemplateEditor();
+
+            template.activeGfxSettings = "icon";
+            for (var i = 0; i < data.length; i++) {
+
+                lbUpdateTemplateEditorFromDB(data[i]);
+
+                //lbAlertTemplateDate(data[i]);
+                //lbAlertTemplateEditor();
+
+                //alert(data[i].panes.length);
+
+                var canvas = document.getElementById("IconCanvas" + data[i].Id);
+                var ctx = canvas.getContext("2d");
+
+                template.activeCanvasId = LB_IconCanvasId + data[i].Id;
+                
+
+                ctx.fillStyle = "#f00";
+                ctx.fillRect(5, 5, 20, 20);
+
+                //lbTemplateRender();
+
+                
+                lbRenderFrame();
+                lbRenderActivePanes();
+                lbRenderPosts();
+                lbRenderPaneGrid();
+
+            }
+
+            // Restore active canvas
+            template.activeGfxSettings = "editor";
+            template.activeCanvasId = LB_TemplateCanvasId;
+
+            lbRestoreTemplateEditor();
+
+            //var LB_TemplateCanvasId = "TemplateCanvas";
+            //var LB_IconCanvasId = "IconCanvas";
 
         });
 
@@ -167,3 +209,14 @@
     });
 
 </script>
+
+
+
+<script src="~/ScriptsLeiab/TemplateConstants.js"></script>     <!-- Template constants -->
+
+<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic object constructors -->
+<script src="~/ScriptsLeiab/TemplateObjects.js"></script> 		<!-- Template object constructors -->
+
+<script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
+<script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
+<script src="~/ScriptsLeiab/TemplateInit.js"></script>          <!-- Template initiation -->
