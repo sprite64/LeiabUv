@@ -105,62 +105,7 @@
 
             //alert(data.length);
             
-
-            // Append icon elements to #TemplateIcons
-            for (var i = 0; i < data.length; i++) {
-                
-                var output = '<div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">'
-                    output += '<canvas id="IconCanvas' + data[i].Id + '" width="120" height="80" style=""></canvas>'
-                    output += '<p>' + data[i].Name + '</p>'
-                    output += '</div>'
-                
-                $("#TemplateIcons").append(output);
-
-            }
-
-
-            // This section is messy but it works well enough, so far there are no bugs anyway.
-
-            // Render template icons
-            lbBackupTemplateEditor();
-
-            template.activeGfxSettings = "icon";
-            for (var i = 0; i < data.length; i++) {
-
-                lbUpdateTemplateEditorFromDB(data[i]);
-
-                //lbAlertTemplateDate(data[i]);
-                //lbAlertTemplateEditor();
-
-                //alert(data[i].panes.length);
-
-                var canvas = document.getElementById("IconCanvas" + data[i].Id);
-                var ctx = canvas.getContext("2d");
-
-                template.activeCanvasId = LB_IconCanvasId + data[i].Id;
-                
-
-                ctx.fillStyle = "#f00";
-                ctx.fillRect(5, 5, 20, 20);
-
-                //lbTemplateRender();
-
-                
-                lbRenderFrame();
-                lbRenderActivePanes();
-                lbRenderPosts();
-                lbRenderPaneGrid();
-
-            }
-
-            // Restore active canvas
-            template.activeGfxSettings = "editor";
-            template.activeCanvasId = LB_TemplateCanvasId;
-
-            lbRestoreTemplateEditor();
-
-            //var LB_TemplateCanvasId = "TemplateCanvas";
-            //var LB_IconCanvasId = "IconCanvas";
+            lbIconRender(data);
 
         });
 
