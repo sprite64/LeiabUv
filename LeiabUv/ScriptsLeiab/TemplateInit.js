@@ -56,7 +56,7 @@ $(function () {
 
     //lbTemplateUpdate(template, "");
 
-    lbTemplateUpdateAndRender("");
+    //lbTemplateUpdateAndRender("");
 
 
     // Mouse button down event

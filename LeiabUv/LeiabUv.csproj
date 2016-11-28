@@ -191,7 +191,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Template\Create.cshtml" />
     <Content Include="Views\Template\Show.cshtml" />
-    <Content Include="Views\Shared\TemplateIcon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

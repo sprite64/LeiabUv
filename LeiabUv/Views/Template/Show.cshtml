@@ -104,8 +104,10 @@
         $.getJSON("/Template/GetTemplates/", function (data) {
 
             //alert(data.length);
-            
-            lbIconRender(data);
+            templateIconData = data;
+
+            lbGenerateIcons(data);
+            lbRenderIcon(data);
 
         });
 

@@ -382,10 +382,11 @@ function lbTemplateRender() {
 }
 
 
-function lbIconRender(data) {
+function lbRenderIcon(data) {
 
 
     // Append icon elements to #TemplateIcons
+    /*
     for (var i = 0; i < data.length; i++) {
 
         var output = '<div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">'
@@ -396,7 +397,7 @@ function lbIconRender(data) {
         $("#TemplateIcons").append(output);
 
     }
-
+    */
 
     // This section is messy but it works well enough, so far there are no bugs anyway.
 

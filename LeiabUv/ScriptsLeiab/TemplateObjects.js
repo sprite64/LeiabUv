@@ -191,4 +191,5 @@ function lbTemplateEditor() {
 // Global template editor
 var template = new lbTemplateEditor();                  // Actual editor
 var backupTemplate = new lbTemplateEditor();            // Store data between rendering a template and icons
+var templateIconData = undefined;                       // All template icon data
 

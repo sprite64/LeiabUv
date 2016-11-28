@@ -695,6 +695,49 @@ function lbUpdateTemplateEditorFromDB(templateData) {
 }
 
 
+function lbUpdateTemplateSelection(event) {
+
+    //alert("UPD Id: " + event.data.id);
+
+    if(templateIconData == undefined) { alert("No template data"); return; }
+
+    data = templateIconData;
+
+    var id = -1;
+    var index = -1;
+
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].Id == event.data.id) {
+            index = i;
+            id = event.data.id;
+            break;
+        }
+    }
+
+    lbUpdateTemplateEditorFromDB(data[i]);
+
+}
+
+
+function lbGenerateIcons(data) {
+
+    for (var i = 0; i < data.length; i ++) {
+
+        var output = '<div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">';
+        output += '<canvas id="IconCanvas' + data[i].Id + '" width="120" height="80" style=""></canvas>';
+        output += '<p>' + data[i].Name + '</p>';
+        output += '</div>';
+
+        $("#TemplateIcons").append(output);
+        
+        $("#IconCanvas" + data[i].Id).click({
+            id: data[i].Id
+        }, lbUpdateTemplateSelection);
+    }
+
+}
+
+
 // Main update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
 // Main Update function
