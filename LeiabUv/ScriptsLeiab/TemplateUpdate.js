@@ -714,14 +714,34 @@ function lbUpdateTemplateSelection(event) {
         }
     }
 
-    lbUpdateTemplateEditorFromDB(data[i]);
-
+    lbUpdateTemplateEditorFromDB(data[index]);      // Update selected template
 }
 
 
 function lbGenerateIcons(data) {
 
-    for (var i = 0; i < data.length; i ++) {
+    for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
+
+        // The href attribute is necessary to change the cursor to a hand, the value; javascripty:void(0) is needed to avoid reloading of the page
+        var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
+        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
+        output += '<p>' + data[i].Name + '</p>';
+        output += '</a>';
+
+        $("#TemplateIcons").append(output);
+
+        $("#IconCanvas" + data[i].Id).click({
+            id: data[i].Id
+        }, lbUpdateTemplateSelection);
+    }
+
+    lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
+}
+
+
+function lbGenerateIcons2(data) {
+
+    for(var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
 
         var output = '<div style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
         output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
@@ -735,6 +755,7 @@ function lbGenerateIcons(data) {
         }, lbUpdateTemplateSelection);
     }
 
+    lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
 }
 
 

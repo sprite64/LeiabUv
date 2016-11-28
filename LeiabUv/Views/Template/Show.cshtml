@@ -23,9 +23,9 @@
 
             <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
 
-                <h4 style="color: #ccc">Meny</h4>
+                <!-- h4 style="color: #ccc">Meny</h4 -->
 
-                <span style="color: #ccc">Välj mall</span>
+                
 
             </div>
         </div>
@@ -56,18 +56,12 @@
 
                 <!-- To be used as partial views for the template icons -->
                
-                <!-- 
-                <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
+                <!-- <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
                     <canvas id="test" width="120" height="80" style=""></canvas>
                     <p>ARV2</p>
-                </div>
+                </div>-->
 
-                <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
-                    <canvas id="test" width="120" height="80" style=""></canvas>
-                    <p>ARV2</p>
-                </div> -->
-
-                <p id="output"></p>
+                <!-- <p id="output"></p>-->
                 
             </div>
         </div>
@@ -79,7 +73,9 @@
             <!-- Frame/Karm control -->
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
 
+                <!-- 
                 <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Använd</button>
+                    -->
 
             </div>
 
@@ -93,14 +89,6 @@
 
     $(function () {
 
-        //var ctx = lbGetTemplateCanvasContext();
-        
-
-        // Get canvas 2D context
-        //function lbGetTemplateCanvasContext() {
-            //var canvas = lbGetTemplateCanvas();
-            //return canvas.getContext("2d");
-
         $.getJSON("/Template/GetTemplates/", function (data) {
 
             //alert(data.length);
@@ -111,48 +99,6 @@
 
         });
 
-
-                //{
-                //    "Id": 2,
-                //    "Name": "ytr",
-                //    "columns": 2,
-                //    "rows": 2,
-                //    "panes": [
-                //      {
-                //          "Id": 10,
-                //          "xIndex": 0,
-                //          "yIndex": 0,
-                //          "colSpan": 1,
-                //          "rowSpan": 1
-                //      },
-                //      {
-                //          "Id": 11,
-                //          "xIndex": 0,
-                //          "yIndex": 0,
-                //          "colSpan": 1,
-                //          "rowSpan": 1
-                //      },
-                //      {
-                //          "Id": 12,
-                //          "xIndex": 0,
-                //          "yIndex": 0,
-                //          "colSpan": 1,
-                //          "rowSpan": 1
-                //      },
-                //      {
-                //          "Id": 13,
-                //          "xIndex": 0,
-                //          "yIndex": 0,
-                //          "colSpan": 1,
-                //          "rowSpan": 1
-                //      }
-                //    ],
-                //    "CreatedBy": null,
-                //    "Created": "/Date(-62135596800000)/",
-                //    "ModifiedBy": null,
-                //    "Modified": "/Date(-62135596800000)/"
-                //}
-                
     });
 
 </script>
