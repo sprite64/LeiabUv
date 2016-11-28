@@ -724,32 +724,12 @@ function lbGenerateIcons(data) {
 
         // The href attribute is necessary to change the cursor to a hand, the value; javascripty:void(0) is needed to avoid reloading of the page
         var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
-        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
         output += '<p>' + data[i].Name + '</p>';
+        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
         output += '</a>';
 
         $("#TemplateIcons").append(output);
 
-        $("#IconCanvas" + data[i].Id).click({
-            id: data[i].Id
-        }, lbUpdateTemplateSelection);
-    }
-
-    lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
-}
-
-
-function lbGenerateIcons2(data) {
-
-    for(var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
-
-        var output = '<div style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
-        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
-        output += '<p>' + data[i].Name + '</p>';
-        output += '</div>';
-
-        $("#TemplateIcons").append(output);
-        
         $("#IconCanvas" + data[i].Id).click({
             id: data[i].Id
         }, lbUpdateTemplateSelection);
