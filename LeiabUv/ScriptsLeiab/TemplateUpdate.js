@@ -723,8 +723,8 @@ function lbGenerateIcons(data) {
 
     for (var i = 0; i < data.length; i ++) {
 
-        var output = '<div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">';
-        output += '<canvas id="IconCanvas' + data[i].Id + '" width="120" height="80" style=""></canvas>';
+        var output = '<div style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
+        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
         output += '<p>' + data[i].Name + '</p>';
         output += '</div>';
 
