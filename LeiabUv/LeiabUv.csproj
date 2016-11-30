@@ -154,6 +154,7 @@
     <Content Include="ScriptsLeiab\GenericObjects.js" />
     <Content Include="ScriptsLeiab\TemplateConstants.js" />
     <Content Include="ScriptsLeiab\TemplateGraphics.js" />
+    <Content Include="ScriptsLeiab\TemplateIconInit.js" />
     <Content Include="ScriptsLeiab\TemplateInit.js" />
     <Content Include="ScriptsLeiab\TemplateObjects.js" />
     <Content Include="ScriptsLeiab\TemplateUpdate.js" />

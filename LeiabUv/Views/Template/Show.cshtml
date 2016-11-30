@@ -34,6 +34,12 @@
             <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
                 -->
                 </div>
+
+                <div style="color: #ccc;">
+                    <p id="TemplateName" style="font-weight: bold;"></p>
+                    <p id="TemplateCreated" style="color: #ccc;"></p>
+                    <p id="TemplateModified"></p>
+                </div>
             </div>
         </div>
 
@@ -58,19 +64,6 @@
         </div>
 
 
-        <!-- Controls -->
-        <div class="col-md-2" style="height: 100%;">
-
-            <!-- Frame/Karm control -->
-            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
-
-                <!-- 
-                <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Använd</button>
-                    -->
-
-            </div>
-
-        </div>
     </div>
 </div>
 
@@ -88,6 +81,7 @@
             lbGenerateIcons(data);
             lbRenderIcon(data);
 
+            lbTemplateUpdateAndRender("");
         });
 
     });
@@ -103,4 +97,4 @@
 
 <script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
 <script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
-<script src="~/ScriptsLeiab/TemplateInit.js"></script>          <!-- Template initiation -->
+<script src="~/ScriptsLeiab/TemplateIconInit.js"></script>          <!-- Template initiation -->

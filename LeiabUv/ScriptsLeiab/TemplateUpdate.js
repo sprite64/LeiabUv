@@ -715,6 +715,50 @@ function lbUpdateTemplateSelection(event) {
     }
 
     lbUpdateTemplateEditorFromDB(data[index]);      // Update selected template
+
+    lbTemplateUpdateAndRender("");                  // Render selected template
+
+    lbUpdateSelectedTemplateData(index);
+}
+
+
+function lbUpdateSelectedTemplateData(index) {
+
+    if (templateIconData == undefined) { alert("No template data"); return; }
+    data = templateIconData;
+
+    var i = index;
+
+    //$("#TemplateName").text("Name: " + data[i].CreatedBy);
+
+    //var date = new Date(Date.parse(data[i].Created));
+
+    // Updatera beteckning
+    $("#TemplateName").text("Beteckning: " + data[i].Name);
+
+    // Uppdatera skapad info
+    var date = new Date(parseInt(data[i].Created.substr(6)));       // Convert JSON date to Javascript date object
+    date = date.toISOString().slice(0, 10);                         // Format date to yyyy-mm-dd
+    
+    var output = "Skapad " + date + " av " + data[i].CreatedBy;
+
+    $("#TemplateCreated").text(output);
+
+    // Uppdatera modifierad info
+    date = new Date(parseInt(data[i].Modified.substr(6)));
+    date = date.toISOString().slice(0, 10);
+
+    var output = "Modifierad " + date + " av " + data[i].ModifiedBy;
+
+    $("#TemplateModified").text(output);
+
+    //$("#TemplateCreatedBy").text(data[i].CreatedBy);
+    //$("#TemplateCreatedDate").text(date);
+
+    //date = data[i].Created;
+
+    //alert("Date: " + date);
+
 }
 
 
@@ -736,6 +780,7 @@ function lbGenerateIcons(data) {
     }
 
     lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
+    lbUpdateSelectedTemplateData(data.length - 1);              // Update selected template data
 }
 
 

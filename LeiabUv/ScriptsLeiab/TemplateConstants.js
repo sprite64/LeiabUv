@@ -21,6 +21,7 @@ LB_TemplateMaxRows = 5;
 
 LB_TemplateStateInactive = 4;       // Arbrutrarily numbers
 LB_TemplateStateActive = 1;
+LB_TemplateStateIdle = 8;
 
 
 

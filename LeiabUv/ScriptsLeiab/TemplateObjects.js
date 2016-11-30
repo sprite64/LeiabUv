@@ -126,6 +126,7 @@ function lbTemplateData() {
     }
 }
 
+
 function lbAlertTemplateDate(td) {
     var output = "TemplateData: " + td.Name + ", cols: " + td.columns + ", rows: " + td.rows + ", paneCount: " + td.panes.length;
 
@@ -136,6 +137,7 @@ function lbAlertTemplateDate(td) {
 
     alert(output);
 }
+
 
 function lbAlertTemplateEditor() {
 
