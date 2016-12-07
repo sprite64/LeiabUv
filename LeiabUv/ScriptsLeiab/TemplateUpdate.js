@@ -752,6 +752,9 @@ function lbUpdateSelectedTemplateData(index) {
 
     $("#TemplateModified").text(output);
 
+    selectedTemplateId = data[i].Id;
+    //alert("SelectedTempalte: " + selectedTemplateId);
+
     //$("#TemplateCreatedBy").text(data[i].CreatedBy);
     //$("#TemplateCreatedDate").text(date);
 

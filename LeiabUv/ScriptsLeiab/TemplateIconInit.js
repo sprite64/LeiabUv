@@ -15,11 +15,15 @@
 // JQuery Ready/Initiation
 $(function () {
 
-    
-
     /* Button events and control */
-    //$("#btnOpenEditor").click(function () { lbOpenEditor(); lbTemplateUpdateAndRender(""); });         // Main test functions for editor
-    
+    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
+
+    function foo(id) {
+        var url = '@Url.Action("Details", "Branch", new { id = "__id__" })';
+        window.location.href = url.replace('__id__', id);
+    }
+
+
     template.state = LB_TemplateStateIdle;
 
     //lbTemplateUpdateAndRender("");
