@@ -58,6 +58,15 @@ namespace LeiabUv.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult DeleteTemplate(int templateId)
+        {
+            Context ctx = new Context();
+
+
+
+            return Json("deleted", JsonRequestBehavior.AllowGet); ;
+        }
         
         public ActionResult Show3()
         {
@@ -77,12 +86,16 @@ namespace LeiabUv.Controllers
             return View();
         }
 
-        public ActionResult Show()
+        public ActionResult Show(int? deleteTemplateId)
         {
-
             Context ctx = new Context();
 
-            var data = new List<SelectListItem>();
+            if (deleteTemplateId != null)               // Delete template
+            {
+                // SQL call
+            }
+
+            var data = new List<SelectListItem>();      // Get templates
             data = ctx.Templates.Select(d => new SelectListItem { Text = d.Name, Value = d.Id.ToString() }).ToList<SelectListItem>();
             ViewBag.templateList = data;
             return View();

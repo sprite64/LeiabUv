@@ -1,10 +1,54 @@
 ﻿
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "CreateFromTemplate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
 
-<h4>Template ID: @ViewBag.TemplateId</h4>
+<!-- <h4>Template ID: ViewBag.TemplateId</h4> -->
+
+<!-- Init elements  -->
+
+<div class="container">
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+
+                <h4 style="color: #ccc">Meny</h4>
+
+            </div>
+        </div>
+
+
+
+        <!-- HTML5 Canvas -->
+        <div class="col-md-6" style="min-height: 500px; min-width: 584px;">
+
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
+
+                <canvas id="ProjectCanvas" width="534" height="400" style="visibility: hidden;">
+                    Your browser doesn't support HTML5 canvas tag.
+                </canvas>
+
+            </div>
+        </div>
+
+
+        <!-- Controls -->
+        <div class="col-md-2" style="height: 100%;">
+
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+
+                <h4 style="color: #ccc">Meny</h4>
+
+            </div>
+    </div>
+</div>
+
+
+<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
 

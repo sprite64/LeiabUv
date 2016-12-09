@@ -153,6 +153,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="ScriptsLeiab\GenericObjects.js" />
+    <Content Include="ScriptsLeiab\ProjectInit.js" />
     <Content Include="ScriptsLeiab\TemplateConstants.js" />
     <Content Include="ScriptsLeiab\TemplateGraphics.js" />
     <Content Include="ScriptsLeiab\TemplateIconInit.js" />
@@ -193,8 +194,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Template\Create.cshtml" />
     <Content Include="Views\Template\Show.cshtml" />
-    <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\Project\CreateSelectTemplate.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Project\Show.cshtml" />
+    <Content Include="Views\Project\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,9 @@ $(function () {
     /* Button events and control */
     $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?templateId=" + selectedTemplateId); });
 
+    //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
+    $("#btnDeleteTemplate").click(function () { window.location.replace("/Template/Show?deleteTemplateId=" + selectedTemplateId); } );
+
     /*
     function foo(id) {
         var url = '@Url.Action("Details", "Branch", new { id = "__id__" })';

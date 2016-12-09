@@ -21,10 +21,15 @@ namespace LeiabUv.Controllers
             {
                 templateId = -1;
             }
-
+            
             ViewBag.TemplateId = templateId;
 
-            return View();
+            if(templateId == -1)
+            {
+                return View("CreateSelectTemplate");
+            }
+
+            return View("Create");
         }
 
         public ActionResult Edit(int projectId)
