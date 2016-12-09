@@ -137,7 +137,7 @@ namespace LeiabUv.Controllers
                     yIndex = f.yIndex,
                 }).ToList<TemplatePaneViewModel>()
             }).ToList<TemplateViewModel>();
-
+            Response.CacheControl = "no-cache";
             return Json(templates, JsonRequestBehavior.AllowGet);
         }
 

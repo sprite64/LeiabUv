@@ -16,12 +16,13 @@
 $(function () {
 
     /* Button events and control */
-    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
+    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?templateId=" + selectedTemplateId); });
 
+    /*
     function foo(id) {
         var url = '@Url.Action("Details", "Branch", new { id = "__id__" })';
         window.location.href = url.replace('__id__', id);
-    }
+    }*/
 
 
     template.state = LB_TemplateStateIdle;

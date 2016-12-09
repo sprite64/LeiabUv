@@ -194,6 +194,7 @@
     <Content Include="Views\Template\Create.cshtml" />
     <Content Include="Views\Template\Show.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
