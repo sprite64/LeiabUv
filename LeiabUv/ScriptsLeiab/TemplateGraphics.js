@@ -37,10 +37,6 @@ function lbRenderFrame() {
     // Get graphics settings for active gfx settings
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
     
-    // Draw dummy
-    //ctx.fillStyle = "#f00";
-    //ctx.fillRect(10, 10, 16, 16);
-    
     // Draw outer rect
     ctx.fillStyle = gfxSettings.frameBorderColor;
     ctx.fillRect(gfxSettings.offsetX + outerRect.x, gfxSettings.offsetY + outerRect.y, outerRect.width, outerRect.height);
@@ -419,9 +415,6 @@ function lbRenderIcon(data) {
 
         template.activeCanvasId = LB_IconCanvasId + data[i].Id;
 
-
-        ctx.fillStyle = "#f00";
-        ctx.fillRect(5, 5, 20, 20);
 
         //lbTemplateRender();
 

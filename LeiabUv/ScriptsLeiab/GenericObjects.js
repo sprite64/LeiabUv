@@ -41,6 +41,8 @@ function lbCreate2DArray2(cols, rows) {
     }
 }
 
+
+// Create 2D Array
 function lbCreate2DArray(cols, rows) {
 
     var grid = new Array(cols);

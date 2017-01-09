@@ -1,4 +1,4 @@
-﻿/*  Template Init
+﻿/*  Project Update
     
     Pritam Schönberger 2016, 2017
 
@@ -10,13 +10,3 @@
         Mall    - Template
         Båge    - -
 */
-
-
-
-// JQuery Ready/Initiation
-$(function () {
-
-    $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
-
-});
-

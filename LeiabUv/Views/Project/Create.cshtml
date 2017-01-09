@@ -14,23 +14,24 @@
     <div class="row">
 
         <!-- Menu -->
-        <div class="col-md-2" style="height: 100%;">
+        <!--div class="col-md-2" style="height: 100%;">
 
             <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
 
                 <h4 style="color: #ccc">Meny</h4>
 
             </div>
-        </div>
+        </!--div>
 
 
 
         <!-- HTML5 Canvas -->
-        <div class="col-md-6" style="min-height: 500px; min-width: 584px;">
+        <div class="col-md-8" style="min-height: 500px; min-width: 584px;">
 
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
 
-                <canvas id="ProjectCanvas" width="534" height="400" style="visibility: hidden;">
+                <!-- Project rendering -->
+                <canvas id="ProjectCanvas" width="534" height="400" style="visibility: visible;">
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
@@ -39,16 +40,47 @@
 
 
         <!-- Controls -->
-        <div class="col-md-2" style="height: 100%;">
+        <div class="col-md-3" style="height: 100%;">
 
-            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 320px; background-color: #333;">
 
-                <h4 style="color: #ccc">Meny</h4>
+                <h4 style="color: #ccc">Luft val</h4>
+
+                <!-- Pane selection canvas -->
+                <canvas id="PaneSelectCanvas" width="300" height="300" style=""></canvas>
 
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-3" style="max-width: 220px; color: #ddd; background-color: #333;">
+            <h4>Karm dimensioner</h4>
+            <span><label style="width: 40px;">Bredd</label><input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;"/> mm</span></br>
+            <span><label style="width: 40px;">Höjd</label><input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;"/> mm</span>
+            <button id="btnUpdateFrameDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
+        </div>
+
+        <div class="col-md-8" style="min-height: 120px; min-width: 800px; color: #ddd; background-color: #333;">
+
+            <h4>Luft dimensioner</h4>
+            <span><label style="width: 40px;">Bredd</label><input id="PaneWidth" type="number" value="0" min="0" name="PaneWidth" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /></span></br>
+            <span><label style="width: 40px;">Höjd</label><input id="PaneHeight" type="number" value="0" min="0" name="PaneHeight" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /></span></br>
+            <button id="btnUpdatePaneDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
+        </div>
+
     </div>
 </div>
 
 
-<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
+<script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
 
+<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->
+<script src="~/ScriptsLeiab/ProjectObjects.js"></script>        <!-- Project objects constructors -->
+
+<script src="~/ScriptsLeiab/ProjectGraphics.js"></script>       <!-- Project graphics functions -->
+<script src="~/ScriptsLeiab/ProjectUpdate.js"></script>         <!-- Project update functions -->
+
+<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
+    

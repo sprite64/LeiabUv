@@ -153,7 +153,11 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="ScriptsLeiab\GenericObjects.js" />
+    <Content Include="ScriptsLeiab\ProjectConstants.js" />
+    <Content Include="ScriptsLeiab\ProjectGraphics.js" />
     <Content Include="ScriptsLeiab\ProjectInit.js" />
+    <Content Include="ScriptsLeiab\ProjectObjects.js" />
+    <Content Include="ScriptsLeiab\ProjectUpdate.js" />
     <Content Include="ScriptsLeiab\TemplateConstants.js" />
     <Content Include="ScriptsLeiab\TemplateGraphics.js" />
     <Content Include="ScriptsLeiab\TemplateIconInit.js" />
