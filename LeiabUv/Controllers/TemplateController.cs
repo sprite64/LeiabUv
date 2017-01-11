@@ -92,6 +92,8 @@ namespace LeiabUv.Controllers
 
             if (deleteTemplateId != null)               // Delete template
             {
+                ctx.Templates.Remove(ctx.Templates.Find(deleteTemplateId));
+                ctx.SaveChanges();
                 // SQL call
             }
 

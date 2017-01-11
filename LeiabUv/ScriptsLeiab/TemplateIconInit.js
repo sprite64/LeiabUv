@@ -19,7 +19,11 @@ $(function () {
     $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?templateId=" + selectedTemplateId); });
 
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
-    $("#btnDeleteTemplate").click(function () { window.location.replace("/Template/Show?deleteTemplateId=" + selectedTemplateId); } );
+    $("#btnDeleteTemplate").click(function () {
+        if (confirm("Vill du radera mallen?")) { 
+            window.location.replace("/Template/Show?deleteTemplateId=" + selectedTemplateId);
+        }
+    });
 
     /*
     function foo(id) {

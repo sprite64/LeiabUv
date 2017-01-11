@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Projekt Editor</h2>
 
 <!-- <h4>Template ID: ViewBag.TemplateId</h4> -->
 
@@ -40,7 +40,7 @@
 
 
         <!-- Controls -->
-        <div class="col-md-3" style="height: 100%;">
+        <div class="col-md-3" style="min-height: 500px;">
 
             <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 320px; background-color: #333;">
 
@@ -49,25 +49,124 @@
                 <!-- Pane selection canvas -->
                 <canvas id="PaneSelectCanvas" width="300" height="300" style=""></canvas>
 
+                <button id="btnSelectProfiles" class="btn btn-success" style="float: right;">Välj profiler</button>
             </div>
         </div>
     </div>
 
     <div class="row">
+        <button id="btnShowFrameSettings" class="btn btn-success">Karm värden</button>
+        <button id="btnShowPaneSettings" class="btn btn-success">Luft värden</button>
+    </div>
 
-        <div class="col-md-3" style="max-width: 220px; color: #ddd; background-color: #333;">
+    <!-- Frame settings -->
+    <div id="FrameSettings" class="row">
+
+        <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
             <h4>Karm dimensioner</h4>
-            <span><label style="width: 40px;">Bredd</label><input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;"/> mm</span></br>
-            <span><label style="width: 40px;">Höjd</label><input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;"/> mm</span>
+            <span>
+                <label style="width: 40px;">Bredd</label>
+                <input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" 
+                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
+            </span></br>
+            <span>
+                <label style="width: 40px;">Höjd</label>
+
+                <input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" 
+                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
+            </span>
             <button id="btnUpdateFrameDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
         </div>
 
-        <div class="col-md-8" style="min-height: 120px; min-width: 800px; color: #ddd; background-color: #333;">
 
+        <div class="col-md-6" style="height: 160px; color: #ddd; background-color: #333;">
+
+            <h4>Karm Profiler</h4>
+            <span>
+                <label style="width: 50px;">Övre</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                <label style="width: 50px; margin-left: 20px;">Vänster</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                </br>
+
+                <label style="width: 50px;">Nedre</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                <label style="width: 50px; margin-left: 20px;">Höger</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+            </span>
+
+        </div>
+
+    </div>
+
+    </br>
+    </br>
+
+    <!-- Pane settings -->
+    <div id="PaneSettings" class="row">
+
+        <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
             <h4>Luft dimensioner</h4>
-            <span><label style="width: 40px;">Bredd</label><input id="PaneWidth" type="number" value="0" min="0" name="PaneWidth" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /></span></br>
-            <span><label style="width: 40px;">Höjd</label><input id="PaneHeight" type="number" value="0" min="0" name="PaneHeight" style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /></span></br>
-            <button id="btnUpdatePaneDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
+            <span>
+                <label style="width: 40px;">Bredd</label>
+                <input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" 
+                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
+            </span></br>
+            <span>
+                <label style="width: 40px;">Höjd</label>
+                <input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" 
+                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
+            </span>
+            <button id="btnUpdateFrameDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
+        </div>
+
+
+        <div class="col-md-6" style="height: 160px; color: #ddd; background-color: #333;">
+
+            <h4>Luft Profiler</h4>
+            <span>
+                <label style="width: 50px;">Övre</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                <label style="width: 50px; margin-left: 20px;">Vänster</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                </br>
+
+                <label style="width: 50px;">Nedre</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+
+                <label style="width: 50px; margin-left: 20px;">Höger</label>
+                <select style="width: 160px; color: #000;">
+                    <option value="LFT">LFT</option>
+                    <option value="CDF">CDF</option>
+                </select>
+            </span>
+
         </div>
 
     </div>
