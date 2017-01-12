@@ -15,7 +15,7 @@ namespace LeiabUv.Models
         public int yIndex { get; set; }
         [Required]
         public int colSpan { get; set; }
-        [Required]
+        [Required]  
         public int rowSpan { get; set; }
 
         public int TemplateId { get; set; }
