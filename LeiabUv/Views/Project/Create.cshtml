@@ -173,6 +173,58 @@
 </div>
 
 
+<script>
+
+    $(function () {
+
+        $.getJSON("/Project/GetTemplate?id=", function (data) {
+
+            //public ActionResult GetTemplate(int id)
+
+            alert(data.Name);
+
+            /*
+            alert(data.length);
+            
+            var c = "Data: ";
+            for (var i = 0; i < data.length; i++) {
+                c += data[i].Name + ", ";
+            }
+
+            alert(c);
+
+            */
+
+            /*
+            var template = ctx.Templates.Select(d=>new TemplateViewModel {
+    Id=d.Id,
+    columns=d.columns,
+    rows=d.rows,
+    Name=d.Name,
+    Created = d.Created,
+    CreatedBy = d.CreatedBy,
+    Modified = d.Modified,
+    ModifiedBy = d.ModifiedBy,
+    panes=d.panes.Select(f=>new TemplatePaneViewModel {
+        Id=f.Id,
+        colSpan=f.colSpan,
+        rowSpan=f.rowSpan,
+        xIndex=f.xIndex,
+        yIndex=f.yIndex
+        */
+            //templateIconData = data;
+
+            //lbGenerateIcons(data);
+            //lbRenderIcon(data);
+
+            //lbTemplateUpdateAndRender("");
+        });
+
+    });
+
+</script>
+
+
 <script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
 
 <script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->

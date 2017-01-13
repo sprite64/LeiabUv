@@ -99,3 +99,5 @@ function lbFrameData() {
     this.verticalPaneHeights = new Array(this.rows);
 }
 
+var paneSelectorData = undefined;
+

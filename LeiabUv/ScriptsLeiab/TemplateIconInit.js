@@ -16,7 +16,7 @@
 $(function () {
 
     /* Button events and control */
-    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?templateId=" + selectedTemplateId); });
+    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
 
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
     $("#btnDeleteTemplate").click(function () {
