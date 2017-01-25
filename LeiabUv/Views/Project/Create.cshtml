@@ -177,49 +177,54 @@
 
     $(function () {
 
-        $.getJSON("/Project/GetTemplate?id=", function (data) {
+        $.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
 
-            //public ActionResult GetTemplate(int id)
+            paneSelectorData = data;            // Init pane selector data
 
-            alert(data.Name);
+            /* 
 
-            /*
-            alert(data.length);
-            
-            var c = "Data: ";
-            for (var i = 0; i < data.length; i++) {
-                c += data[i].Name + ", ";
+            var o = "Name: " + data.Name + ", ";
+            o += "Cols: " + data.columns + ", ";
+            o += "Rows: " + data.rows + ", ";
+            o += "Nr of Panes: " + data.panes.length;
+
+            for(var i = 0; i < data.panes.length; i ++) {
+                o += "PaneId: " + i + ": " + data.panes[i].Id;
+                o += "PanecSpan: " + i + ": " + data.panes[i].colSpan;
+                o += "PanerSpan: " + i + ": " + data.panes[i].rowSpan;
+                o += "PaneXIndex: " + i + ": " + data.panes[i].xIndex;
+                o += "PaneYIndex: " + i + ": " + data.panes[i].yIndex;
+                o += " ";
             }
 
-            alert(c);
+            alert(o); */
 
-            */
+            /*      
+                  var template = ctx.Templates.Select(d => new TemplateViewModel
+                  {
+                      Id = d.Id,
+                      columns = d.columns,
+                      rows = d.rows,
+                      Name = d.Name,
+                      Created = d.Created,
+                      CreatedBy = d.CreatedBy,
+                      Modified = d.Modified,
+                      ModifiedBy = d.ModifiedBy,
+                      panes = d.panes.Select(f => new TemplatePaneViewModel
+                  {
+                          Id = f.Id,
+                          colSpan = f.colSpan,
+                          rowSpan = f.rowSpan,
+                          xIndex = f.xIndex,
+                          yIndex = f.yIndex
+              }).ToList<TemplatePaneViewModel>()
+      
+              }).FirstOrDefault(d => d.Id == id);
+          return Json(template, JsonRequestBehavior.AllowGet);
+      
+          */
 
-            /*
-            var template = ctx.Templates.Select(d=>new TemplateViewModel {
-    Id=d.Id,
-    columns=d.columns,
-    rows=d.rows,
-    Name=d.Name,
-    Created = d.Created,
-    CreatedBy = d.CreatedBy,
-    Modified = d.Modified,
-    ModifiedBy = d.ModifiedBy,
-    panes=d.panes.Select(f=>new TemplatePaneViewModel {
-        Id=f.Id,
-        colSpan=f.colSpan,
-        rowSpan=f.rowSpan,
-        xIndex=f.xIndex,
-        yIndex=f.yIndex
-        */
-            //templateIconData = data;
-
-            //lbGenerateIcons(data);
-            //lbRenderIcon(data);
-
-            //lbTemplateUpdateAndRender("");
         });
-
     });
 
 </script>

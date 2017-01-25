@@ -26,21 +26,16 @@ namespace LeiabUv.Controllers
         }
         
 
-        public ActionResult Create(int? templateId)
+        public ActionResult Create(int? id)
         {
-            if(templateId == null)
+            if(id == null)
             {
-                templateId = -1;
+                return View("CreateSelectTemplate");            // A view with "Select Template" button that redirects to /Template/Show
             }
             
-            ViewBag.TemplateId = templateId;
-
-            if(templateId == -1)
-            {
-                return View("CreateSelectTemplate");
-            }
-
-            return View("Create");
+            ViewBag.TemplateId = id;
+            
+            return View("Create");                              // View that implements the Project editor
         }
 
         public ActionResult Edit(int projectId)
