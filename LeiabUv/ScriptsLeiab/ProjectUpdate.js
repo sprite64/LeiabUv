@@ -10,3 +10,26 @@
         Mall    - Template
         Båge    - -
 */
+
+
+lbRenderFrame();
+
+
+
+function lbProjectUpdate(action) {          // action specifies what action to preform
+
+    switch (action) {
+
+        default:
+
+            break;
+    }
+}
+
+
+function lbProjectUpdateAndRender() {
+
+    lbProjectUpdate("");
+    lbProjectRender();
+}
+

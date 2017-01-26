@@ -34,7 +34,7 @@ function lbCreateRect(x, y, width, height) {
 
 
 // Create 2D Array
-function lbCreate2DArray2(cols, rows) {
+function lbCreate2DArray2(cols, rows) {             // This is probably deprecated and can be removed
     this.grid = new Array(cols);
     for (var i = 0; i < cols; i++) {
         this.grid[i] = new Array(rows);

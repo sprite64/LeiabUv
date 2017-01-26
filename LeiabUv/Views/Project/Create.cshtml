@@ -173,13 +173,26 @@
 </div>
 
 
+<script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
+
+<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->
+<script src="~/ScriptsLeiab/ProjectObjects.js"></script>        <!-- Project objects constructors -->
+
+<script src="~/ScriptsLeiab/ProjectGraphics.js"></script>       <!-- Project graphics functions -->
+<script src="~/ScriptsLeiab/ProjectUpdate.js"></script>         <!-- Project update functions -->
+
+<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
+
+
 <script>
 
     $(function () {
 
         $.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
 
-            paneSelectorData = data;            // Init pane selector data
+            //paneSelectorData = data;            // Init pane selector data
+
+            paneSelectorData = new lbPaneSelector(data);
 
             /* 
 
@@ -230,13 +243,4 @@
 </script>
 
 
-<script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
 
-<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->
-<script src="~/ScriptsLeiab/ProjectObjects.js"></script>        <!-- Project objects constructors -->
-
-<script src="~/ScriptsLeiab/ProjectGraphics.js"></script>       <!-- Project graphics functions -->
-<script src="~/ScriptsLeiab/ProjectUpdate.js"></script>         <!-- Project update functions -->
-
-<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
-    

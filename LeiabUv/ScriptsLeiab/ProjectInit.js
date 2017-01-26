@@ -16,7 +16,10 @@
 // JQuery Ready/Initiation
 $(function () {
 
-    $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
+    $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });      // Redirect to template gallery to select a template
 
 });
+
+
+setInterval(function () { lbProjectUpdateAndRender(""); }, 300);
 
