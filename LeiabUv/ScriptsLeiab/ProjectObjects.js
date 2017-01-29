@@ -134,7 +134,20 @@ function lbPaneSelector(data) {
     if(true) {
 
         // Calculate widths: canvasWidth - single px line widths
-        this.paneSize = Math.floor((LB_PaneSelectCanvasWidth - (LB_PaneSelectMargin * 2 + this.frameSize + (data.panes.length - 1) + 4)) / data.columns);
+        var w = (LB_PaneSelectCanvasWidth - LB_PaneSelectMargin) / data.columns;
+
+        w *= 0.2;                                   // Get frame size ratio
+
+        this.frameSize = Math.floor(w);
+
+        w = (LB_PaneSelectCanvasWidth - 2 * this.frameSize);       // Get size of inner rectangle
+
+        this.paneSize = Math.floor(w / data.columns);           // --!!--
+
+        //alert("Pane: " + this.paneSize + ", Frame: " + this.frameSize);
+        
+
+        //this.paneSize = Math.floor((LB_PaneSelectCanvasWidth - (LB_PaneSelectMargin * 2 + this.frameSize + (data.panes.length - 1) + 4)) / data.columns);
         
         //this.frameSize = 10;
         //this.paneSize = 40;

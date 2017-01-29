@@ -50,20 +50,41 @@ function lbRenderFrame() {
     //ctx.fillStyle = "#f00";
     //ctx.fillRect(10, 10, 20, 20);
 
-    ctx.fillStyle = "#0f0";
+    
 
     // Render frame
+    var x = LB_PaneSelectMargin;
+    var y = LB_PaneSelectMargin;
 
+    var w = LB_PaneSelectCanvasWidth;
+    var h = LB_PaneSelectCanvasHeight;
+
+    
+    ctx.fillStyle = "#000";
+    ctx.fillRect(x, y, w, h);
+
+    ctx.fillStyle = "#ccc";
+    ctx.fillRect(x + 1, y + 1, w - 2, h - 2);
+
+    ctx.fillStyle = "#444";
+    ctx.fillRect(x + );
 
     // Render panes
+    ctx.fillStyle = "#0f0";
     for (var i = 0; i < paneSelectorData.nrOfPanes; i++) {
         
-        var x = LB_PaneSelectMargin + paneSelectorData.panes[i].xIndex * paneSelectorData.paneSize + 1;
-        var y = LB_PaneSelectMargin + paneSelectorData.panes[i].yIndex * paneSelectorData.paneSize + 1;
+        //var x = LB_PaneSelectMargin + paneSelectorData.panes[i].xIndex * paneSelectorData.paneSize + 1;
+        //var y = LB_PaneSelectMargin + paneSelectorData.panes[i].yIndex * paneSelectorData.paneSize + 1;
         //var w = 0;
         //var h = 0;
 
-        ctx.fillRect(x + paneSelectorData.panes[i].xIndex, y + paneSelectorData.panes[i].yIndex, paneSelectorData.paneSize, paneSelectorData.paneSize);
+        var x = LB_PaneSelectMargin + paneSelectorData.frameSize + paneSelectorData.panes[i].xIndex * paneSelectorData.paneSize + paneSelectorData.panes[i].xIndex;
+        var y = LB_PaneSelectMargin + paneSelectorData.frameSize + paneSelectorData.panes[i].yIndex * paneSelectorData.paneSize + paneSelectorData.panes[i].yIndex;
+
+        ctx.fillRect(x, y, paneSelectorData.paneSize, paneSelectorData.paneSize);
+        
+        //ctx.fillRect(paneSelectorData.panes[i].xIndex, y + paneSelectorData.panes[i].yIndex, paneSelectorData.paneSize, paneSelectorData.paneSize);
+        //ctx.fillRect(x + paneSelectorData.panes[i].xIndex, y + paneSelectorData.panes[i].yIndex, paneSelectorData.paneSize, paneSelectorData.paneSize);
 
         // Create a lbGetPaneRect(paneIndex) function
     }
