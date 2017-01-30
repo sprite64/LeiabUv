@@ -26,61 +26,6 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan) {
 }
 
 
-// PaneSelector object constructor, paneCanvasWidth/Height parameters are used to calculate framesize and panesize to fit the pane selection canvas
-// 
-function lbPaneSelector2(nrOfPanes, columns, rows) {
-
-    var offset = 5;
-
-    var paneCanvasWidth = LB_PaneSelectCanvasWidth - 5 * 2;         // Set to project constants
-    var paneCanvasHeight = LB_PaneSelectCanvasHeight - 5 * 2;
-
-    this.columns = columns;
-    this.rows = rows;
-
-    this.frameSize = 0; //10;
-    this.paneSize = 0;  //40;
-
-    // Calculate frame and pane size
-    if (columns > rows) {       // Calculate for width/columns
-
-        var width = 10 * 2;                 // Frame size
-        //width += 6 * 2 * (columns - 1);     // Pane border size
-        width += 40 * columns;              // Pane size
-
-        var ratio = width / paneCanvasWidth;    // Ratio for sizes, not sure if this is correct or needs to be converted, test and find out
-
-        this.frameSize = (10 * 2) * ratio;         // Update frame and pane size
-        this.paneSize = (40 * columns) * ratio;
-
-    } else {                    // Calculate for height/rows
-
-        var height = 10 * 2;
-        height += 40 * rows;
-
-        var ratio = height / paneCanvasHeight;
-
-        this.frameSize = (10 * 2) * ratio;
-        this.paneSize = (40 * columns) * ratio;
-
-    }
-
-    this.hoverPane = -1;
-    this.selectedPane = -1;
-
-    this.xOffset = 5;      // Canvas render offset
-    this.yOffset = 5;
-
-    this.nrOfPanes = nrOfPanes;
-
-    this.panes = new Array(this.nrOfPanes);
-
-    for (var i = 0; i < this.nrOfPanes; i++) {
-        this.panes[i] = new lbPaneData();
-    }
-}
-
-
 function lbFrameData() {
 
     this.mmWidth = 70;      // Frame width in millimeters
@@ -103,13 +48,6 @@ function lbFrameData() {
 // Pane Selector constructor
 function lbPaneSelector(data) {
 
-    var offset = 5;
-    //LB_PaneSelectCanvasWidth
-    //LB_PaneSelectCanvasHeight
-    //LB_PaneSelectMargin
-
-    //var canvasWidth = LB_PaneSelectCanvasWidth - 5 * 2;         // Set to project constants
-    //var canvasHeight = LB_PaneSelectCanvasHeight - 5 * 2;
 
     // Copy data
     this.id = data.Id;
@@ -131,71 +69,34 @@ function lbPaneSelector(data) {
 
     // Calculate pane and frame size
     //if (data.columns > data.rows) {             // Adjust after columns
+    //if(data.columns >= data.rows) {
     if(true) {
 
-        // Calculate widths: canvasWidth - single px line widths
-        var w = (LB_PaneSelectCanvasWidth - LB_PaneSelectMargin) / data.columns;
+        var paneSize = ((LB_PaneSelectCanvasSize - LB_PaneSelectMargin * 2) / data.columns);
 
-        w *= 0.2;                                   // Get frame size ratio
+        var frameSize = paneSize * 0.2;
 
-        this.frameSize = Math.floor(w);
-
-        w = (LB_PaneSelectCanvasWidth - 2 * this.frameSize);       // Get size of inner rectangle
-
-        this.paneSize = Math.floor(w / data.columns);           // --!!--
-
-        //alert("Pane: " + this.paneSize + ", Frame: " + this.frameSize);
+        var totalSize = LB_PaneSelectCanvasSize + frameSize * 2;
         
+        var ratio = (LB_PaneSelectCanvasSize / totalSize);
+        //alert("Ratio: " + ratio);
 
-        //this.paneSize = Math.floor((LB_PaneSelectCanvasWidth - (LB_PaneSelectMargin * 2 + this.frameSize + (data.panes.length - 1) + 4)) / data.columns);
+        frameSize = Math.round(frameSize * ratio);
+        paneSize = Math.round(paneSize * ratio);
         
-        //this.frameSize = 10;
-        //this.paneSize = 40;
-        //this.postSize = 6;
+        this.frameSize = frameSize;
+        this.paneSize = paneSize;
+
+        this.xOffset = 5;
+        this.yOffset = 5;
+
 
     } else {                                    // Adjust after rows
-
-        this.frameSize = 10;
-        this.paneSize = 40;
-        this.postSize = 6;
-
-        this.frameWidth = LB_PaneSelectCanvasWidth - LB_PaneSelectMargin;
-        this.frameHeight = LB_PaneSelectCanvasHeight - LB_PaneSelectMargin;
 
     }
 
     this.hoverPane = -1;
     this.selectedPane = -1;
-
-    this.xOffset = 5;      // Canvas render offset
-    this.yOffset = 5;
-
-
-    /*
-    // Calculate frame and pane size
-    if (columns > rows) {       // Calculate for width/columns
-
-        var width = 10 * 2;                 // Frame size
-        //width += 6 * 2 * (columns - 1);     // Pane border size
-        width += 40 * columns;              // Pane size
-
-        var ratio = width / canvasWidth;    // Ratio for sizes, not sure if this is correct or needs to be converted, test and find out
-
-        this.frameSize = (10 * 2) * ratio;         // Update frame and pane size
-        this.paneSize = (40 * columns) * ratio;
-
-    } else {                    // Calculate for height/rows
-
-        var height = 10 * 2;
-        height += 40 * rows;
-
-        var ratio = height / canvasHeight;
-
-        this.frameSize = (10 * 2) * ratio;
-        this.paneSize = (40 * columns) * ratio;
-
-    }*/
-
 
     /*
         Id = d.Id,

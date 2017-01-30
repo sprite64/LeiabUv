@@ -16,9 +16,11 @@
 var LB_ProjectCanvasId = "ProjectCanvas";
 var LB_PaneSelectCanvasId = "PaneSelectCanvas";
 
+var LB_PaneSelectCanvasSize = 300;
+
 var LB_PaneSelectCanvasWidth = 300;
 var LB_PaneSelectCanvasHeight = 300;
-var LB_PaneSelectMargin = 10;
+var LB_PaneSelectMargin = 20;
 
 var LB_TemplateMaxColumns = 7;
 var LB_TemplateMaxRows = 5;
