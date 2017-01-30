@@ -70,7 +70,7 @@ function lbPaneSelector(data) {
     // Calculate pane and frame size
     //if (data.columns > data.rows) {             // Adjust after columns
     //if(data.columns >= data.rows) {
-    if(true) {
+    if(data.columns >= data.rows) {
 
         var paneSize = ((LB_PaneSelectCanvasSize - LB_PaneSelectMargin * 2) / data.columns);
 
@@ -92,6 +92,24 @@ function lbPaneSelector(data) {
 
 
     } else {                                    // Adjust after rows
+
+        var paneSize = ((LB_PaneSelectCanvasSize - LB_PaneSelectMargin * 2) / data.rows);
+
+        var frameSize = paneSize * 0.2;
+
+        var totalSize = LB_PaneSelectCanvasSize + frameSize * 2;
+
+        var ratio = (LB_PaneSelectCanvasSize / totalSize);
+        //alert("Ratio: " + ratio);
+
+        frameSize = Math.round(frameSize * ratio);
+        paneSize = Math.round(paneSize * ratio);
+
+        this.frameSize = frameSize;
+        this.paneSize = paneSize;
+
+        this.xOffset = 5;
+        this.yOffset = 5;
 
     }
 

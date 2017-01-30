@@ -100,11 +100,6 @@ function lbGetInnerSelectorFrameRect2() {
 }
 
 
-
-
-
-
-
 function lbProjectUpdate(action) {          // action specifies what action to preform
 
     switch (action) {
