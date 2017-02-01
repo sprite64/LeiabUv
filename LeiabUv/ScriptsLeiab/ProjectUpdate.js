@@ -20,21 +20,10 @@ function lbGetInnerSelectorFrameRect() {
     var x = paneSelectorData.frameSize;
     var y = paneSelectorData.frameSize;
 
-    //var x = Math.round((LB_PaneSelectCanvasSize - w) * 0.5);
-    //var y = Math.round((LB_PaneSelectCanvasSize - h) * 0.5);
-
     var w = paneSelectorData.paneSize * paneSelectorData.columns + paneSelectorData.columns + 1;
     var h = paneSelectorData.paneSize * paneSelectorData.rows + paneSelectorData.rows + 1;
 
     var rect = new lbCreateRect(x, y, w, h);
-
-    /*
-    rect.x += paneSelectorData.frameSize;
-    rect.y += paneSelectorData.frameSize;
-
-    rect.width -= paneSelectorData.frameSize * 2;
-    rect.height -= paneSelectorData.frameSize * 2;
-    */
 
     return rect;
 }
@@ -60,19 +49,17 @@ function lbGetOuterSelectorFrameRect() {
 }
 
 
-// Returns a rect object with the outer frame rectangle of the selector canvas
-function lbGetOuterSelectorFrameRect2() {
+// Gets selector pane rectangle by index
+function lbGetSelectorPaneRect(index) {
 
-    if (paneSelectorData == undefined)
-        return;
+    var outerRect = lbGetOuterSelectorFrameRect();      // Get rectangels
+    var innerRect = lbGetInnerSelectorFrameRect();
 
-    var w = paneSelectorData.frameSize * 2 + paneSelectorData.paneSize * paneSelectorData.columns + paneSelectorData.columns - 1;
-    var h = paneSelectorData.frameSize * 2 + paneSelectorData.paneSize * paneSelectorData.rows + paneSelectorData.rows - 1;
+    var x = outerRect.x + innerRect.x + 2 + paneSelectorData.paneSize * paneSelectorData.panes[index].xIndex + paneSelectorData.panes[index].xIndex;
+    var y = outerRect.y + innerRect.y + 2 + paneSelectorData.paneSize * paneSelectorData.panes[index].yIndex + paneSelectorData.panes[index].yIndex;
 
-    var x = Math.round((LB_PaneSelectCanvasSize - w) * 0.5);
-    var y = Math.round((LB_PaneSelectCanvasSize - h) * 0.5);
-
-    //alert("Outer: " + x + ", " + y + ", " + w + ", " + h);
+    var w = paneSelectorData.paneSize * paneSelectorData.panes[index].colSpan + paneSelectorData.panes[index].colSpan - 1;
+    var h = paneSelectorData.paneSize * paneSelectorData.panes[index].rowSpan + paneSelectorData.panes[index].rowSpan - 1;
 
     var rect = new lbCreateRect(x, y, w, h);
 
@@ -80,29 +67,53 @@ function lbGetOuterSelectorFrameRect2() {
 }
 
 
-// Returns a rect object with the inner frame rectangle of the selector canvas
-function lbGetInnerSelectorFrameRect2() {
+// Update mouse position
+function lbUpdateMousePosition(e) {
 
-    var rect = lbGetOuterSelectorFrameRect();
+    var mouseX = parseInt(e.clientX);                               // Get event data
+    var mouseY = parseInt(e.clientY);
 
-    rect.x += paneSelectorData.frameSize;
-    rect.y += paneSelectorData.frameSize;
+    var canvasOffset = $("#" + LB_PaneSelectCanvasId).offset();       // Get canvas element offset
 
-    rect.width -= paneSelectorData.frameSize * 2;
-    rect.height -= paneSelectorData.frameSize * 2;
+    paneSelectorData.mouseX = Math.round(mouseX - canvasOffset.left);                   // Update mouse position
+    paneSelectorData.mouseY = Math.round(mouseY - canvasOffset.top);                    // Using round because at some times mouseX will return a float
 
-    //alert("Inner: " + rect.x + ", " + rect.y + ", " + rect.width + ", " + rect.height);
-
-    //ctx.fillRect(x + paneSelectorData.frameSize, y + paneSelectorData.frameSize,
-    //    w - paneSelectorData.frameSize * 2, h - paneSelectorData.frameSize * 2);
-
-    return rect;
+    //alert("Mouse: " + paneSelectorData.mouseX + ", " + paneSelectorData.mouseY);
 }
 
 
 function lbProjectUpdate(action) {          // action specifies what action to preform
 
+
+
     switch (action) {
+
+        case "mouseMove":
+
+            // Find hover pane
+            paneSelectorData.hoverPane = -1;
+            for (var i = 0; i < paneSelectorData.nrOfPanes; i++) {
+                
+                var rect = lbGetSelectorPaneRect(i);
+                
+                if(paneSelectorData.mouseX > rect.x && paneSelectorData.mouseX <= rect.x + rect.width) {
+                    if(paneSelectorData.mouseY > rect.y && paneSelectorData.mouseY <= rect.y + rect.height) {
+                        paneSelectorData.hoverPane = i;
+                    }
+                }
+            }
+
+            break;
+        case "mouseUp":
+
+            // Select pane
+            if (paneSelectorData.hoverPane != -1) {
+                paneSelectorData.selectedPane = paneSelectorData.hoverPane;
+            } else {
+                paneSelectorData.selectedPane = -1;
+            }
+
+            break;
 
         default:
 
@@ -111,9 +122,9 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 }
 
 
-function lbProjectUpdateAndRender() {
+function lbProjectUpdateAndRender(action) {
 
-    lbProjectUpdate("");
+    lbProjectUpdate(action);
     lbProjectRender();
 }
 

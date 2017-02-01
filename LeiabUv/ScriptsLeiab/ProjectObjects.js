@@ -113,8 +113,13 @@ function lbPaneSelector(data) {
 
     }
 
-    this.hoverPane = -1;
-    this.selectedPane = -1;
+    this.postSize = Math.round(frameSize * 0.7);            // Calculate post size/width
+
+    this.hoverPane = 1;
+    this.selectedPane = 2;
+
+    this.mouseX = -1;
+    this.mouseY = -1;
 
     /*
         Id = d.Id,

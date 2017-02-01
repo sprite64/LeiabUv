@@ -16,10 +16,40 @@
 // JQuery Ready/Initiation
 $(function () {
 
-    $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });      // Redirect to template gallery to select a template
 
+    // Mouse button down event
+    function handleMouseDown(e) {
+        // Do nothing
+    }
+
+
+    // Mouse button up event
+    function handleMouseUp(e) {
+        lbProjectUpdateAndRender("mouseUp");      // Handle mouse-clicks
+    }
+
+
+    // Mouse out of bounds
+    function handleMouseOut(e) {
+        // Do nothing
+    }
+
+    function handleMouseMove(e) {
+
+        lbUpdateMousePosition(e);
+        lbProjectUpdateAndRender("mouseMove");
+    }
+
+
+    // The actual event handlers
+    $("#PaneSelectCanvas").mousedown(function (e) { handleMouseDown(e); });
+    $("#PaneSelectCanvas").mousemove(function (e) { handleMouseMove(e); });
+    $("#PaneSelectCanvas").mouseup(function (e) { handleMouseUp(e); });
+    $("#PaneSelectCanvas").mouseout(function (e) { handleMouseOut(e); });
+
+    // Redirect to template gallery to select a template
+    $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
 });
-
 
 setInterval(function () { lbProjectUpdateAndRender(""); }, 300);
 
