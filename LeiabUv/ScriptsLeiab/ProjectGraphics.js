@@ -40,7 +40,42 @@ function lbGetPaneSelectCanvasContext() {
 }
 
 
+
 function lbRenderSelectorFrame() {
+
+    if (paneSelectorData == undefined) return;        // Escape if paneSelectData isn't available
+
+    var ctx = lbGetPaneSelectCanvasContext();
+
+    var innerRect = lbGetInnerSelectorFrameRect();
+    var outerRect = lbGetOuterSelectorFrameRect();
+
+    // Render outer rect, frame size and inner rect
+    ctx.fillStyle = "#000";
+    ctx.fillRect(outerRect.x, outerRect.y, outerRect.width, outerRect.height);
+
+    ctx.fillStyle = "#ccc";
+    ctx.fillRect(outerRect.x + 1, outerRect.y + 1, outerRect.width - 2, outerRect.height - 2);
+
+    // Render inner frame
+    ctx.fillStyle = "#333";
+    ctx.fillRect(innerRect.x + outerRect.x + 1, innerRect.y + outerRect.y + 1, innerRect.width, innerRect.height);
+
+    // Render seperate horizontal frame border lines
+    ctx.strokeStyle = "#000";
+    //ctx.lineWidth = 1;
+    
+    ctx.moveTo(outerRect.x, outerRect.y + innerRect.y + 1 + 0.5);
+    ctx.lineTo(outerRect.x + outerRect.width, outerRect.y + innerRect.y + 1 + 0.5);
+    ctx.stroke();
+
+    ctx.moveTo(outerRect.x, outerRect.y + outerRect.height - (innerRect.y + 2) + 0.5)
+    ctx.lineTo(outerRect.x + outerRect.width, outerRect.y + outerRect.height - (innerRect.y + 2) + 0.5)
+    ctx.stroke();
+}
+
+
+function lbRenderSelectorFrame2() {
 
     if (paneSelectorData == undefined) return;        // Escape if paneSelectData isn't available
     
@@ -51,6 +86,7 @@ function lbRenderSelectorFrame() {
     var xOuter = rect.x + 1;
     var yOuter = rect.y + 1;
 
+    // Render outer rect, frame size and inner rect
     ctx.fillStyle = "#000";
     ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
 
@@ -62,6 +98,9 @@ function lbRenderSelectorFrame() {
     ctx.fillStyle = "#333";
     ctx.fillRect(rect.x + xOuter, rect.y + yOuter, rect.width, rect.height);
 
+    // Render seperate horizontal frame border lines
+    //ctx.fillStyle = "#000";
+    //ctx.
 }
 
 
@@ -100,29 +139,8 @@ function lbRenderSelectorPosts() {
 
         rect = lbGetSelectorPaneRect(i);
 
-        // Left
-        rectPost.x = rect.x;
-        rectPost.y = rect.y;
-        rectPost.width = postSize;
-        rectPost.height = rect.height;
+        
 
-        if (paneSelectorData.panes[i].xIndex > 0) {
-            ctx.fillStyle = "#333";
-            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
-            ctx.fillStyle = "#ccc";
-            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width - 1, rectPost.height);
-        }
-        
-        // Right
-        rectPost.x = rect.x + rect.width - postSize;
-        
-        if (paneSelectorData.panes[i].xIndex + paneSelectorData.panes[i].colSpan < paneSelectorData.columns) {
-            ctx.fillStyle = "#333";
-            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
-            ctx.fillStyle = "#ccc";
-            ctx.fillRect(rectPost.x + 1, rectPost.y, rectPost.width - 1, rectPost.height);
-        }
-        
         // Top
         rectPost.x = rect.x;
         rectPost.y = rect.y;
@@ -135,7 +153,7 @@ function lbRenderSelectorPosts() {
             ctx.fillStyle = "#ccc";
             ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height - 1);
         }
-        
+
         // Bottom
         rectPost.y = rect.y + rect.height - postSize;
 
@@ -145,10 +163,32 @@ function lbRenderSelectorPosts() {
             ctx.fillStyle = "#ccc";
             ctx.fillRect(rectPost.x, rectPost.y + 1, rectPost.width, rectPost.height - 1);
         }
+
+        // Left
+        rectPost.x = rect.x;
+        rectPost.y = rect.y;
+        rectPost.width = postSize;
+        rectPost.height = rect.height;
+
+        if (paneSelectorData.panes[i].xIndex > 0) {
+            ctx.fillStyle = "#333";
+            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
+            ctx.fillStyle = "#ccc";
+            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width - 1, rectPost.height);
+        }
+
+        // Right
+        rectPost.x = rect.x + rect.width - postSize;
+
+        if (paneSelectorData.panes[i].xIndex + paneSelectorData.panes[i].colSpan < paneSelectorData.columns) {
+            ctx.fillStyle = "#333";
+            ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
+            ctx.fillStyle = "#ccc";
+            ctx.fillRect(rectPost.x + 1, rectPost.y, rectPost.width - 1, rectPost.height);
+        }
     }
 
 }
-
 
 
 function lbProjectRender() {

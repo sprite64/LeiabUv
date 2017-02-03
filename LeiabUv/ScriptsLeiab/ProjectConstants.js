@@ -25,6 +25,8 @@ var LB_PaneSelectMargin = 20;
 var LB_TemplateMaxColumns = 7;
 var LB_TemplateMaxRows = 5;
 
+var LB_DefaultPaneSizeMm = 400;
+
 
 /* Unused  */
 

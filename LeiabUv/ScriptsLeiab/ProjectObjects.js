@@ -26,22 +26,67 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan) {
 }
 
 
+function lbPaneDataGfx() {
+
+    this.x = 0;
+    this.y = 0;
+
+    this.width = 0;
+    this.height = 0;
+
+}
+
+
+// All sizes and positions are in pixels
+function lbFrameDataGfx() {
+
+    this.xOffset;       // Frame canvas offset
+    this.yOffset;
+
+    this.width;         // Outer frame size
+    this.height;
+
+    this.topSize;       // Sizes of frame "width"
+    this.bottomSize;
+
+    this.leftSize;
+    this.rightSize;
+}
+
+/*
+// Dont use this...
 function lbFrameData() {
 
-    this.mmWidth = 70;      // Frame width in millimeters
-    this.mmHeight = 70;     // Frame height in millimeters
+    this.mmWidth;      // Frame width in millimeters
+    this.mmHeight;     // Frame height in millimeters
 
-    this.pxWidth = 10;      // Frame width in pixels, derived from mmWidth to fit canvas dimensions
-    this.pxHeight = 10;     // frame height in pixels, derived from mmHeight to fit canvas dimensions
+    //this.pxWidth = 10;      // Frame width in pixels, derived from mmWidth to fit canvas dimensions
+    //this.pxHeight = 10;     // frame height in pixels, derived from mmHeight to fit canvas dimensions
 
-    this.pxXOffset = 0;
-    this.pxYOffset = 0;
+    //this.pxXOffset = 0;
+    //this.pxYOffset = 0;
 
-    this.columns = 0;
-    this.rows = 0;
+    //this.columns = 0;
+    //this.rows = 0;
+
+    
+}*/
+
+
+function lbProject() {
+
+    this.name = "";
+    this.description = "";
+
+    this.frameGfx = new lbFrameDataGfx();
 
     this.horizontalPaneWidths = new Array(this.columns);
     this.verticalPaneHeights = new Array(this.rows);
+}
+
+
+function lbProjectGfx() {
+    
 }
 
 
@@ -142,6 +187,6 @@ function lbPaneSelector(data) {
 
 }
 
-
-var paneSelectorData = undefined;
+var project = undefined;                // Project data
+var paneSelectorData = undefined;       // Pane selector data
 
