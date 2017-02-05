@@ -73,15 +73,20 @@ function lbFrameData() {
 }*/
 
 
-function lbProject() {
+function lbProject(data) {
 
     this.name = "";
     this.description = "";
 
     this.frameGfx = new lbFrameDataGfx();
 
+    this.columns = data.columns;
+    this.rows = data.rows;
+
     this.horizontalPaneWidths = new Array(this.columns);
     this.verticalPaneHeights = new Array(this.rows);
+
+    //this.panes[]
 }
 
 
