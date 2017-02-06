@@ -75,24 +75,39 @@ function lbFrameData() {
 
 function lbProject(data) {
 
-    this.name = "";
-    this.description = "";
-
-    this.frameGfx = new lbFrameDataGfx();
+    this.name = "Project Name";
+    this.description = "Project description";
 
     this.columns = data.columns;
     this.rows = data.rows;
 
-    this.horizontalPaneWidths = new Array(this.columns);
-    this.verticalPaneHeights = new Array(this.rows);
+    this.paneWidths = new Array(this.columns);      // Pane origin widths and heights
+    this.paneHeights = new Array(this.rows);
 
-    //this.panes[]
+    this.paneWidthAge = new Array(this.columns);    // The age/timestamp of each pane
+    this.paneHeightAge = new Array(this.rows);
+
+    this.paneWidthAgeCounter = 0;                     // Width/height counter/ager
+    this.paneHeightAgeCounter = 0;
+
+    // Initiate age and counters
+    for (var i = this.columns - 1; i >= 0; i --) {
+    //for (var i = 0; i < this.columns; i++) {
+        this.paneWidthAge[i] = this.paneWidthAgeCounter;
+        this.paneWidthAgeCounter ++;
+    }
+
+    for (var i = 0; i < this.rows; i++) {
+        this.paneHeightAge[i] = this.paneHeightAgeCounter;
+        this.paneHeightAgeCounter ++;
+    }
 }
 
 
-function lbProjectGfx() {
+function lbProjectGraphics() {
     
 }
+
 
 
 // Pane Selector constructor

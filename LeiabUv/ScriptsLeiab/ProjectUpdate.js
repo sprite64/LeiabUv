@@ -109,6 +109,18 @@ function lbProjectUpdate(action) {          // action specifies what action to p
             // Select pane
             if (paneSelectorData.hoverPane != -1) {
                 paneSelectorData.selectedPane = paneSelectorData.hoverPane;
+
+                // Update measure input data
+                var paneId = paneSelectorData.selectedPane;
+
+                paneSelectorData.panes[paneId];
+                alert(paneSelectorData.panes[paneId].xIndex);
+
+                // This is gonna get tricky
+
+                //project.paneWidths[];
+                //project.paneHeights[];
+
             } else {
                 paneSelectorData.selectedPane = -1;
             }

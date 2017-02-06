@@ -42,14 +42,23 @@
         <!-- Controls -->
         <div class="col-md-3" style="min-height: 700px;">
 
-            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 360px; background-color: #333;">
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 500px; background-color: #333;">
 
                 <h4 style="color: #ccc">Luft val</h4>
 
                 <!-- Pane selection canvas -->
-                <canvas id="PaneSelectCanvas" width="300" height="300" style=""></canvas>
+                <canvas id="PaneSelectCanvas" width="300" height="300"></canvas>
 
                 <!--button id="btnSelectProfiles" class="btn btn-success" style="float: right;">Välj profiler</button -->
+
+                <!--
+                <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                    -->
+
+                <label style="color: #ccc;">Mått</label><br />
+                <span><label style="color: #ccc; width: 50px;">Bredd: </label><input type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;"/></span><br>
+                <span><label style="color: #ccc; width: 50px;">Höjd: </label><input type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-bottom: 10px;"/></span>
+                
             </div>
         </div>
     </div>
@@ -162,7 +171,9 @@
 
                 <label style="width: 50px; margin-left: 20px;">Höger</label>
                 <select style="width: 160px; color: #000;">
+                    <option disabled style="color: #000;">Senast använda</option>
                     <option value="LFT">LFT</option>
+                    <option disabled>---</option>
                     <option value="CDF">CDF</option>
                 </select>
             </span>
@@ -190,53 +201,9 @@
 
         $.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
 
-            //paneSelectorData = data;            // Init pane selector data
+            paneSelectorData = new lbPaneSelector(data);        // Init pane selector object
 
-            paneSelectorData = new lbPaneSelector(data);
-
-            /* 
-
-            var o = "Name: " + data.Name + ", ";
-            o += "Cols: " + data.columns + ", ";
-            o += "Rows: " + data.rows + ", ";
-            o += "Nr of Panes: " + data.panes.length;
-
-            for(var i = 0; i < data.panes.length; i ++) {
-                o += "PaneId: " + i + ": " + data.panes[i].Id;
-                o += "PanecSpan: " + i + ": " + data.panes[i].colSpan;
-                o += "PanerSpan: " + i + ": " + data.panes[i].rowSpan;
-                o += "PaneXIndex: " + i + ": " + data.panes[i].xIndex;
-                o += "PaneYIndex: " + i + ": " + data.panes[i].yIndex;
-                o += " ";
-            }
-
-            alert(o); */
-
-            /*      
-                  var template = ctx.Templates.Select(d => new TemplateViewModel
-                  {
-                      Id = d.Id,
-                      columns = d.columns,
-                      rows = d.rows,
-                      Name = d.Name,
-                      Created = d.Created,
-                      CreatedBy = d.CreatedBy,
-                      Modified = d.Modified,
-                      ModifiedBy = d.ModifiedBy,
-                      panes = d.panes.Select(f => new TemplatePaneViewModel
-                  {
-                          Id = f.Id,
-                          colSpan = f.colSpan,
-                          rowSpan = f.rowSpan,
-                          xIndex = f.xIndex,
-                          yIndex = f.yIndex
-              }).ToList<TemplatePaneViewModel>()
-      
-              }).FirstOrDefault(d => d.Id == id);
-          return Json(template, JsonRequestBehavior.AllowGet);
-      
-          */
-
+            project = new lbProject(data);                      // Init project object
         });
     });
 
