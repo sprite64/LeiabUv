@@ -201,7 +201,7 @@
 
         $.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
 
-            paneSelectorData = new lbPaneSelector(data);        // Init pane selector object
+            selector = new lbPaneSelector(data);        // Init pane selector object
 
             project = new lbProject(data);                      // Init project object
         });

@@ -43,7 +43,7 @@ function lbGetPaneSelectCanvasContext() {
 
 function lbRenderSelectorFrame() {
 
-    if (paneSelectorData == undefined) return;        // Escape if paneSelectData isn't available
+    if (selector == undefined) return;        // Escape if paneSelectData isn't available
 
     var ctx = lbGetPaneSelectCanvasContext();
 
@@ -77,7 +77,7 @@ function lbRenderSelectorFrame() {
 
 function lbRenderSelectorFrame2() {
 
-    if (paneSelectorData == undefined) return;        // Escape if paneSelectData isn't available
+    if (selector == undefined) return;        // Escape if paneSelectData isn't available
     
     var ctx = lbGetPaneSelectCanvasContext();
 
@@ -110,14 +110,14 @@ function lbRenderSelectorPanes() {
 
     var rect = new lbCreateRect(0, 0, 0, 0);
 
-    for (var i = 0; i < paneSelectorData.nrOfPanes; i++) {
+    for (var i = 0; i < selector.nrOfPanes; i++) {
 
         rect = lbGetSelectorPaneRect(i);
 
         ctx.fillStyle = "#fff";
-        if (paneSelectorData.hoverPane == i) {                  // Hovered pane
+        if (selector.hoverPane == i) {                  // Hovered pane
             ctx.fillStyle = "#ffa";
-        } else if (paneSelectorData.selectedPane == i) {        // Selected pane
+        } else if (selector.selectedPane == i) {        // Selected pane
             ctx.fillStyle = "#aaf";
         }
 
@@ -133,9 +133,9 @@ function lbRenderSelectorPosts() {
 
     var rect = undefined;
     var rectPost = new lbCreateRect(0, 0, 0, 0);
-    var postSize = paneSelectorData.postSize;
+    var postSize = selector.postSize;
 
-    for (var i = 0; i < paneSelectorData.nrOfPanes; i++) {
+    for (var i = 0; i < selector.nrOfPanes; i++) {
 
         rect = lbGetSelectorPaneRect(i);
 
@@ -147,7 +147,7 @@ function lbRenderSelectorPosts() {
         rectPost.width = rect.width;
         rectPost.height = postSize;
 
-        if (paneSelectorData.panes[i].yIndex > 0) {
+        if (selector.panes[i].yIndex > 0) {
             ctx.fillStyle = "#333";
             ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
             ctx.fillStyle = "#ccc";
@@ -157,7 +157,7 @@ function lbRenderSelectorPosts() {
         // Bottom
         rectPost.y = rect.y + rect.height - postSize;
 
-        if (paneSelectorData.panes[i].yIndex + paneSelectorData.panes[i].rowSpan < paneSelectorData.rows) {
+        if (selector.panes[i].yIndex + selector.panes[i].rowSpan < selector.rows) {
             ctx.fillStyle = "#333";
             ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
             ctx.fillStyle = "#ccc";
@@ -170,7 +170,7 @@ function lbRenderSelectorPosts() {
         rectPost.width = postSize;
         rectPost.height = rect.height;
 
-        if (paneSelectorData.panes[i].xIndex > 0) {
+        if (selector.panes[i].xIndex > 0) {
             ctx.fillStyle = "#333";
             ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
             ctx.fillStyle = "#ccc";
@@ -180,7 +180,7 @@ function lbRenderSelectorPosts() {
         // Right
         rectPost.x = rect.x + rect.width - postSize;
 
-        if (paneSelectorData.panes[i].xIndex + paneSelectorData.panes[i].colSpan < paneSelectorData.columns) {
+        if (selector.panes[i].xIndex + selector.panes[i].colSpan < selector.columns) {
             ctx.fillStyle = "#333";
             ctx.fillRect(rectPost.x, rectPost.y, rectPost.width, rectPost.height);
             ctx.fillStyle = "#ccc";
@@ -193,7 +193,7 @@ function lbRenderSelectorPosts() {
 
 function lbProjectRender() {
 
-    if (paneSelectorData == undefined) return;
+    if (selector == undefined) return;
 
     var ctx = lbGetPaneSelectCanvasContext();
 

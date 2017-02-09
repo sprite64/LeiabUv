@@ -53,25 +53,6 @@ function lbFrameDataGfx() {
     this.rightSize;
 }
 
-/*
-// Dont use this...
-function lbFrameData() {
-
-    this.mmWidth;      // Frame width in millimeters
-    this.mmHeight;     // Frame height in millimeters
-
-    //this.pxWidth = 10;      // Frame width in pixels, derived from mmWidth to fit canvas dimensions
-    //this.pxHeight = 10;     // frame height in pixels, derived from mmHeight to fit canvas dimensions
-
-    //this.pxXOffset = 0;
-    //this.pxYOffset = 0;
-
-    //this.columns = 0;
-    //this.rows = 0;
-
-    
-}*/
-
 
 function lbProject(data) {
 
@@ -80,6 +61,13 @@ function lbProject(data) {
 
     this.columns = data.columns;
     this.rows = data.rows;
+
+    this.nrOfPanes = data.panes.length;
+
+    this.panes = new Array(data.panes.length);
+    for (var i = 0; i < data.panes.length; i++) {
+        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan);
+    }
 
     this.paneWidths = new Array(this.columns);      // Pane origin widths and heights
     this.paneHeights = new Array(this.rows);
@@ -208,5 +196,6 @@ function lbPaneSelector(data) {
 }
 
 var project = undefined;                // Project data
-var paneSelectorData = undefined;       // Pane selector data
+var selector = undefined;               // Pane selector data
+
 
