@@ -115,11 +115,27 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 // Update measure input data
                 var paneId = selector.selectedPane;
 
-                selector.panes[paneId];
-                alert("Pane: " + paneId);
+                //selector.panes[paneId];
+
+                //alert("Pane: " + paneId);
                 //alert(selector.panes[paneId].xIndex);
 
                 // This is gonna get tricky
+                //alert($("#paneWidth").val().text());
+
+                //$("#paneWidth").val(project.paneWidths[selector.panes[paneId].xIndex]);
+                //$("#paneHeight").val(project.paneHeights[selector.panes[paneId].yIndex]);
+
+                $("#paneWidth").val(lbGetSelectedPaneWidth());
+                $("#paneHeight").val(lbGetSelectedPaneHeight());
+                
+                //project.paneWidths[selector.panes[i].xIndex] + " x"
+                //ctx.fillText(project.paneHeights[selector.panes[i].xIndex] + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
+
+                //document.getElementById("paneWidth").textContent("hello");
+                //document.getElementById("paneHeight");
+
+                //pw.text("Hello");
 
                 //project.paneWidths[];
                 //project.paneHeights[];
@@ -134,6 +150,38 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 
             break;
     }
+}
+
+
+// Functions for setting/getting values of the width/height arrays
+function lbSetSelectedPaneWidth(n) {
+    project.paneWidths[selector.panes[selector.selectedPane].xIndex] = n;
+}
+
+function lbGetSelectedPaneWidth() {
+    return project.paneWidths[selector.panes[selector.selectedPane].xIndex];
+}
+
+
+function lbSetSelectedPaneHeight(n) {
+    project.paneHeights[selector.panes[selector.selectedPane].yIndex] = n;
+}
+
+function lbGetSelectedPaneHeight() {
+    return project.paneHeights[selector.panes[selector.selectedPane].yIndex];
+}
+
+
+
+function lbProjectUpdatePaneDimensions() {
+
+    // This needs to take the width/height age into account
+    // A functino for getting the active paneWidth/height would be usefull as well
+
+    lbSetSelectedPaneWidth($("#paneWidth").val());
+    lbSetSelectedPaneHeight($("#paneHeight").val());
+    
+
 }
 
 

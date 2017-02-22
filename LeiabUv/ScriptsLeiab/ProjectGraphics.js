@@ -127,6 +127,30 @@ function lbRenderSelectorPanes() {
 }
 
 
+function lbRenderSelectorDebug() {
+
+    var ctx = lbGetPaneSelectCanvasContext();
+
+    var rect = new lbCreateRect(0, 0, 0, 0);
+
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#333";
+    ctx.textAlign = "center";
+
+    for (var i = 0; i < selector.nrOfPanes; i++) {
+
+        rect = lbGetSelectorPaneRect(i);
+
+        //ctx.fillText("Hello", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
+
+        ctx.fillText(project.paneWidths[selector.panes[i].xIndex] + " x", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
+        ctx.fillText(project.paneHeights[selector.panes[i].yIndex] + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
+    }
+
+}
+
+
+
 function lbRenderSelectorPosts() {
 
     var ctx = lbGetPaneSelectCanvasContext();
@@ -203,6 +227,8 @@ function lbProjectRender() {
     lbRenderSelectorFrame();
     lbRenderSelectorPanes();
     lbRenderSelectorPosts();
+
+    lbRenderSelectorDebug()
 
     // Dummy render
     ctx = lbGetProjectCanvasContext()

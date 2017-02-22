@@ -49,6 +49,9 @@ $(function () {
 
     // Redirect to template gallery to select a template
     $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
+
+    $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
+
 });
 
 setInterval(function () { lbProjectUpdateAndRender(""); }, 300);

@@ -72,6 +72,14 @@ function lbProject(data) {
     this.paneWidths = new Array(this.columns);      // Pane origin widths and heights
     this.paneHeights = new Array(this.rows);
 
+    for (var i = 0; i < this.columns; i++) {        // Initiate width
+        this.paneWidths[i] = 300;
+    }
+
+    for (var i = 0; i < this.rows; i++) {
+        this.paneHeights[i] = 400;
+    }
+
     this.paneWidthAge = new Array(this.columns);    // The age/timestamp of each pane
     this.paneHeightAge = new Array(this.rows);
 
