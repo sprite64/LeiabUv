@@ -135,20 +135,46 @@ function lbRenderSelectorDebug() {
 
     ctx.font = "12px Arial";
     ctx.fillStyle = "#333";
-    ctx.textAlign = "center";
+    
+    // Render frame dimensions
+    ctx.textAlign = "left";
+    ctx.fillText("Karm: " + project.frameWidth + "x" + project.frameHeight + " mm", 15, 20);
 
+    // Render pane dimensions
+    ctx.textAlign = "center";
     for (var i = 0; i < selector.nrOfPanes; i++) {
 
         rect = lbGetSelectorPaneRect(i);
 
-        //ctx.fillText("Hello", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
+        ctx.fillText(project.panes[i].width + " x", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
+        ctx.fillText(project.panes[i].height + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
+    }
 
-        ctx.fillText(project.paneWidths[selector.panes[i].xIndex] + " x", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
-        ctx.fillText(project.paneHeights[selector.panes[i].yIndex] + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
+    // Render width/height ages
+    ctx.textAlign = "left";
+    ctx.fillText("Ålder", 15, 40);
+    for (var x = 0; x < project.columns; x++) {
+        ctx.fillText(project.paneWidthAge[x], x * selector.paneSize + selector.paneSize * 0.5, 52);
+    }
+
+    for (var y = 0; y < project.rows; y++) {
+        ctx.fillText(project.paneHeightAge[y], 5, y * selector.paneSize + selector.paneSize * 0.5 + 60);
     }
 
 }
 
+/*
+function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
+
+    this.xIndex = xIndex;           // Position indices
+    this.yIndex = yIndex;
+
+    this.colSpan = colSpan;         // Spans
+    this.rowSpan = rowSpan;
+
+    this.width;                     // Dimensions in millimeters
+    this.height;
+}*/
 
 
 function lbRenderSelectorPosts() {

@@ -16,13 +16,16 @@
 */
 
 
-function lbPaneData(xIndex, yIndex, colSpan, rowSpan) {
+function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
 
-    this.xIndex = xIndex;
+    this.xIndex = xIndex;           // Position indices
     this.yIndex = yIndex;
 
-    this.colSpan = colSpan;
+    this.colSpan = colSpan;         // Spans
     this.rowSpan = rowSpan;
+
+    this.width = width;             // Dimensions in millimeters
+    this.height = height;
 }
 
 
@@ -66,18 +69,21 @@ function lbProject(data) {
 
     this.panes = new Array(data.panes.length);
     for (var i = 0; i < data.panes.length; i++) {
-        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan);
+        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan, LB_DefaultPaneWidthMM, LB_DefaultPaneHeightMM);
     }
+
+    this.frameWidth = LB_DefaultPaneWidthMM * data.columns;           // Frame dimensions
+    this.frameHeight = LB_DefaultPaneHeightMM * data.rows;
 
     this.paneWidths = new Array(this.columns);      // Pane origin widths and heights
     this.paneHeights = new Array(this.rows);
 
     for (var i = 0; i < this.columns; i++) {        // Initiate width
-        this.paneWidths[i] = 300;
+        this.paneWidths[i] = LB_DefaultPaneWidthMM;
     }
 
     for (var i = 0; i < this.rows; i++) {
-        this.paneHeights[i] = 400;
+        this.paneHeights[i] = LB_DefaultPaneHeightMM;
     }
 
     this.paneWidthAge = new Array(this.columns);    // The age/timestamp of each pane
@@ -93,7 +99,8 @@ function lbProject(data) {
         this.paneWidthAgeCounter ++;
     }
 
-    for (var i = 0; i < this.rows; i++) {
+    for(var i = this.rows - 1; i >= 0; i --) {
+    //for (var i = 0; i < this.rows; i++) {
         this.paneHeightAge[i] = this.paneHeightAgeCounter;
         this.paneHeightAgeCounter ++;
     }

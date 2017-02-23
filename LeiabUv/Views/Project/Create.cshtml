@@ -203,7 +203,9 @@
 
             selector = new lbPaneSelector(data);        // Init pane selector object
 
-            project = new lbProject(data);                      // Init project object
+            project = new lbProject(data);              // Init project object
+
+            lbUpdatePaneDimensions();                   // Update project pane dimensions
         });
     });
 

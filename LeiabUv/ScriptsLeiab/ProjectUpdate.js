@@ -162,15 +162,70 @@ function lbGetSelectedPaneWidth() {
     return project.paneWidths[selector.panes[selector.selectedPane].xIndex];
 }
 
-
 function lbSetSelectedPaneHeight(n) {
     project.paneHeights[selector.panes[selector.selectedPane].yIndex] = n;
+}
+
+function lbSetPaneHeight(id, n) {
+    project.paneHeights[id] = n;
 }
 
 function lbGetSelectedPaneHeight() {
     return project.paneHeights[selector.panes[selector.selectedPane].yIndex];
 }
 
+
+// Functions for getting width/height pane indexes.
+function lbGetSelectedPaneWidthIndex() {
+    return selector.panes[selector.selectedPane].xIndex;
+}
+
+function lbGetSelectedPaneHeightIndex() {
+    return selector.panes[selector.selectedPane].yIndex;
+}
+
+
+function lbUpdatePaneDimensions() {
+
+    for (var i = 0; i < project.nrOfPanes; i++) {
+
+        // Set single column pane width
+        if(project.panes[i].colSpan == 1) {
+            project.panes[i].width = project.paneWidths[project.panes[i].xIndex];
+        }
+
+
+        // Set single row pane height
+        if(project.panes[i].rowSpan == 1) {
+            project.panes[i].height = project.paneHeights[project.panes[i].yIndex];
+        }
+
+
+        // Calculate colSpan panes
+        var h = 0;
+        if (project.panes[i].colSpan > 1) {
+            for (var x = project.panes[i].xIndex; x < project.panes[i].colSpan; x++) {
+                h += parseInt(project.paneWidths[x]);          // Might need to use parseFloat isntead
+            }
+
+            project.panes[i].width = h;
+        }
+
+        // Calculate rowSpan panes
+        var w = 0;
+        if (project.panes[i].rowSpan > 1) {
+            for (var y = project.panes[i].yIndex; y < project.panes[i].rowSpan; y++) {
+                w += parseInt(project.paneHeights[y]);          // Might need to use parseFloat isntead
+            }
+
+            project.panes[i].height = w;
+
+            //alert(total);
+        }
+        
+    }
+
+}
 
 
 function lbProjectUpdatePaneDimensions() {
@@ -181,7 +236,7 @@ function lbProjectUpdatePaneDimensions() {
     lbSetSelectedPaneWidth($("#paneWidth").val());
     lbSetSelectedPaneHeight($("#paneHeight").val());
     
-
+    lbUpdatePaneDimensions();
 }
 
 
