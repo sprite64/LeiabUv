@@ -155,6 +155,9 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 
 // Functions for setting/getting values of the width/height arrays
 function lbSetSelectedPaneWidth(n) {
+
+    // this needs to include spanned panes to work properly
+
     project.paneWidths[selector.panes[selector.selectedPane].xIndex] = n;
 }
 
@@ -185,7 +188,68 @@ function lbGetSelectedPaneHeightIndex() {
 }
 
 
+// Selecting spanned panes need to set appropriate input values when selected
+// 
+// 
+// 
+
 function lbUpdatePaneDimensions() {
+
+
+    // Correct pane dimensions by frame width
+    var n = 0;
+    var r = 0;
+    for (var y = 0; y < project.rows; y++) {
+
+        // Calculate total width by pane widths
+        for (var x = 0; x < project.columns; x++) {
+            n += parseInt(project.paneWidths[x]);
+        }
+
+        // Row is longer than frame width
+        if (n > project.frameWidth) {
+
+            r = n - project.frameWidth;
+
+            // Recalculate widths according to pane dimension ages
+            while (r != 0) {
+
+                // Find youngest pane
+                var i = 0;
+                var yid = project.paneWidthAgeCounter + 1;
+                for (var x = 0; x < project.columns; x++) {
+
+                    //if ("pane isn't the selected one condition") {
+                        if (project.paneWidthAge[x] < yid) {
+                            yid = project.paneWidthAge[x];
+                            i = x;
+                        }
+                    //}
+
+                }
+                alert("R: " + r);
+                // Adjust youngest pane width
+                project.paneWidths[i] -= r;
+
+                project.paneWidthAgeCounter++;
+                project.paneWidthAge[i] = project.paneWidthAgeCounter;
+
+                //project.panes[].width = project.paneWidths[i];
+
+                r = 0;          // This is temporary, r should be calculated for other panes until it's zero, hence the while loop
+            }
+
+            alert("Row " + y + " (" + n + ") is more than frame width (" + project.frameWidth + ")");
+        }
+
+        // Row is shorter than frame width
+        if (n < project.frameWidth) {
+            alert("Row " + y + " (" + n + ") is less than frame width (" + project.frameWidth + ")");
+        }
+
+        //alert("Frame width: " + n);
+        n = 0;
+    }
 
     for (var i = 0; i < project.nrOfPanes; i++) {
 
@@ -222,8 +286,9 @@ function lbUpdatePaneDimensions() {
 
             //alert(total);
         }
-        
     }
+
+    
 
 }
 
