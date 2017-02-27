@@ -152,13 +152,15 @@ function lbRenderSelectorDebug() {
 
     // Render width/height ages
     ctx.textAlign = "left";
-    ctx.fillText("Ålder", 15, 40);
+    //ctx.fillText("Ålder", 15, 40);
     for (var x = 0; x < project.columns; x++) {
         ctx.fillText(project.paneWidthAge[x], x * selector.paneSize + selector.paneSize * 0.5, 52);
+        ctx.fillText(project.paneWidths[x], x * selector.paneSize + selector.paneSize * 0.5, 62);
     }
 
     for (var y = 0; y < project.rows; y++) {
         ctx.fillText(project.paneHeightAge[y], 5, y * selector.paneSize + selector.paneSize * 0.5 + 60);
+        ctx.fillText(project.paneHeights[y], 5, y * selector.paneSize + selector.paneSize * 0.5 + 70);
     }
 
 }

@@ -184,7 +184,7 @@ function lbPaneSelector(data) {
     this.postSize = Math.round(frameSize * 0.7);            // Calculate post size/width
 
     this.hoverPane = -1;
-    this.selectedPane = -1;
+    this.selectedPane = 0;
 
     this.mouseX = -1;
     this.mouseY = -1;

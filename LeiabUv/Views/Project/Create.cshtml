@@ -206,6 +206,9 @@
             project = new lbProject(data);              // Init project object
 
             lbUpdatePaneDimensions();                   // Update project pane dimensions
+
+            $("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
+            $("#paneHeight").val(lbGetSelectedPaneHeight());
         });
     });
 
