@@ -127,251 +127,40 @@ function lbProjectUpdate(action) {          // action specifies what action to p
     }
 }
 
-
-// Functions for setting/getting values of the width/height arrays
-function lbSetSelectedPaneWidth(n) {
-    project.paneWidths[selector.panes[selector.selectedPane].xIndex] = n;
-}
-
-function lbSetPaneWidth(id, n) {
-    project.paneHeights[id] = n;
-}
-
+// 
 function lbGetSelectedPaneWidth() {
 
-    var id = selector.selectedPane;
-    var n = 0;
-    if (selector.panes[id].colSpan > 1) {
-        for (var x = 0; x < selector.panes[id].colSpan; x++) {
-            n += parseInt(project.paneWidths[selector.panes[id].xIndex + x]);
-        }
-    } else {
-        return project.paneWidths[selector.panes[selector.selectedPane].xIndex];
-    }
-
-    return n;
+    var paneId = selector.selectedPane;
+    return project.panes[paneId].width;
 }
 
-function lbSetSelectedPaneHeight(n) {
-    project.paneHeights[selector.panes[selector.selectedPane].yIndex] = n;
-}
-
-function lbSetPaneHeight(id, n) {
-    project.paneHeights[id] = n;
-}
 
 function lbGetSelectedPaneHeight() {
-    var id = selector.selectedPane;
-    var n = 0;
-    if (selector.panes[id].rowSpan > 1) {
-        for (var y = 0; y < selector.panes[id].rowSpan; y++) {
-            n += parseInt(project.paneHeights[selector.panes[id].yIndex + y]);
-        }
-    } else {
-        return project.paneHeights[selector.panes[selector.selectedPane].yIndex];
-    }
 
-    return n;
-}
-
-
-// Functions for getting width/height pane indexes.
-function lbGetSelectedPaneWidthIndex() {
-    return selector.panes[selector.selectedPane].xIndex;
-}
-
-function lbGetSelectedPaneHeightIndex() {
-    return selector.panes[selector.selectedPane].yIndex;
+    var paneId = selector.selectedPane;
+    return project.panes[paneId].height;
 }
 
 
 // 
+function lbUpdatePanes() {
 
-function lbGetTotalPaneWidth() {
-    var n = 0;
-    for (var x = 0; x < project.columns; x++) {
-        n += parseInt(project.paneWidths[x]);
-    }
-    return n;
-}
-
-function lbGetTotalPaneHeight() {
-    var n = 0;
-    for (var y = 0; y < project.rows; y++) {
-        n += parseInt(project.paneHeights[y]);
-    }
-    return n;
-}
-
-function lbWidthIndexIsSelected(i) {
-    if (selector.panes[selector.selectedPane].xIndex == i) {
-        return true;
-    }
-    return false;
-}
-
-function lbHeightIndexIsSelected(i) {
-    if (selector.panes[selector.selectedPane].yIndex == i) {
-        return true;
-    }
-    return false;
-}
-
-function lbGetSelectedWidthIndex() {
-    return selector.panes[selector.selectedPane].xIndex;
-}
-
-function lbGetSelectedHeightIndex() {
-    return selector.panes[selector.selectedPane].yIndex;
-}
-
-function lbGetYoungestWidth() {
-
-    var i = 0;
-    var yid = project.paneWidthAgeCounter + 1;
-
-    for (var x = 0; x < project.columns; x++) {
-
-        // Another condition is if the index is that of a selected pane
-        if (project.paneWidthAge[x] < yid) {
-            if(!lbWidthIndexIsSelected(x)) {
-                yid = project.paneWidthAge[x];
-                i = x;
-            }
-        }
-    }
-
-    return i;
-}
-
-function lbGetYoungestHeight() {
-
-    var i = 0;
-    var yid = project.paneHeightAgeCounter + 1;
-
-    for (var y = 0; y < project.rows; y++) {
-
-        if (project.paneHeightAge[y] < yid) {
-            if (!lbHeightIndexIsSelected(y)) {
-                yid = project.paneHeightAge[y];
-                i = y;
-            }
-        }
-    }
-
-    return i;
-}
-
-// Selecting spanned panes need to set appropriate input values when selected
-// 
-// 
-// 
-
-function lbUpdatePaneDimensions() {
-
-
-    // Correct pane dimensions by frame width
-    var n = lbGetTotalPaneWidth();
-    var r = 0;
-    for (var y = 0; y < project.rows; y++) {
-
-
-        // Row is longer than frame width *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
-        if (n > project.frameWidth) {
-
-            r = n - project.frameWidth;
-
-            // Recalculate widths according to pane dimension ages
-            while (r != 0) {
-
-                // Find youngest pane
-                var i = lbGetYoungestWidth();
-
-                //alert("R: " + r);
-                // Adjust youngest pane width
-                project.paneWidths[i] -= r;
-
-                // Update altered pane age
-                project.paneWidthAgeCounter++;
-                project.paneWidthAge[i] = project.paneWidthAgeCounter;
-
-                // Update selected pane age
-                project.paneWidthAgeCounter++;
-                project.paneWidthAge[lbGetSelectedWidthIndex()] += project.paneWidthAgeCounter;
-
-                //project.panes[].width = project.paneWidths[i];
-
-                r = 0;          // This is temporary, r should be calculated for other panes until it's zero, hence the while loop
-            }
-
-            //alert("Row " + y + " (" + n + ") is more than frame width (" + project.frameWidth + ")");
-        }
-
-
-        // Row is shorter than frame width *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
-        if (n < project.frameWidth) {
-
-            // Because this is not implemented yet, a lesser size than the frame will screw up values to be smaller than the frame itself
-
-            alert("Row " + y + " (" + n + ") is less than frame width (" + project.frameWidth + ")");
-        }
-
-        //alert("Frame width: " + n);
-        n = lbGetTotalPaneWidth();
-    }
-
-
-    // 
-    for (var i = 0; i < project.nrOfPanes; i++) {
-
-        // Set single column pane width
-        if(project.panes[i].colSpan == 1) {
-            project.panes[i].width = project.paneWidths[project.panes[i].xIndex];
-        }
-
-
-        // Set single row pane height
-        if(project.panes[i].rowSpan == 1) {
-            project.panes[i].height = project.paneHeights[project.panes[i].yIndex];
-        }
-
-        // Calculate colSpan panes
-        var h = 0;
-        if (project.panes[i].colSpan > 1) {
-            //for (var x = project.panes[i].xIndex; x < project.panes[i].colSpan; x++) {
-            for (var x = 0; x < project.panes[i].colSpan; x++) {
-                h += parseInt(project.paneWidths[project.panes[i].xIndex + x]);          // Might need to use parseFloat isntead
-            }
-
-            project.panes[i].width = h;
-        }
-
-        // Calculate rowSpan panes *** untested
-        var w = 0;
-        if (project.panes[i].rowSpan > 1) {
-            //for (var y = project.panes[i].yIndex; y < project.panes[i].rowSpan; y++) {
-            for (var y = 0; y < project.panes[i].rowSpan; y++) {
-                w += parseInt(project.paneHeights[project.panes[i].yIndex + y]);          // Might need to use parseFloat isntead
-            }
-
-            project.panes[i].height = w;
-        }
-    }
 
     
 
 }
 
 
+// 
 function lbProjectUpdatePaneDimensions() {
 
-    // This needs to take the width/height age into account
-    // A functino for getting the active paneWidth/height would be usefull as well
+    var paneId = selector.selectedPane;                         // Selected pane ID
 
-    lbSetSelectedPaneWidth($("#paneWidth").val());
-    lbSetSelectedPaneHeight($("#paneHeight").val());
-    
-    lbUpdatePaneDimensions();
+    project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
+    project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
+
+    $("#paneWidth").val(project.panes[paneId].width);           // Update input boxes to remove garbage values
+    $("#paneHeight").val(project.panes[paneId].height);
 }
 
 

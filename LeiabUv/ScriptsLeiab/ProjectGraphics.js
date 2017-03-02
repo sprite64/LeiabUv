@@ -75,35 +75,6 @@ function lbRenderSelectorFrame() {
 }
 
 
-function lbRenderSelectorFrame2() {
-
-    if (selector == undefined) return;        // Escape if paneSelectData isn't available
-    
-    var ctx = lbGetPaneSelectCanvasContext();
-
-    var rect = lbGetOuterSelectorFrameRect();
-
-    var xOuter = rect.x + 1;
-    var yOuter = rect.y + 1;
-
-    // Render outer rect, frame size and inner rect
-    ctx.fillStyle = "#000";
-    ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-
-    ctx.fillStyle = "#ccc";
-    ctx.fillRect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2);
-
-    rect = lbGetInnerSelectorFrameRect();               // Render inner frame
-
-    ctx.fillStyle = "#333";
-    ctx.fillRect(rect.x + xOuter, rect.y + yOuter, rect.width, rect.height);
-
-    // Render seperate horizontal frame border lines
-    //ctx.fillStyle = "#000";
-    //ctx.
-}
-
-
 function lbRenderSelectorPanes() {
 
     var ctx = lbGetPaneSelectCanvasContext();
