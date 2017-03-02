@@ -12,6 +12,14 @@
 */
 
 
+/*
+    Code to properly set values first. Then implement a system that limits/corrects values
+
+
+
+*/
+
+
 lbRenderSelectorFrame();
 
 
