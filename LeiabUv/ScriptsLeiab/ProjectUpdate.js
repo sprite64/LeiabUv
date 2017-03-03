@@ -135,7 +135,7 @@ function lbProjectUpdate(action) {          // action specifies what action to p
     }
 }
 
-// 
+// Used in Create.cshtml to update input values
 function lbGetSelectedPaneWidth() {
 
     var paneId = selector.selectedPane;
@@ -150,16 +150,44 @@ function lbGetSelectedPaneHeight() {
 }
 
 
-// 
+// Used to calculate total widths/heights
+function lbGetTotalArrayWidth() {
+
+    var t = 0;
+    for (var i = 0; i < project.columns; i++) {
+        t += project.paneWidths[i];
+    }
+
+    return t;
+}
+
+
+// Get delta
+function lbGetTotalPaneWidth() {                    // Gets the "row" currently selected by selector
+
+    var t = lbGetTotalArrayWidth();
+    var id = selector.selectedPane;
+
+    t = t - project.panes[id].width;
+
+    alert("Delta: " + (t - lbGetTotalArrayWidth()));
+
+    return t;
+}
+
+
+// Update width/height arrays by panes width/height
 function lbUpdatePanes() {
 
+    //lbGetTotalPaneWidth();
 
-    
+    alert("Pane: " + lbGetTotalPaneWidth() + " Array: " + lbGetTotalArrayWidth());
+    //alert("Total array width: " + lbGetTotalArrayWidth());
 
 }
 
 
-// 
+// Runs on "Update" button hit
 function lbProjectUpdatePaneDimensions() {
 
     var paneId = selector.selectedPane;                         // Selected pane ID
@@ -169,6 +197,8 @@ function lbProjectUpdatePaneDimensions() {
 
     $("#paneWidth").val(project.panes[paneId].width);           // Update input boxes to remove garbage values
     $("#paneHeight").val(project.panes[paneId].height);
+
+    lbUpdatePanes();
 }
 
 

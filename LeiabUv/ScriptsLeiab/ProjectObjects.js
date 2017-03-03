@@ -69,7 +69,9 @@ function lbProject(data) {
 
     this.panes = new Array(data.panes.length);
     for (var i = 0; i < data.panes.length; i++) {
-        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan, LB_DefaultPaneWidthMM, LB_DefaultPaneHeightMM);
+        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex,
+            data.panes[i].colSpan, data.panes[i].rowSpan,
+            LB_DefaultPaneWidthMM * data.panes[i].colSpan, LB_DefaultPaneHeightMM * data.panes[i].rowSpan);
     }
 
     this.frameWidth = LB_DefaultPaneWidthMM * data.columns;           // Frame dimensions
