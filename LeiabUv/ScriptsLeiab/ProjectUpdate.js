@@ -162,15 +162,16 @@ function lbGetTotalArrayWidth() {
 }
 
 
-// Get delta
-function lbGetTotalPaneWidth() {                    // Gets the "row" currently selected by selector
+// Returns delta between pane width and array width
+function lbGetTotalPaneWidth() {
 
-    var t = lbGetTotalArrayWidth();
     var id = selector.selectedPane;
+    var t = 0.0;
 
-    t = t - project.panes[id].width;
-
-    alert("Delta: " + (t - lbGetTotalArrayWidth()));
+    for (var i = project.panes[id].xIndex; i < project.panes[id].xIndex + project.panes[id].colSpan; i++) {
+        t += parseFloat(project.paneWidths[i]);
+        alert("in " + project.paneWidths[i]);
+    }
 
     return t;
 }
