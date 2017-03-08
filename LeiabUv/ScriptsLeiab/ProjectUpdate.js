@@ -449,6 +449,8 @@ function lbProjectUpdatePaneDimensions() {
 // Update changes made to frame dimensions
 function lbProjectUpdateFrameDimensions() {
 
+    // Correct NaN errors, fall back on previous values
+    
 
     // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var id = lbGetAnyOldestPaneWidthArray();
