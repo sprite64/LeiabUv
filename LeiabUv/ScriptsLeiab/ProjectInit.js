@@ -51,6 +51,7 @@ $(function () {
     $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
 
     $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
+    $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
 
 });
 

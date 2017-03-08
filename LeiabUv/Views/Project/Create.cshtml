@@ -40,9 +40,9 @@
 
 
         <!-- Controls -->
-        <div class="col-md-3" style="min-height: 700px;">
+        <div class="col-md-3" style="min-height: 1200px;">
 
-            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 500px; background-color: #333;">
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 320px; height: 1000px; background-color: #333;">
 
                 <h4 style="color: #ccc">Luft val</h4>
 
@@ -55,10 +55,18 @@
                 <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
                     -->
 
-                <label style="color: #ccc;">Mått</label><br />
+                <label style="color: #ccc;">Luft mått</label><br />
                 <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;"/><label style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
                 <span><label style="color: #ccc; width: 50px;">Höjd: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label style="margin-left: 10px; color: #ccc;"> mm</label></span>
                 <button id="btnPaneDimensionsUpdate" class="btn btn-success">Uppdatera</button>
+
+                <br/>
+
+                <label style="color: #ccc;">Karm mått</label><br/>
+                <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="frameWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" /><label style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
+                <span><label style="color: #ccc; width: 50px;">Höjd: </label><input id="frameHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label style="margin-left: 10px; color: #ccc;"> mm</label></span>
+                <button id="btnFrameDimensionsUpdate" class="btn btn-success">Uppdatera</button>
+
             </div>
         </div>
     </div>
@@ -209,6 +217,9 @@
             
             $("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
             $("#paneHeight").val(lbGetSelectedPaneHeight());
+
+            $("#frameWidth").val(lbGetFrameWidth());
+            $("#frameHeight").val(lbGetFrameHeight());
         });
     });
 

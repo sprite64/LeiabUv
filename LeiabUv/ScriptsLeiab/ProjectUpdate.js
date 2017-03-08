@@ -150,7 +150,30 @@ function lbGetSelectedPaneHeight() {
 }
 
 
+function lbGetFrameWidth() {
+
+    if (project.frameWidth == Number.NaN) {
+        project.frameWidth = 0.0;
+    }
+
+    return project.frameWidth;
+}
+
+function lbGetFrameHeight() {
+
+    if (project.frameHeight == Number.NaN) {
+        project.frameHeight = 0.0;
+    }
+
+    return project.frameHeight;
+}
+
+
+
+// Returns total of width array
 // Used to calculate total widths/heights
+
+// This seems to be totally unused, probably not needed anymore
 function lbGetTotalArrayWidth() {
 
     var t = 0;
@@ -162,7 +185,7 @@ function lbGetTotalArrayWidth() {
 }
 
 
-// Returns delta between pane width and array width
+// Returns pane width by width array
 function lbGetTotalPaneWidth() {
 
     var id = selector.selectedPane;
@@ -170,21 +193,238 @@ function lbGetTotalPaneWidth() {
 
     for (var i = project.panes[id].xIndex; i < project.panes[id].xIndex + project.panes[id].colSpan; i++) {
         t += parseFloat(project.paneWidths[i]);
-        alert("in " + project.paneWidths[i]);
+    }
+
+    return t;
+}
+
+function lbGetTotalPaneHeight() {
+
+    var id = selector.selectedPane;
+    var t = 0.0;
+
+    for (var i = project.panes[id].yIndex; i < project.panes[id].yIndex + project.panes[id].rowSpan; i++) {
+        t += parseFloat(project.paneHeights[i]);
     }
 
     return t;
 }
 
 
+// Returns delta between pane width and width array
+// 
+function lbGetPaneWidthDelta() {
+
+    var id = selector.selectedPane;
+    var t = lbGetTotalPaneWidth();
+
+    return (project.panes[id].width - t);
+}
+
+function lbGetPaneHeightDelta() {
+
+    var id = selector.selectedPane;
+    var t = lbGetTotalPaneHeight();
+
+    return (project.panes[id].height - t);
+}
+
+
+// Get oldest width array index from selected pane
+function lbGetOldestSelectedPaneWidthArray() {
+
+    var id = selector.selectedPane;
+    var oldest = project.paneWidthAgeCounter + 1;
+    var oldId = - 1;
+
+    for (var i = project.panes[id].xIndex; i < project.panes[id].xIndex + project.panes[id].colSpan; i++) {
+        if (project.paneWidthAge[i] < oldest) {
+            oldest = project.paneWidthAge[i];
+            oldId = i;
+        }
+    }
+
+    return oldId;
+}
+
+function lbGetOldestSelectedPaneHeightArray() {
+         
+    var id = selector.selectedPane;
+    var oldest = project.paneHeightAgeCounter + 1;
+    var oldId = -1;
+
+    for (var i = project.panes[id].yIndex; i < project.panes[id].yIndex + project.panes[id].rowSpan; i++) {
+        if (project.paneHeightAge[i] < oldest) {
+            oldest = project.paneHeightAge[i];
+            oldId = i;
+        }
+    }
+
+    return oldId;
+}
+
+
+// Get oldest width array index from unselected panes
+function lbGetOldestUnselectedPaneWidthArray() {
+
+    var id = selector.selectedPane;
+    var oldest = project.paneWidthAgeCounter + 1;
+    var oldId = - 1;
+
+    // Find oldest unselected width array index
+    for (var i = 0; i < project.columns; i++) {
+
+        //if(i < project.panes[id].xIndex || i >= project.panes[id].xIndex + project.panes[id].colSpan) {
+        if(i < project.panes[id].xIndex || i > project.panes[id].xIndex + project.panes[id].colSpan) {
+
+            if(project.paneWidthAge[i] < oldest) {
+                oldest = project.paneWidthAge[i];
+                oldId = i;
+            }
+        }
+    }
+
+    return oldId;
+}
+
+function lbGetOldestUnselectedPaneHeightArray() {
+
+    var id = selector.selectedPane;
+    var oldest = project.paneHeightAgeCounter + 1;
+    var oldId = - 1;
+
+    // 
+    for(var i = 0; i < project.rows; i ++) {
+
+        if(i < project.panes[id].yIndex || i > project.panes[id].yIndex + project.panes[id].rowSpan) {
+
+            if(project.paneHeightAge[i] < oldest) {
+                oldest = project.paneHeightAge[i];
+                oldId = i;
+            }
+        }
+    }
+
+    return oldId;
+}
+
+
+// Gets index of any oldest array width, // any as in selected or unselected
+function lbGetAnyOldestPaneWidthArray() {
+
+    //var id = -1;
+    var oldest = project.paneWidthAgeCounter + 1;
+    var oldId = -1;
+
+    for (var i = 0; i < project.columns; i++) {
+
+        if (project.paneWidthAge[i] < oldest) {
+            oldest = project.paneWidthAge[i];
+            oldId = i;
+        }
+    }
+
+    return oldId;
+}
+
+function lbGetAnyOldestPaneHeightArray() {
+
+    var oldest = project.paneHeightAgeCounter + 1;
+    var oldId = -1;
+
+    for (var i = 0; i < project.rows; i++) {
+
+        if (project.paneHeightAge[i] < oldest) {
+            oldest = project.paneHeightAge[i];
+            oldId = i;
+        }
+    }
+
+    return oldId;
+}
+
+
+// Updates pane width from recent changes in width array
+// This runs last
+function lbUpdatePaneWidthFromWidthArray() {
+
+    var id = selector.selectedPane;
+    var total = 0.0;
+
+    for (var i = 0; i < project.nrOfPanes; i++) {
+
+        for (var x = project.panes[i].xIndex; x < project.panes[i].xIndex + project.panes[i].colSpan; x ++) {
+            total += project.paneWidths[x];
+        }
+
+        project.panes[i].width = total;
+        total = 0.0;
+    }
+}
+
+
+function lbUpdatePaneHeightFromHeightArray() {
+
+    var id = selector.selectedPane;
+    var total = 0.0;
+
+    for (var i = 0; i < project.nrOfPanes; i++) {
+
+        for (var y = project.panes[i].yIndex; y < project.panes[i].yIndex + project.panes[i].rowSpan; y++) {
+            total += project.paneHeights[y];
+        }
+
+        project.panes[i].height = total;
+        total = 0.0;
+    }
+}
+
+
 // Update width/height arrays by panes width/height
 function lbUpdatePanes() {
 
-    //lbGetTotalPaneWidth();
+    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
-    alert("Pane: " + lbGetTotalPaneWidth() + " Array: " + lbGetTotalArrayWidth());
-    //alert("Total array width: " + lbGetTotalArrayWidth());
+    // Update selected pane width
+    var d = lbGetPaneWidthDelta();
+    var oldId = lbGetOldestSelectedPaneWidthArray();
 
+    //alert("Oldest pane: " + lbGetOldestSelectedPaneWidthArray());
+
+    project.paneWidths[oldId] += d;
+    project.paneWidthAge[oldId] = project.paneWidthAgeCounter;      // Update widths age
+    project.paneWidthAgeCounter++;
+
+    // Update unselected pane width
+    oldId = lbGetOldestUnselectedPaneWidthArray();
+
+    project.paneWidths[oldId] -= d;
+    project.paneWidthAge[oldId] = project.paneWidthAgeCounter;
+    project.paneWidthAgeCounter++;
+
+    //alert("Oldest unselected: " + lbGetOldestUnselectedPaneWidthArray());
+
+    // Update pane widths from width array
+    lbUpdatePaneWidthFromWidthArray();
+
+    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+    // Update selected pane height
+    d = lbGetPaneHeightDelta();
+    oldId = lbGetOldestSelectedPaneHeightArray();
+
+    project.paneHeights[oldId] += d;
+    project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
+    project.paneHeightAgeCounter++;
+
+    // Update unselected pane height
+    oldId = lbGetOldestUnselectedPaneHeightArray();
+
+    project.paneHeights[oldId] -= d;
+    project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
+    project.paneHeightAgeCounter++;
+
+    lbUpdatePaneHeightFromHeightArray()
 }
 
 
@@ -200,6 +440,39 @@ function lbProjectUpdatePaneDimensions() {
     $("#paneHeight").val(project.panes[paneId].height);
 
     lbUpdatePanes();
+}
+
+
+// Function below and function above need to correct a NaN input error, if Nan then make it zero
+// *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+// Update changes made to frame dimensions
+function lbProjectUpdateFrameDimensions() {
+
+
+    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var id = lbGetAnyOldestPaneWidthArray();
+    var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
+    
+    project.paneWidths[id] += delta;
+    project.frameWidth += delta;
+
+    project.paneWidthAge[id] = project.paneWidthAgeCounter;
+    project.paneWidthAgeCounter++;
+
+    lbUpdatePaneWidthFromWidthArray();
+
+    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    id = lbGetAnyOldestPaneHeightArray();
+    delta = parseFloat($("#frameHeight").val().replace(",", ".")) - project.frameHeight;
+
+    project.paneHeights[id] += delta;
+    project.frameHeight += delta;
+
+    project.paneHeightAge[id] = project.paneHeightAgeCounter;
+    project.paneHeightAgeCounter++;
+
+    lbUpdatePaneHeightFromHeightArray();
 }
 
 
