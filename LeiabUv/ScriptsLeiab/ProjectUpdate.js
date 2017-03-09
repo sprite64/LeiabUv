@@ -449,7 +449,7 @@ function lbProjectUpdatePaneDimensions() {
 // Update changes made to frame dimensions
 function lbProjectUpdateFrameDimensions() {
 
-    // Correct NaN errors, fall back on previous values
+    // Correct NaN errors, fall back on previous values or return; and show 
     
 
     // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
