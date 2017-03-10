@@ -53,6 +53,9 @@ $(function () {
     $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
     $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
 
+    // Input change events
+    $("#paneWidth").change(function () { lbProjectInputChange(); });
+
 });
 
 setInterval(function () { lbProjectUpdateAndRender(""); }, 300);

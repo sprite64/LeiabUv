@@ -54,47 +54,7 @@ namespace LeiabUv.Models
         public Project Project { get; set; }
     }
 
-
-    public class Profile
-    {
-        [MinLength(1), MaxLength(256), Required]
-        public string Name { get; set; }
-        public double Tftf { get; set; }
-        public double Ufuf { get; set; }
-        public double Yfyf { get; set; }
-        public double Tptp { get; set; }
-        public double Upup { get; set; }
-        public double Ypyp { get; set; }
-        public double Ugug { get; set; }
-        [MinLength(1), MaxLength(256)]
-        public string Glass { get; set; }
-        public double dim1230x1480 { get; set; }        // Window dimensions
-        public double dim985x2085 { get; set; }         // Door dimensions
-        [MaxLength(256)]
-        public string info { get; set; }                // Additional information
-        public int nrOfUsedInProjects { get; set; }     // 
-    }
-
-    /*
-    public class ProjectProfile
-    {
-        [MinLength(1), MaxLength(256), Required]
-        public string Name { get; set; }
-        [Required]
-        public int Tf { get; set; }
-        [Required]
-        public double Uf { get; set; }
-        [Required]
-        public double Yf { get; set; }
-        [Required]
-        public double Ug { get; set; }
-        [MinLength(1), MaxLength(320), Required]
-        public string Glass { get; set; }
-        [ForeignKey("ProjectId")]
-        public Project Project { get; set; }
-    }*/
     
-
     public class Project : UserEntryLog
     {
         public int Id { get; set; }

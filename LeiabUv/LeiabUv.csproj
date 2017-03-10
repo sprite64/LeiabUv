@@ -154,6 +154,7 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="ScriptsLeiab\GenericObjects.js" />
+    <Content Include="ScriptsLeiab\ProfileInit.js" />
     <Content Include="ScriptsLeiab\ProjectConstants.js" />
     <Content Include="ScriptsLeiab\ProjectGraphics.js" />
     <Content Include="ScriptsLeiab\ProjectInit.js" />
@@ -203,7 +204,8 @@
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Show.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
-    <Content Include="Views\Profile\Manage.cshtml" />
+    <Content Include="Views\Profile\Show.cshtml" />
+    <Content Include="Views\Profile\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

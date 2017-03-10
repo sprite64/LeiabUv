@@ -484,3 +484,21 @@ function lbProjectUpdateAndRender(action) {
     lbProjectRender();
 }
 
+
+function lbProjectInputChange() {
+
+    //alert("Chagne!");
+
+    // Check pane dimensions
+    /*
+    var x = parseFloat($("#paneWidth").val().replace(",", "."));
+    if (x < 0.0 && x == Number.NaN) {
+        alert("PaneWidth is error (" + x + ")");
+    }
+    */
+
+    //var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
+
+    
+
+}
