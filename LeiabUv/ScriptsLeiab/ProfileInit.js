@@ -17,6 +17,6 @@ $(function () {
 
 
     $("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
-    $("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
+    //$("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
 });
 
