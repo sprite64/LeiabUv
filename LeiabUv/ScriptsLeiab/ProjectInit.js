@@ -54,6 +54,7 @@ $(function () {
     $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
 
     // Input change events
+    // Not in use, probably wont be either
     $("#paneWidth").change(function () { lbProjectInputChange(); });
 
 });

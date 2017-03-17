@@ -385,6 +385,11 @@ function lbUpdatePanes() {
 
     // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
+    // Update frame if selected pane is the same size as frame sizes
+    //project.frameWidth;
+    //project.selectedPaneWidth/Colspans
+
+
     // Update selected pane width
     var d = lbGetPaneWidthDelta();
     var oldId = lbGetOldestSelectedPaneWidthArray();
@@ -433,6 +438,25 @@ function lbProjectUpdatePaneDimensions() {
 
     var paneId = selector.selectedPane;                         // Selected pane ID
 
+    // Check for NaN
+    var nanError = false;
+
+    if (isNaN(parseFloat($("#paneWidth").val().replace(",", ".")))) {
+        alert("Felaktigt bredd värde");
+        $("#paneWidth").val(project.panes[paneId].width);
+        nanError = true;
+    }
+
+    if (isNaN(parseFloat($("#paneHeight").val().replace(",", ".")))) {
+        alert("Felaktigt höjd värde");
+        $("#paneHeight").val(project.panes[paneId].width);
+        nanError = true;
+    }
+
+    if (nanError) {
+        return;
+    }
+
     project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
     project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
 
@@ -451,6 +475,25 @@ function lbProjectUpdateFrameDimensions() {
 
     // Correct NaN errors, fall back on previous values or return; and show 
     
+    // Check for NaN
+    var nanError = false;
+
+    if (isNaN(parseFloat($("#frameWidth").val().replace(",", ".")))) {
+        alert("Felaktigt bredd värde");
+        $("#frameWidth").val(project.frameWidth);
+        nanError = true;
+    }
+
+    if (isNaN(parseFloat($("#frameHeight").val().replace(",", ".")))) {
+        alert("Felaktigt höjd värde");
+        $("#frameHeight").val(project.frameHeight);
+        nanError = true;
+    }
+
+    if (nanError) {
+        return;
+    }
+
 
     // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var id = lbGetAnyOldestPaneWidthArray();
