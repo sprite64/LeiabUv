@@ -538,9 +538,50 @@ function lbProjectUpdateFrameDimensions() {
 }
 
 
+
+function lbUpdateInputButtons() {
+
+    var id = selector.selectedPane;
+
+    // Pane button update
+    var w = parseFloat($("#paneWidth").val().replace(",", "."));
+    var h = parseFloat($("#paneHeight").val().replace(",", "."));
+    
+    // jquery functions
+    // .removeClass()
+    // .addClass()
+
+    // Default to gray
+    $("#paneWidth")
+
+    // Update
+    if(project.panes[id].width != w) {
+        // Change to green
+    }
+
+    // Error
+    if(!isNaN(w) || w < 0.0) {
+        // Change to red
+    }
+
+    
+
+
+
+    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
+    
+
+}
+
+
 function lbProjectUpdateAndRender(action) {
 
+    
     lbProjectUpdate(action);
     lbProjectRender();
+
+    // If a dimension value has been entered but not updated the update button changes to green appearance
+    // and if there is nothing to udpate the button is gray
+    lbUpdateInputButtons()
 }
 
