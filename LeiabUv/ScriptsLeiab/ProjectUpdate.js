@@ -152,8 +152,9 @@ function lbGetSelectedPaneHeight() {
 
 function lbGetFrameWidth() {
 
-    if (project.frameWidth == Number.NaN) {
+    if (isNaN(project.frameWidth)) {                // This NaN check is probably not necessary, it's all  handled by the update input functions
         project.frameWidth = 0.0;
+        alert("NaN error!");
     }
 
     return project.frameWidth;
@@ -161,27 +162,12 @@ function lbGetFrameWidth() {
 
 function lbGetFrameHeight() {
 
-    if (project.frameHeight == Number.NaN) {
+    if (isNaN(project.frameHeight)) {               // This NaN check is probably not necessary, it's all  handled by the update input functions
         project.frameHeight = 0.0;
+        alert("NaN error!");
     }
 
     return project.frameHeight;
-}
-
-
-
-// Returns total of width array
-// Used to calculate total widths/heights
-
-// This seems to be totally unused, probably not needed anymore
-function lbGetTotalArrayWidth() {
-
-    var t = 0;
-    for (var i = 0; i < project.columns; i++) {
-        t += project.paneWidths[i];
-    }
-
-    return t;
 }
 
 
@@ -275,7 +261,7 @@ function lbGetOldestUnselectedPaneWidthArray() {
     for (var i = 0; i < project.columns; i++) {
 
         //if(i < project.panes[id].xIndex || i >= project.panes[id].xIndex + project.panes[id].colSpan) {
-        if(i < project.panes[id].xIndex || i > project.panes[id].xIndex + project.panes[id].colSpan) {
+        if(i < project.panes[id].xIndex || i >= project.panes[id].xIndex + project.panes[id].colSpan) {
 
             if(project.paneWidthAge[i] < oldest) {
                 oldest = project.paneWidthAge[i];
@@ -296,7 +282,7 @@ function lbGetOldestUnselectedPaneHeightArray() {
     // 
     for(var i = 0; i < project.rows; i ++) {
 
-        if(i < project.panes[id].yIndex || i > project.panes[id].yIndex + project.panes[id].rowSpan) {
+        if(i < project.panes[id].yIndex || i >= project.panes[id].yIndex + project.panes[id].rowSpan) {
 
             if(project.paneHeightAge[i] < oldest) {
                 oldest = project.paneHeightAge[i];
@@ -438,25 +424,54 @@ function lbProjectUpdatePaneDimensions() {
 
     var paneId = selector.selectedPane;                         // Selected pane ID
 
-    // Check for NaN
+    // Check for NaN and negative input values and revert original value
     var nanError = false;
 
-    if (isNaN(parseFloat($("#paneWidth").val().replace(",", ".")))) {
+    if (isNaN(parseFloat($("#paneWidth").val().replace(",", "."))) || parseFloat($("#paneWidth").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt bredd värde");
         $("#paneWidth").val(project.panes[paneId].width);
         nanError = true;
     }
 
-    if (isNaN(parseFloat($("#paneHeight").val().replace(",", ".")))) {
+    if (isNaN(parseFloat($("#paneHeight").val().replace(",", "."))) || parseFloat($("#paneHeight").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt höjd värde");
-        $("#paneHeight").val(project.panes[paneId].width);
+        $("#paneHeight").val(project.panes[paneId].height);
         nanError = true;
     }
 
     if (nanError) {
+        //alert("NaN error!");
         return;
     }
+    
 
+    // Correct frame dimensions conditionaly else do nothing
+    if (project.panes[paneId].colSpan == project.columns) {
+
+        if (project.frameWidth != project.panes[paneId].width) {
+            if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (WIDTH)") == true) {
+                project.frameWidth = parseFloat($("#paneWidth").val().replace(",", "."));//project.panes[paneId].width;
+            } else {
+                $("#paneWidth").val(project.panes[paneId].width);
+                return;
+            }
+        }
+    }
+
+    if (project.panes[paneId].rowSpan == project.rows) {
+
+        if (project.frameHeight != project.panes[paneId].height) {
+            if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (HEIGHT)") == true) {
+                project.frameHeight = parseFloat($("#paneHeight").val().replace(",", "."));//project.panes[paneId].width;
+            } else {
+                $("#paneHeight").val(project.panes[paneId].height);
+                return;
+            }
+        }
+    }
+
+
+    // Update pane dimensions
     project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
     project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
 
@@ -476,15 +491,17 @@ function lbProjectUpdateFrameDimensions() {
     // Correct NaN errors, fall back on previous values or return; and show 
     
     // Check for NaN
+
+    // Check for NaN and negative input values and revert original value
     var nanError = false;
 
-    if (isNaN(parseFloat($("#frameWidth").val().replace(",", ".")))) {
+    if (isNaN(parseFloat($("#frameWidth").val().replace(",", "."))) || parseFloat($("#frameWidth").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt bredd värde");
         $("#frameWidth").val(project.frameWidth);
         nanError = true;
     }
 
-    if (isNaN(parseFloat($("#frameHeight").val().replace(",", ".")))) {
+    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt höjd värde");
         $("#frameHeight").val(project.frameHeight);
         nanError = true;
@@ -527,21 +544,3 @@ function lbProjectUpdateAndRender(action) {
     lbProjectRender();
 }
 
-
-function lbProjectInputChange() {
-
-    //alert("Chagne!");
-
-    // Check pane dimensions
-    /*
-    var x = parseFloat($("#paneWidth").val().replace(",", "."));
-    if (x < 0.0 && x == Number.NaN) {
-        alert("PaneWidth is error (" + x + ")");
-    }
-    */
-
-    //var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
-
-    
-
-}

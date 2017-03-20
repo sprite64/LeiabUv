@@ -55,7 +55,7 @@ $(function () {
 
     // Input change events
     // Not in use, probably wont be either
-    $("#paneWidth").change(function () { lbProjectInputChange(); });
+    //$("#paneWidth").change(function () { lbProjectInputChange(); });
 
 });
 

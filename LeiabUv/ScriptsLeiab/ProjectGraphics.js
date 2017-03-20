@@ -122,6 +122,7 @@ function lbRenderSelectorDebug() {
     }
 
     // Render width/height ages
+    /*
     ctx.textAlign = "left";
     //ctx.fillText("Ålder", 15, 40);
     for (var x = 0; x < project.columns; x++) {
@@ -133,7 +134,7 @@ function lbRenderSelectorDebug() {
         ctx.fillText(project.paneHeightAge[y], 5, y * selector.paneSize + selector.paneSize * 0.5 + 60);
         ctx.fillText(project.paneHeights[y], 5, y * selector.paneSize + selector.paneSize * 0.5 + 70);
     }
-
+    */
 }
 
 /*
