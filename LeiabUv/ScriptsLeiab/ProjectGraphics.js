@@ -108,8 +108,8 @@ function lbRenderSelectorDebug() {
     ctx.fillStyle = "#333";
     
     // Render frame dimensions
-    ctx.textAlign = "left";
-    ctx.fillText("Karm: " + project.frameWidth + "x" + project.frameHeight + " mm", 15, 20);
+    //ctx.textAlign = "left";
+    //ctx.fillText("Karm: " + project.frameWidth + "x" + project.frameHeight + " mm", 15, 20);
 
     // Render pane dimensions
     ctx.textAlign = "center";

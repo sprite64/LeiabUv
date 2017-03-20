@@ -541,36 +541,48 @@ function lbProjectUpdateFrameDimensions() {
 
 function lbUpdateInputButtons() {
 
+
+    if (selector == undefined) return;
+
     var id = selector.selectedPane;
+    //var paneId = selector.selectedPane;                         // Selected pane ID
 
     // Pane button update
     var w = parseFloat($("#paneWidth").val().replace(",", "."));
     var h = parseFloat($("#paneHeight").val().replace(",", "."));
     
-    // jquery functions
-    // .removeClass()
-    // .addClass()
-
     // Default to gray
-    $("#paneWidth")
+    var toGray = true;
 
     // Update
-    if(project.panes[id].width != w) {
+    if(project.panes[id].width != w || project.panes[id].height != h) {
         // Change to green
+        $("#btnPaneDimensionsUpdate").removeClass("btn-danger");
+        $("#btnPaneDimensionsUpdate").removeClass("btn-default");
+        $("#btnPaneDimensionsUpdate").addClass("btn-success");
+        toGray = false;
     }
 
     // Error
-    if(!isNaN(w) || w < 0.0) {
+    if(isNaN(w) || w < 0.0 || isNaN(h) || h < 0.0) {
         // Change to red
+        $("#btnPaneDimensionsUpdate").removeClass("btn-success");
+        $("#btnPaneDimensionsUpdate").removeClass("btn-default");
+        $("#btnPaneDimensionsUpdate").addClass("btn-danger");
+        toGray = false;
     }
 
-    
+    if(toGray) {
+        $("#btnPaneDimensionsUpdate").removeClass("btn-success");
+        $("#btnPaneDimensionsUpdate").removeClass("btn-danger");
+        $("#btnPaneDimensionsUpdate").addClass("btn-default");
+    }
 
 
 
-    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
-    
+    //if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
 
+    //}
 }
 
 
@@ -582,6 +594,11 @@ function lbProjectUpdateAndRender(action) {
 
     // If a dimension value has been entered but not updated the update button changes to green appearance
     // and if there is nothing to udpate the button is gray
-    lbUpdateInputButtons()
+    lbUpdateInputButtons();
+
+    // There should also be a limit to how many decimal points are allowed, two but three at the most
+
+    // Apart from that, it would be really nice to have a max/min input value to avoid negative pane dimension calculations, because they do happen
+    // and add a minimum size for panes, perhaps 300mm or so.
 }
 
