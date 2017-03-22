@@ -31,7 +31,35 @@ namespace LeiabUv.Controllers
             return View();
         }
 
-       [HttpGet]
+        [HttpPost]
+        public ActionResult Create(Profile p)
+        {
+            Context ctx = new Context();
+
+            p.CreatedBy = "Admin";
+            p.Created = System.DateTime.Now;
+
+            p.ModifiedBy = "Admin";
+            p.Modified = System.DateTime.Now;
+
+            if (ModelState.IsValid) {
+                ctx.Profiles.Add(p);
+                ctx.SaveChanges();
+            }
+
+
+            return View();
+        }
+
+
+        public ActionResult Show()
+        {
+            return View();
+        }
+
+
+        // Not currently in use
+        [HttpGet]
         public JsonResult Save(string json)
         {
             Context ctx = new Context();
@@ -48,9 +76,6 @@ namespace LeiabUv.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Show()
-        {
-            return View();
-        }
     }
 }
+

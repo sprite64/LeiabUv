@@ -16,11 +16,16 @@ namespace LeiabUv.Models
         [Required]
         public int rowSpan { get; set; }
 
+        public Profile profile { get; set; }
+        public double Ug { get; set; }                      // Customizable Ug value that overrides the profile Ug value
+
+        /*
         public Profile windowProfile { get; set; }          // Profile for windows
         public Profile doorProfileTop { get; set; }         // Profiles for doors
         public Profile doorProfileBottom { get; set; }
         public Profile doorProfileLeft { get; set; }
         public Profile doorProfileRight { get; set; }
+        */
 
         public int ProjectId { get; set; }
         [ForeignKey("ProjectId")]

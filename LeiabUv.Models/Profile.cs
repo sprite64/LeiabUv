@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LeiabUv.Models
 {
-    public class Profile
+    public class Profile : UserEntryLog
     {
         public int Id { get; set; }
 
         [MinLength(1), MaxLength(256), Required]
         public string Name { get; set; }                // Key 
 
+        [Range(0,200)]
         public double Tf { get; set; }                  // Frame values
         public double Uf { get; set; }
         public double Yf { get; set; }

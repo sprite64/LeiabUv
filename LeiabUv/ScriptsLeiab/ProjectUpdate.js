@@ -447,8 +447,8 @@ function lbProjectUpdatePaneDimensions() {
 
     // Correct frame dimensions conditionaly else do nothing
     if (project.panes[paneId].colSpan == project.columns) {
+        if(project.frameWidth != parseFloat($("#paneWidth").val().replace(",", "."))) {
 
-        if (project.frameWidth != project.panes[paneId].width) {
             if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (WIDTH)") == true) {
                 project.frameWidth = parseFloat($("#paneWidth").val().replace(",", "."));//project.panes[paneId].width;
             } else {
@@ -459,8 +459,7 @@ function lbProjectUpdatePaneDimensions() {
     }
 
     if (project.panes[paneId].rowSpan == project.rows) {
-
-        if (project.frameHeight != project.panes[paneId].height) {
+        if(project.frameHeight != parseFloat($("#paneHeight").val().replace(",", "."))) {
             if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (HEIGHT)") == true) {
                 project.frameHeight = parseFloat($("#paneHeight").val().replace(",", "."));//project.panes[paneId].width;
             } else {
@@ -469,6 +468,10 @@ function lbProjectUpdatePaneDimensions() {
             }
         }
     }
+
+    // Update frame input if any changes were made above
+    $("#frameWidth").val(project.frameWidth);
+    $("#frameHeight").val(project.frameHeight);
 
 
     // Update pane dimensions
@@ -547,7 +550,7 @@ function lbUpdateInputButtons() {
     var id = selector.selectedPane;
     //var paneId = selector.selectedPane;                         // Selected pane ID
 
-    // Pane button update
+    // Pane button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var w = parseFloat($("#paneWidth").val().replace(",", "."));
     var h = parseFloat($("#paneHeight").val().replace(",", "."));
     
@@ -576,6 +579,39 @@ function lbUpdateInputButtons() {
         $("#btnPaneDimensionsUpdate").removeClass("btn-success");
         $("#btnPaneDimensionsUpdate").removeClass("btn-danger");
         $("#btnPaneDimensionsUpdate").addClass("btn-default");
+    }
+
+    // Frame button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var w = parseFloat($("#frameWidth").val().replace(",", "."));
+    var h = parseFloat($("#frameHeight").val().replace(",", "."));
+
+    // Default to gray
+    toGray = true;
+
+    // Update
+    //if (project.panes[id].width != w || project.panes[id].height != h) {
+    if(project.frameWidth != w || project.frameHeight != h) {
+        // Change to green
+        $("#btnFrameDimensionsUpdate").removeClass("btn-danger");
+        $("#btnFrameDimensionsUpdate").removeClass("btn-default");
+        $("#btnFrameDimensionsUpdate").addClass("btn-success");
+        toGray = false;
+    }
+
+    // Error
+    if (isNaN(w) || w < 0.0 || isNaN(h) || h < 0.0) {
+        // Change to red
+        $("#btnFrameDimensionsUpdate").removeClass("btn-success");
+        $("#btnFrameDimensionsUpdate").removeClass("btn-default");
+        $("#btnFrameDimensionsUpdate").addClass("btn-danger");
+        toGray = false;
+    }
+
+    if (toGray) {
+        // Change to default
+        $("#btnFrameDimensionsUpdate").removeClass("btn-success");
+        $("#btnFrameDimensionsUpdate").removeClass("btn-danger");
+        $("#btnFrameDimensionsUpdate").addClass("btn-default");
     }
 
 
