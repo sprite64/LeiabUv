@@ -26,6 +26,63 @@ namespace LeiabUv.Controllers
             return View();
         }
 
+        // Create window profile
+        public ActionResult CreateWindow()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateWindow(Profile p)
+        {
+            Context ctx = new Context();
+            
+            p.door = false;
+
+            p.CreatedBy = "Admin";
+            p.Created = System.DateTime.Now;
+
+            p.ModifiedBy = "Admin";
+            p.Modified = System.DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                ctx.Profiles.Add(p);
+                ctx.SaveChanges();
+            }
+
+            return View();
+        }
+
+
+        public ActionResult CreateDoor()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateDoor(Profile p)
+        {
+            Context ctx = new Context();
+
+            p.door = true;
+            
+            p.CreatedBy = "Admin";
+            p.Created = System.DateTime.Now;
+
+            p.ModifiedBy = "Admin";
+            p.Modified = System.DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                ctx.Profiles.Add(p);
+                ctx.SaveChanges();
+            }
+
+            return View();
+        }
+
+        /*
         public ActionResult Create()
         {
             return View();
@@ -50,13 +107,19 @@ namespace LeiabUv.Controllers
 
             return View();
         }
-
+        */
 
         public ActionResult Show()
         {
-            return View();
-        }
+            Context ctx = new Context();
 
+            var model = ctx.Profiles.ToList().OrderBy(m => m.door);
+
+            //model.OrderBy(m => m.door)
+
+            return View(model);
+        }
+        
 
         // Not currently in use
         [HttpGet]

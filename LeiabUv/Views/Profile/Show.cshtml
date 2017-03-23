@@ -1,41 +1,124 @@
-﻿
+﻿@model IEnumerable<LeiabUv.Models.Profile>
+
 @{
-    ViewBag.Title = "Manage";
+    ViewBag.Title = "Show";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Manage</h2>
+<h2>Show</h2>
 
-<table>
-    <thead>
-        <tr>
-            <th style="width: 60px;">Profil</th>
-            <th style="width: 50px;">Tf</th>
-            <th style="width: 50px;">Uf</th>
-            <th style="width: 50px;">&#x3A8;f</th>
-            <th style="width: 50px;">Tp</th>
-            <th style="width: 50px;">Up</th>
-            <th style="width: 50px;">&#x3A8;p</th>
-            <th style="width: 50px;">Ug</th>
-            <th style="width: 120px;">Glas</th>
-            <th style="width: 80px;">1230x1480</th>
-            <th style="width: 80px;">985x2085</th>
-            <th style="width: 120px;">Notis</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>LFI1003</td>
-            <td>74</td>
-            <td>1,951</td>
-            <td>0,068</td>
-            <td>47,5</td>
-            <td>1,969</td>
-            <td>0,061</td>
-            <td>0,875</td>
-            <td>4-16-4-16-4E</td>
-            <td>1,283</td>
-        </tr>
-    </tbody>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tf)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uf)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Yf)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Up)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Yp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tr)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ug)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Glass)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.door)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.info)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Created)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Modified)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Uf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Yf)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Up)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Yp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ug)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Glass)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.door)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.info)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModifiedBy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Modified)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
 </table>
-

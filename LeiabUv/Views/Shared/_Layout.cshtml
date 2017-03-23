@@ -22,14 +22,40 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <!--<li>Html.ActionLink("About", "About", "Home")</li>
-                    <li>Html.ActionLink("Contact", "Contact", "Home")</li>-->
-                    <li>@Html.ActionLink("Skapa Projekt", "Create", "Project")</li>
-                    <li>@Html.ActionLink("Visa Projekt", "Show", "Project")</li>
-                    <li>@Html.ActionLink("Skapa profil", "Create", "Profile")</li>
-                    <li>@Html.ActionLink("Visa profiler", "Show", "Profile")</li>
-                    <li>@Html.ActionLink("Skapa Modell", "Create", "Template")</li>
-                    <li>@Html.ActionLink("Visa Modeller", "Show", "Template")</li>
+
+                    <!-- Project menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Projekt
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Skapa projekt", "Create", "Project")</li>
+                            <li>@Html.ActionLink("Visa projekt", "Show", "Project")</li>
+                        </ul>
+                    </li>
+
+                    <!-- Profile menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Profil
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Skapa fönsterprofil", "CreateWindow", "Profile")</li>
+                            <li>@Html.ActionLink("Skapa dörrprofil", "CreateDoor", "Profile")</li>
+                            <li>@Html.ActionLink("Visa profiler", "Show", "Profile")</li>
+                        </ul>
+                    </li>
+
+                    <!-- Template menu -->
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Modell
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Skapa modell", "Create", "Template")</li>
+                            <li>@Html.ActionLink("Visa modeller", "Show", "Template")</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
