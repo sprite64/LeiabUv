@@ -116,7 +116,8 @@ function lbRenderSelectorDebug() {
     for (var i = 0; i < selector.nrOfPanes; i++) {
 
         rect = lbGetSelectorPaneRect(i);
-
+        /// .toFixed(3)
+        // parseFloat(Math.round(num3 * 1000) / 1000).toFixed(3);
         ctx.fillText(project.panes[i].width + " x", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
         ctx.fillText(project.panes[i].height + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
     }
