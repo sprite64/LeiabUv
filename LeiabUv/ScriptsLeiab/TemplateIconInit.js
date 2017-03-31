@@ -16,7 +16,9 @@
 $(function () {
 
     /* Button events and control */
-    $("#btnCreateProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
+    $("#btnCreateWindowProject").click(function () { window.location.replace("/Project/CreateWindow/" + selectedTemplateId); });
+    //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
+    $("#btnCreateDoorProject").click(function () { window.location.replace("/Project/CreateDoor/" + selectedTemplateId); });
 
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
     $("#btnDeleteTemplate").click(function () {

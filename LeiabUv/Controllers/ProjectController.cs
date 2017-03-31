@@ -26,7 +26,7 @@ namespace LeiabUv.Controllers
         }
         
 
-        public ActionResult Create(int? id)
+        public ActionResult CreateWindow(int? id)
         {
             if(id == null)
             {
@@ -35,7 +35,7 @@ namespace LeiabUv.Controllers
             
             ViewBag.TemplateId = id;
             
-            return View("Create");                              // View that implements the Project editor
+            return View("CreateWindow");                              // View that implements the Project editor
         }
 
         public ActionResult Edit(int projectId)

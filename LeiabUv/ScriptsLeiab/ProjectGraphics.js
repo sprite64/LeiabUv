@@ -105,21 +105,69 @@ function lbRenderSelectorDebug() {
     var rect = new lbCreateRect(0, 0, 0, 0);
 
     ctx.font = "12px Arial";
+    ctx.textBaseline = "top"
+
     ctx.fillStyle = "#333";
     
     // Render frame dimensions
     ctx.textAlign = "left";
-    ctx.fillText("Karm: " + project.frameWidth + "x" + project.frameHeight + " mm", 15, 10);
+    ctx.fillText("Karm: " + Math.round((project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
+        Math.round((project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 300);
+
+    ctx.textAlign = "right";
+    ctx.fillText("(mm)", 285, 300);
 
     // Render pane dimensions
-    ctx.textAlign = "center";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "top"
+
+    var x = 0.0;
+    var y = 0.0;
+
+    var wText = "0.0";
+    var hText = "0.0";
+
+    var postSize = selector.postSize;
+
     for (var i = 0; i < selector.nrOfPanes; i++) {
 
+        // Get pane dimensions
         rect = lbGetSelectorPaneRect(i);
-        /// .toFixed(3)
-        // parseFloat(Math.round(num3 * 1000) / 1000).toFixed(3);
-        ctx.fillText(project.panes[i].width + " x", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5);
-        ctx.fillText(project.panes[i].height + " mm", rect.x + rect.width * 0.5, rect.y + rect.height * 0.5 + 16);
+
+        // Format dimensions
+        wText = Math.round((project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
+        hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+
+        // Calc X
+        if ((selector.panes[i].xIndex + selector.panes[i].colSpan - 1) == (selector.columns - 1)) {
+            x = rect.x + rect.width - 3;
+        } else {
+            x = rect.x + rect.width - postSize - 3;
+        }
+
+        // Calc Y
+        if (selector.panes[i].yIndex > 0) {
+            y = rect.y + postSize + 2;
+        } else {
+            y = rect.y + 2;
+        }
+
+        // Render text background
+        var tw = 2;
+        if (wText.length >= hText.length) {
+            tw = ctx.measureText(wText).width;
+        } else {
+            tw = ctx.measureText(hText).width;
+        }
+        
+        ctx.fillStyle = "#ddd";
+        ctx.fillRect(x - tw + 3 - 7, y - 2, tw + 7, 32);
+        //ctx.fillRect(x - tw + 3, y - 2, tw, 32);
+
+        // Render text
+        ctx.fillStyle = "#333";
+        ctx.fillText(wText + "", x, y);
+        ctx.fillText(hText + "", x, y + 16);
     }
 
     // Render width/height ages
@@ -237,4 +285,5 @@ function lbProjectRender() {
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, 534, 534);
 }
+
 

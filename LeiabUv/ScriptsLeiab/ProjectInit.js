@@ -17,6 +17,12 @@
 $(function () {
 
 
+    // Update selection canvas html dimensions
+    // This didn't work, but it's fine
+    //$("#PaneSelectCanvas").width(LB_PaneSelectCanvasWidth);
+    //$("#PaneSelectCanvas").height(LB_PaneSelectCanvasHeight);
+
+
     // Mouse button down event
     function handleMouseDown(e) {
         // Do nothing

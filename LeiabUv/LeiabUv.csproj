@@ -203,7 +203,7 @@
     <Content Include="Views\Project\CreateSelectTemplate.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Show.cshtml" />
-    <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\Project\CreateWindow.cshtml" />
     <Content Include="Views\Profile\Show2.cshtml" />
     <Content Include="Views\Profile\Create.cshtml" />
     <Content Include="Views\Profile\CreateWindow.cshtml" />
