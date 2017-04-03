@@ -203,12 +203,14 @@
     <Content Include="Views\Project\CreateSelectTemplate.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Show.cshtml" />
-    <Content Include="Views\Project\CreateWindow.cshtml" />
+    <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Profile\Show2.cshtml" />
     <Content Include="Views\Profile\Create.cshtml" />
     <Content Include="Views\Profile\CreateWindow.cshtml" />
     <Content Include="Views\Profile\CreateDoor.cshtml" />
     <Content Include="Views\Profile\Show.cshtml" />
+    <Content Include="Views\Profile\ShowWindow.cshtml" />
+    <Content Include="Views\Profile\ShowDoor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

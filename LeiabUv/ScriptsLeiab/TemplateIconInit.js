@@ -16,9 +16,13 @@
 $(function () {
 
     /* Button events and control */
-    $("#btnCreateWindowProject").click(function () { window.location.replace("/Project/CreateWindow/" + selectedTemplateId); });
+    //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create/" + selectedTemplateId); });
+    $("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create/" + selectedTemplateId + "?window=1"); });
+    $("#btnCreateDoorProject").click(function () { window.location.replace("/Project/Create/" + selectedTemplateId + "?window=0"); });
+
+    //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/CreateWindow/" + selectedTemplateId + "?window=1"); });
     //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
-    $("#btnCreateDoorProject").click(function () { window.location.replace("/Project/CreateDoor/" + selectedTemplateId); });
+    //$("#btnCreateDoorProject").click(function () { window.location.replace("/Project/CreateDoor/" + selectedTemplateId + "?door=1"); });
 
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
     $("#btnDeleteTemplate").click(function () {

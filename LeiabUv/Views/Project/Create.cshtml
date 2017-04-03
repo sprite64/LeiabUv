@@ -4,9 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Fönster Editor</h2>
-
-<!-- <h4>Template ID: ViewBag.TemplateId</h4> -->
+<h2 id="titleProject"></h2>
 
 <!-- Init elements  -->
 
@@ -35,8 +33,25 @@
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
+                <h4 style="color: #ccc">Profil</h4>
+                <span>
+                    <label style="width: 50px;">Övre</label>
+                    <select style="width: 160px; color: #000;">
+                        <!-- option value="LFT">LFT</!--option>
+                        <option value="CDF">CDF</option> -->
+                    </select>
+                </span>
+                
+                <!-- >label style="color: #ccc;">Ug</!--label><br / -->
+                <span>
+                    <label style="color: #ccc; width: 50px;">Ug</label>
+                    <input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
+                    <!-- label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</!--label -->
+                </span>
+                <br>
             </div>
         </div>
+
 
 
         <!-- Controls -->
@@ -73,12 +88,13 @@
         </div>
     </div>
 
-    <div class="row">
+    <!--div class="row">
         <button id="btnShowFrameSettings" class="btn btn-success">Karm värden</button>
         <button id="btnShowPaneSettings" class="btn btn-success">Luft värden</button>
-    </div>
+    </div-->
 
     <!-- Frame settings -->
+        <!--
     <div id="FrameSettings" class="row">
 
         <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
@@ -135,8 +151,10 @@
 
     </br>
     </br>
+        -->
 
     <!-- Pane settings -->
+    <!--
     <div id="PaneSettings" class="row">
 
         <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
@@ -188,7 +206,7 @@
                 </select>
             </span>
 
-        </div>
+        </div>-->
 
     </div>
 </div>
@@ -216,13 +234,20 @@
             project = new lbProject(data);              // Init project object
 
             //lbUpdatePaneDimensions();                   // Update project pane dimensions
-            
+
             $("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
             $("#paneHeight").val(lbGetSelectedPaneHeight());
 
             $("#frameWidth").val(lbGetFrameWidth());
             $("#frameHeight").val(lbGetFrameHeight());
         });
+
+        // Update project title
+        if(@ViewBag.ProjectType == 1) {
+            $("#titleProject").text("Fönster");
+        } else {
+            $("#titleProject").text("Dörr");
+        }
     });
 
 </script>

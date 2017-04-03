@@ -55,6 +55,17 @@ namespace LeiabUv.Controllers
         }
 
 
+        public ActionResult ShowWindow()
+        {
+            Context ctx = new Context();
+
+            // Select window profiles
+            var model = ctx.Profiles.ToList().Where(m => m.door == false);//.OrderBy(m => m.door);
+
+            return View(model);
+        }
+
+        
         public ActionResult CreateDoor()
         {
             return View();
@@ -80,6 +91,16 @@ namespace LeiabUv.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult ShowDoor()
+        {
+            Context ctx = new Context();
+
+            // Select window profiles
+            var model = ctx.Profiles.ToList().Where(m => m.door == true);
+
+            return View(model);
         }
 
         /*
