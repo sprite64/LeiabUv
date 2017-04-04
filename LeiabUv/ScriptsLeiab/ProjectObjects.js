@@ -26,6 +26,9 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
 
     this.width = width;             // Dimensions in millimeters
     this.height = height;
+
+    this.ug = 0.0;                  // Pane Ug value
+    this.profileId = -1;            // Pane profile
 }
 
 

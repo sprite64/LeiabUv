@@ -102,33 +102,7 @@ namespace LeiabUv.Controllers
 
             return View(model);
         }
-
-        /*
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Create(Profile p)
-        {
-            Context ctx = new Context();
-
-            p.CreatedBy = "Admin";
-            p.Created = System.DateTime.Now;
-
-            p.ModifiedBy = "Admin";
-            p.Modified = System.DateTime.Now;
-
-            if (ModelState.IsValid) {
-                ctx.Profiles.Add(p);
-                ctx.SaveChanges();
-            }
-
-
-            return View();
-        }
-        */
+        
 
         public ActionResult Show()
         {

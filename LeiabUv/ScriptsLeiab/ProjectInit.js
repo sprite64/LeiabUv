@@ -62,7 +62,9 @@ $(function () {
     // Input change events
     // Not in use, probably wont be either
     //$("#paneWidth").change(function () { lbProjectInputChange(); });
-
+    $("#profileList").change(function () {
+        alert("Cahgned! " + 0);
+    });
 });
 
 setInterval(function () { lbProjectUpdateAndRender(""); }, 300);

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Generic.cs" />
     <Compile Include="Profile.cs" />
+    <Compile Include="ProfileViewModel.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

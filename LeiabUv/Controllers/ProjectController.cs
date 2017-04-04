@@ -24,15 +24,15 @@ namespace LeiabUv.Controllers
         {
             return View();
         }
-        
+
 
         public ActionResult Create(int? id, int? window)
         {
-            if(id == null)
+            if (id == null)
             {
                 return View("CreateSelectTemplate");            // A view with "Select Template" button that redirects to /Template/Show
             }
-            
+
             ViewBag.TemplateId = id;
             ViewBag.ProjectType = window;
 
@@ -79,5 +79,64 @@ namespace LeiabUv.Controllers
             }).FirstOrDefault(d => d.Id == id);
             return Json(template, JsonRequestBehavior.AllowGet);
         }
+
+        // Used to populate profile select list
+        [HttpGet]
+        public ActionResult GetProfiles(int window)     // Template Id
+        {
+            Context ctx = new Context();
+            
+            if(window == 1)
+            {
+                var profiles = ctx.Profiles.Where(m => m.door == false).Select(d => new ProfileViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+
+                    Tf = d.Tf,
+                    Uf = d.Uf,
+                    Yf = d.Yf,
+
+                    Tp = d.Tp,
+                    Up = d.Up,
+                    Yp = d.Yp,
+
+                    Tr = d.Tr,
+                    Ug = d.Ug,
+
+                    Glass = d.Glass,
+                    door = d.door,
+                    //info = d.info
+                }).ToList<ProfileViewModel>();
+
+                return Json(profiles, JsonRequestBehavior.AllowGet);
+            } else {
+                var profiles = ctx.Profiles.Where(m => m.door == true).Select(d => new ProfileViewModel
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+
+                    Tf = d.Tf,
+                    Uf = d.Uf,
+                    Yf = d.Yf,
+
+                    Tp = d.Tp,
+                    Up = d.Up,
+                    Yp = d.Yp,
+
+                    Tr = d.Tr,
+                    Ug = d.Ug,
+
+                    Glass = d.Glass,
+                    door = d.door,
+                    //info = d.info
+                }).ToList<ProfileViewModel>();
+
+                return Json(profiles, JsonRequestBehavior.AllowGet);
+            }
+            
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
     }
 }
+

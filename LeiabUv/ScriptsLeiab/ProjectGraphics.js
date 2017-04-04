@@ -126,6 +126,7 @@ function lbRenderSelectorDebug() {
 
     var wText = "0.0";
     var hText = "0.0";
+    var uText = "0.0";
 
     var postSize = selector.postSize;
 
@@ -134,9 +135,14 @@ function lbRenderSelectorDebug() {
         // Get pane dimensions
         rect = lbGetSelectorPaneRect(i);
 
+        // Render width / height *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
         // Format dimensions
         wText = Math.round((project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
         hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+
+        var u = (project.panes[i].ug * 1000.0 / 1000.0).toFixed(3);
+        uText = u;          // For some reason, uText can't be formated the same way as wText and hText, but this works fine
 
         // Calc X
         if ((selector.panes[i].xIndex + selector.panes[i].colSpan - 1) == (selector.columns - 1)) {
@@ -168,6 +174,44 @@ function lbRenderSelectorDebug() {
         ctx.fillStyle = "#333";
         ctx.fillText(wText + "", x, y);
         ctx.fillText(hText + "", x, y + 16);
+
+        // Render Ug *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+        // Calc X
+        if (selector.panes[i].xIndex == 0) {
+            x = rect.x;
+        } else {
+            x = rect.x + postSize;
+        }
+        /*
+        if ((selector.panes[i].xIndex + selector.panes[i].colSpan - 1) == (selector.columns - 1)) {
+            x = rect.x + rect.width - 3;
+        } else {
+            x = rect.x + rect.width - postSize - 3;
+        }*/
+
+        // Calc Y
+        if (selector.panes[i].yIndex > 0) {
+            y = rect.y + rect.height - 14;// + postSize + 2;
+        } else {
+            y = rect.y + rect.height - 14 - postSize;
+        }
+        //y += 32;
+
+        // Render text background
+        tw = 2;
+        tw = ctx.measureText(uText).width;
+
+        tw += 20;
+
+        ctx.fillStyle = "#ddd";
+        ctx.fillRect(x, y - 2, tw + 7, 16);
+        //ctx.fillRect(x - tw + 3, y - 2, tw, 32);
+
+        // Render text
+        ctx.fillStyle = "#333";
+        ctx.fillText("Ug " + uText, x + tw + 3, y);
+        //ctx.fillText(hText + "", x, y + 16);
     }
 
     // Render width/height ages

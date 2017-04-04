@@ -33,23 +33,28 @@
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
-                <h4 style="color: #ccc">Profil</h4>
+                <!--form-->
+                <!-- div class="form-group" -->
                 <span>
-                    <label style="width: 50px;">Övre</label>
-                    <select style="width: 160px; color: #000;">
-                        <!-- option value="LFT">LFT</!--option>
-                        <option value="CDF">CDF</option> -->
+                    <label style="color: #ccc; width: 50px;">Profil</label>
+                    <select id="profileList" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                        <option>Null</option>
                     </select>
                 </span>
-                
+
+                <br />
+
                 <!-- >label style="color: #ccc;">Ug</!--label><br / -->
                 <span>
                     <label style="color: #ccc; width: 50px;">Ug</label>
-                    <input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
+                    <input id="paneUg" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
                     <!-- label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</!--label -->
                 </span>
-                <br>
+                <br />
+
+                <button id="btnProfileUpdate" class="btn btn-default">Uppdatera</button>
             </div>
+            
         </div>
 
 
@@ -86,128 +91,6 @@
 
             </div>
         </div>
-    </div>
-
-    <!--div class="row">
-        <button id="btnShowFrameSettings" class="btn btn-success">Karm värden</button>
-        <button id="btnShowPaneSettings" class="btn btn-success">Luft värden</button>
-    </div-->
-
-    <!-- Frame settings -->
-        <!--
-    <div id="FrameSettings" class="row">
-
-        <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
-            <h4>Karm dimensioner</h4>
-            <span>
-                <label style="width: 40px;">Bredd</label>
-                <input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" 
-                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
-            </span></br>
-            <span>
-                <label style="width: 40px;">Höjd</label>
-
-                <input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" 
-                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
-            </span>
-            <button id="btnUpdateFrameDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
-        </div>
-
-
-        <div class="col-md-6" style="height: 160px; color: #ddd; background-color: #333;">
-
-            <h4>Karm Profiler</h4>
-            <span>
-                <label style="width: 50px;">Övre</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                <label style="width: 50px; margin-left: 20px;">Vänster</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                </br>
-
-                <label style="width: 50px;">Nedre</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                <label style="width: 50px; margin-left: 20px;">Höger</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-            </span>
-
-        </div>
-
-    </div>
-
-    </br>
-    </br>
-        -->
-
-    <!-- Pane settings -->
-    <!--
-    <div id="PaneSettings" class="row">
-
-        <div class="col-md-3" style="max-width: 220px; height: 160px; color: #ddd; background-color: #333;">
-            <h4>Luft dimensioner</h4>
-            <span>
-                <label style="width: 40px;">Bredd</label>
-                <input id="FrameWidth" type="number" value="0" min="0" name="FrameWidth" 
-                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
-            </span></br>
-            <span>
-                <label style="width: 40px;">Höjd</label>
-                <input id="FrameHeight" type="number" value="0" min="0" name="FrameHeight" 
-                       style="text-align: right; color: #000; width: 100px; margin-left: 10px; margin-bottom: 10px;" /> mm
-            </span>
-            <button id="btnUpdateFrameDimensions" class="btn btn-success" style="width: 130px; margin-bottom: 10px; margin-left: 49px;">Uppdatera</button>
-        </div>
-
-
-        <div class="col-md-6" style="height: 160px; color: #ddd; background-color: #333;">
-
-            <h4>Luft Profiler</h4>
-            <span>
-                <label style="width: 50px;">Övre</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                <label style="width: 50px; margin-left: 20px;">Vänster</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                </br>
-
-                <label style="width: 50px;">Nedre</label>
-                <select style="width: 160px; color: #000;">
-                    <option value="LFT">LFT</option>
-                    <option value="CDF">CDF</option>
-                </select>
-
-                <label style="width: 50px; margin-left: 20px;">Höger</label>
-                <select style="width: 160px; color: #000;">
-                    <option disabled style="color: #000;">Senast använda</option>
-                    <option value="LFT">LFT</option>
-                    <option disabled>---</option>
-                    <option value="CDF">CDF</option>
-                </select>
-            </span>
-
-        </div>-->
-
     </div>
 </div>
 
@@ -248,9 +131,25 @@
         } else {
             $("#titleProject").text("Dörr");
         }
+
+        // Populate profile select list
+        $.getJSON("/Project/GetProfiles/?window=" + @ViewBag.ProjectType, function (data) {
+            //alert(data.length);
+
+            for(var i = 0; i < data.length; i ++) {
+
+                $("#profileList").append(
+                    $('<option/>', {
+                        value: data[i].Id,      // Need to find out how to get this value on select list change
+                        text: "[" + data[i].Name + "], [" + data[i].Glass + "]"
+                        //text: "[" + data[i].Name + "], [" + data[i].Glass + "]" + " Ug: " + data[i].Ug
+                    }));
+
+                //alert("Val: " + data[i].Id);
+                //alert("Name: " + data[i].Name);
+            }
+        });
     });
 
 </script>
-
-
 
