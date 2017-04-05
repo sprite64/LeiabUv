@@ -125,6 +125,10 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 
                 $("#paneWidth").val(lbGetSelectedPaneWidth());
                 $("#paneHeight").val(lbGetSelectedPaneHeight());
+
+                // Update profile and Ug value
+                //$("#profileList").val(lbGetSelectedProfile());
+                $("#paneUg").val(lbGetSelectedUg());
             }
 
             break;
@@ -149,6 +153,15 @@ function lbGetSelectedPaneHeight() {
     return project.panes[paneId].height;
 }
 
+function lbGetSelectedProfile() {               // This shouldnt work like this, consider the select dropdown list
+    var paneId = selector.selectedPane;
+    return project.panes[paneId].profileId;
+}
+
+function lbGetSelectedUg() {
+    var paneId = selector.selectedPane;
+    return project.panes[paneId].ug;
+}
 
 function lbGetFrameWidth() {
 
@@ -548,6 +561,32 @@ function lbProjectUpdateFrameDimensions() {
 }
 
 
+// Updates pane Profile and Ug
+function lbProjectUpdateProfileData() {
+
+    var paneId = selector.selectedPane;
+
+    var nanError = false;
+
+    var val = parseFloat($("#paneUg").val().replace(",", "."));
+
+    if (isNaN(val)) {
+        alert("FUKAFNEFA");
+    }
+
+    if (isNaN(val) || val < 0.0) {
+        alert("Felaktigt Ug värde");
+        $("#frameWidth").val(project.panes[paneId].ug);
+        nanError = true;
+    }
+
+    if (nanError) {
+        return;
+    }
+
+    project.panes[paneId].ug = $("#paneUg").val();
+}
+
 
 function lbUpdateInputButtons() {
 
@@ -621,6 +660,37 @@ function lbUpdateInputButtons() {
         $("#btnFrameDimensionsUpdate").addClass("btn-default");
     }
 
+    // Profile/Ug button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var ug = parseFloat($("#paneUg").val().replace(",", "."));
+    
+    // Default to gray
+    toGray = true;
+
+    // Update
+    // This should also validate profile changes
+    if (project.panes[id].ug != ug) {
+        // Change to green
+        $("#btnProfileUpdate").removeClass("btn-danger");
+        $("#btnProfileUpdate").removeClass("btn-default");
+        $("#btnProfileUpdate").addClass("btn-success");
+        toGray = false;
+    }
+
+    // Error
+    // This should also validate profile changes
+    if (isNaN(ug) || ug < 0.0) {
+        // Change to red
+        $("#btnProfileUpdate").removeClass("btn-success");
+        $("#btnProfileUpdate").removeClass("btn-default");
+        $("#btnProfileUpdate").addClass("btn-danger");
+        toGray = false;
+    }
+
+    if (toGray) {
+        $("#btnProfileUpdate").removeClass("btn-success");
+        $("#btnProfileUpdate").removeClass("btn-danger");
+        $("#btnProfileUpdate").addClass("btn-default");
+    }
 
 
     //if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
