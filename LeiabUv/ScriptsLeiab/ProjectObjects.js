@@ -133,7 +133,7 @@ function lbPaneSelector(data) {
 
     this.panes = new Array(data.panes.length);
     for (var i = 0; i < data.panes.length; i++) {
-        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan);
+        this.panes[i] = new lbPaneData(data.panes[i].xIndex, data.panes[i].yIndex, data.panes[i].colSpan, data.panes[i].rowSpan, 0.0, 0.0);
     }
 
     this.frameSize = 10; //10;

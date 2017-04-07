@@ -138,11 +138,14 @@ function lbRenderSelectorDebug() {
         // Render width / height *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
         // Format dimensions
-        wText = Math.round((project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
-        hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+        wText = (Math.round(project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
+        hText = (Math.round(project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+        uText = (Math.round(project.panes[i].ug * 1000.0) / 1000.0).toFixed(3);
 
-        var u = (project.panes[i].ug * 1000.0 / 1000.0).toFixed(3);
-        uText = u;          // For some reason, uText can't be formated the same way as wText and hText, but this works fine
+        //hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+
+        //var u = (project.panes[i].ug * 1000.0 / 1000.0).toFixed(3);
+        //uText = u;          // For some reason, uText can't be formated the same way as wText and hText, but this works fine
 
         // Calc X
         if ((selector.panes[i].xIndex + selector.panes[i].colSpan - 1) == (selector.columns - 1)) {
@@ -191,6 +194,9 @@ function lbRenderSelectorDebug() {
         }*/
 
         // Calc Y
+        //if (selector.panes[i].yIndex > 0 && selector.panes[i].rowSpan > 1) {
+
+
         if (selector.panes[i].yIndex > 0) {
             y = rect.y + rect.height - 14;// + postSize + 2;
         } else {
@@ -255,8 +261,6 @@ function lbRenderSelectorPosts() {
     for (var i = 0; i < selector.nrOfPanes; i++) {
 
         rect = lbGetSelectorPaneRect(i);
-
-        
 
         // Top
         rectPost.x = rect.x;

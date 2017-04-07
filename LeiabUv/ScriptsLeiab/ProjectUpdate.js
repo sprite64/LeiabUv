@@ -153,7 +153,7 @@ function lbGetSelectedPaneHeight() {
     return project.panes[paneId].height;
 }
 
-function lbGetSelectedProfile() {               // This shouldnt work like this, consider the select dropdown list
+function lbGetSelectedProfile() {               // *** ### *** This shouldnt work like this, consider the select dropdown list
     var paneId = selector.selectedPane;
     return project.panes[paneId].profileId;
 }
@@ -568,15 +568,16 @@ function lbProjectUpdateProfileData() {
 
     var nanError = false;
 
-    var val = parseFloat($("#paneUg").val().replace(",", "."));
-
-    if (isNaN(val)) {
+    var u = parseFloat($("#paneUg").val().replace(",", "."));
+    
+    /*
+    if (isNaN(u)) {
         alert("FUKAFNEFA");
-    }
+    }*/
 
-    if (isNaN(val) || val < 0.0) {
+    if (isNaN(u) || u < 0.0) {
         alert("Felaktigt Ug värde");
-        $("#frameWidth").val(project.panes[paneId].ug);
+        $("#paneUg").val(project.panes[paneId].ug);
         nanError = true;
     }
 
@@ -584,7 +585,7 @@ function lbProjectUpdateProfileData() {
         return;
     }
 
-    project.panes[paneId].ug = $("#paneUg").val();
+    project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
 }
 
 
