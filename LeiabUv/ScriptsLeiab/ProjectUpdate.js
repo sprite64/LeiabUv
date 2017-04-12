@@ -96,6 +96,8 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 
     if (selector == undefined) return;
 
+    var yOffset = $(window).scrollTop();    // Taking scroll y offset into account for pane collision
+
     switch (action) {
 
         case "mouseMove":
@@ -106,8 +108,10 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 
                 var rect = lbGetSelectorPaneRect(i);
                 
+
+                // Check collision
                 if (selector.mouseX > rect.x && selector.mouseX <= rect.x + rect.width) {
-                    if (selector.mouseY > rect.y && selector.mouseY <= rect.y + rect.height) {
+                    if (selector.mouseY + yOffset > rect.y && selector.mouseY + yOffset <= rect.y + rect.height) {
                         selector.hoverPane = i;
                     }
                 }
@@ -129,6 +133,9 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 // Update profile and Ug value
                 //$("#profileList").val(lbGetSelectedProfile());
                 $("#paneUg").val(lbGetSelectedUg());
+
+                var profileId = lbGetSelectedProfile();
+                $("#profileList").val(profileId);
             }
 
             break;
@@ -347,7 +354,7 @@ function lbGetAnyOldestPaneHeightArray() {
 // This runs last
 function lbUpdatePaneWidthFromWidthArray() {
 
-    var id = selector.selectedPane;
+    //var id = selector.selectedPane;
     var total = 0.0;
 
     for (var i = 0; i < project.nrOfPanes; i++) {
@@ -364,7 +371,7 @@ function lbUpdatePaneWidthFromWidthArray() {
 
 function lbUpdatePaneHeightFromHeightArray() {
 
-    var id = selector.selectedPane;
+    //var id = selector.selectedPane;
     var total = 0.0;
 
     for (var i = 0; i < project.nrOfPanes; i++) {
@@ -418,6 +425,7 @@ function lbUpdatePanes() {
 
 
     // Update unselected pane height
+    d = lbGetPaneHeightDelta();
     oldId = lbGetOldestUnselectedPaneHeightArray();
 
     project.paneHeights[oldId] -= d;
@@ -426,14 +434,12 @@ function lbUpdatePanes() {
 
 
     // Update selected pane height
-    d = lbGetPaneHeightDelta();
+    //d = lbGetPaneHeightDelta();
     oldId = lbGetOldestSelectedPaneHeightArray();
 
     project.paneHeights[oldId] += d;
     project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
     project.paneHeightAgeCounter++;
-
-    
 
     lbUpdatePaneHeightFromHeightArray()
 }
@@ -589,6 +595,19 @@ function lbProjectUpdateProfileData() {
 }
 
 
+function lbProjectChangeProfile() {
+
+    var id = selector.selectedPane;
+    var profileId = $("#profileList").val();
+
+    if (profileId == null) {
+        project.panes[id].profileId = -1;
+    } else {
+        project.panes[id].profileId = profileId;
+    }
+}
+
+
 function lbUpdateInputButtons() {
 
 
@@ -714,5 +733,7 @@ function lbProjectUpdateAndRender(action) {
 
     // Apart from that, it would be really nice to have a max/min input value to avoid negative pane dimension calculations, because they do happen
     // and add a minimum size for panes, perhaps 300mm or so.
+
+    $("#scrollTopper").text("Top: " + $(window).scrollTop());
 }
 

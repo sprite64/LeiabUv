@@ -64,7 +64,10 @@ $(function () {
     // Not in use, probably wont be either
     //$("#paneWidth").change(function () { lbProjectInputChange(); });
     $("#profileList").change(function () {
-        alert("Cahgned! " + 0);
+        //var id = document.getElementById("profileList").value;
+        lbProjectChangeProfile();
+        //var id = $("#profileList").val();
+        //alert("Profile change! " + id);
     });
 });
 

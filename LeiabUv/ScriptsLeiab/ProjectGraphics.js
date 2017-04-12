@@ -111,8 +111,9 @@ function lbRenderSelectorDebug() {
     
     // Render frame dimensions
     ctx.textAlign = "left";
-    ctx.fillText("Karm: " + Math.round((project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
-        Math.round((project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 300);
+
+    ctx.fillText("Karm: " + (Math.round(project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
+        (Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 300);
 
     ctx.textAlign = "right";
     ctx.fillText("(mm)", 285, 300);
@@ -202,6 +203,11 @@ function lbRenderSelectorDebug() {
         } else {
             y = rect.y + rect.height - 14 - postSize;
         }
+
+        if (selector.panes[i].rowSpan == project.rows) {
+            y = rect.y + rect.height - 14;
+        }
+
         //y += 32;
 
         // Render text background
@@ -218,9 +224,13 @@ function lbRenderSelectorDebug() {
         ctx.fillStyle = "#333";
         ctx.fillText("Ug " + uText, x + tw + 3, y);
         //ctx.fillText(hText + "", x, y + 16);
+
+        // Render profile null or not
+        // ... Code ...
     }
 
     // Render width/height ages
+    
     /*
     ctx.textAlign = "left";
     //ctx.fillText("Ålder", 15, 40);
@@ -235,6 +245,7 @@ function lbRenderSelectorDebug() {
     }
     */
 }
+
 
 /*
 function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
