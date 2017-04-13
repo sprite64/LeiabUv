@@ -217,5 +217,5 @@ function lbPaneSelector(data) {
 
 var project = undefined;                // Project data
 var selector = undefined;               // Pane selector data
-
+var profiles = undefined;               // List of profile data
 

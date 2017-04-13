@@ -797,6 +797,7 @@ function lbTemplateUpdate(action) {
 
     // Init
     var rect;
+    var yOffset = $(window).scrollTop();    // Taking scroll y offset into account for pane collision
 
     // Get graphics settings for active gfx settings
     var gfxSettings = new lbCreateGraphicsSettings(template.activeGfxSettings);
@@ -821,7 +822,8 @@ function lbTemplateUpdate(action) {
 
                     // Check collision
                     if (template.mouseX >= rect.x && template.mouseX < rect.x + rect.width) {
-                        if (template.mouseY >= rect.y && template.mouseY < rect.y + rect.height) {
+                        if (template.mouseY + yOffset > rect.y && template.mouseY + yOffset <= rect.y + rect.height) {
+                        //if (template.mouseY >= rect.y && template.mouseY < rect.y + rect.height) {
                             template.hovering = true;
                             template.hoverCellX = nx;
                             template.hoverCellY = ny;

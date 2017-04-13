@@ -198,17 +198,12 @@ function lbRenderSelectorDebug() {
         //if (selector.panes[i].yIndex > 0 && selector.panes[i].rowSpan > 1) {
 
 
-        if (selector.panes[i].yIndex > 0) {
-            y = rect.y + rect.height - 14;// + postSize + 2;
-        } else {
+        if (selector.panes[i].yIndex + selector.panes[i].rowSpan < selector.rows) {
             y = rect.y + rect.height - 14 - postSize;
+        } else {
+            y = rect.y + rect.height - 14;// + postSize + 2;
         }
 
-        if (selector.panes[i].rowSpan == project.rows) {
-            y = rect.y + rect.height - 14;
-        }
-
-        //y += 32;
 
         // Render text background
         tw = 2;

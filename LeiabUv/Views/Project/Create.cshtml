@@ -54,8 +54,9 @@
                 <br />
 
                 <button id="btnProfileUpdate" class="btn btn-default">Uppdatera</button>
+                <button id="btnProfileUpdateAll" class="btn btn-default" style="width: 117px;">Uppdatera Alla</button>
 
-                <label id="scrollTopper" style="color: #ccc;">awe</label>
+                <!-- label id="scrollTopper" style="color: #ccc;">awe</!--label -->
             </div>
             
         </div>
@@ -91,7 +92,7 @@
                 <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="frameWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" /><label id="lblFrameWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
                 <span><label style="color: #ccc; width: 50px;">Höjd: </label><input id="frameHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label id="lblFrameHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span>
                 <button id="btnFrameDimensionsUpdate" class="btn btn-default">Uppdatera</button>
-
+                
             </div>
         </div>
     </div>
@@ -140,6 +141,7 @@
         // Populate profile select list
         $.getJSON("/Project/GetProfiles/?window=" + @ViewBag.ProjectType, function (data) {
             //alert(data.length);
+            profiles = data;
 
             for(var i = 0; i < data.length; i ++) {
 

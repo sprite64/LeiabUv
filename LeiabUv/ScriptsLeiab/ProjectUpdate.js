@@ -395,53 +395,70 @@ function lbUpdatePanes() {
     //project.frameWidth;
     //project.selectedPaneWidth/Colspans
 
+    // Something should be considered here, if the width value (or height) doesnt change
+    // the respective age counter should not update
 
     // Update unselected pane width
     var d = lbGetPaneWidthDelta();
     var oldId = lbGetOldestUnselectedPaneWidthArray();
 
-    project.paneWidths[oldId] -= d;
-    project.paneWidthAge[oldId] = project.paneWidthAgeCounter;
-    project.paneWidthAgeCounter++;
-
-
-    // Update selected pane width
-    oldId = lbGetOldestSelectedPaneWidthArray();
-
-    //alert("Oldest pane: " + lbGetOldestSelectedPaneWidthArray());
-
-    project.paneWidths[oldId] += d;
-    project.paneWidthAge[oldId] = project.paneWidthAgeCounter;      // Update widths age
-    project.paneWidthAgeCounter++;
-
     
+    if (d != 0) {       // Update only if delta exists
 
-    //alert("Oldest unselected: " + lbGetOldestUnselectedPaneWidthArray());
+        project.paneWidths[oldId] -= d;
+        /*
+        // This should be removed
+        project.paneWidthAge[oldId] = project.paneWidthAgeCounter;
+        project.paneWidthAgeCounter++;
+        */
 
-    // Update pane widths from width array
-    lbUpdatePaneWidthFromWidthArray();
+        // Update selected pane width
+        oldId = lbGetOldestSelectedPaneWidthArray();
+
+        //alert("Oldest pane: " + lbGetOldestSelectedPaneWidthArray());
+
+        project.paneWidths[oldId] += d;
+        project.paneWidthAge[oldId] = project.paneWidthAgeCounter;      // Update widths age
+        project.paneWidthAgeCounter++;
+
+
+
+        //alert("Oldest unselected: " + lbGetOldestUnselectedPaneWidthArray());
+
+        // Update pane widths from width array
+        lbUpdatePaneWidthFromWidthArray();
+
+    }
 
     // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
 
     // Update unselected pane height
     d = lbGetPaneHeightDelta();
+    
+    
     oldId = lbGetOldestUnselectedPaneHeightArray();
 
-    project.paneHeights[oldId] -= d;
-    project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
-    project.paneHeightAgeCounter++;
+    if (d != 0) {       // Update only if delta exists
 
+        project.paneHeights[oldId] -= d;
 
-    // Update selected pane height
-    //d = lbGetPaneHeightDelta();
-    oldId = lbGetOldestSelectedPaneHeightArray();
+        /*
+        // This should be removed
+        project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
+        project.paneHeightAgeCounter++;
+        */
 
-    project.paneHeights[oldId] += d;
-    project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
-    project.paneHeightAgeCounter++;
+        // Update selected pane height
+        //d = lbGetPaneHeightDelta();
+        oldId = lbGetOldestSelectedPaneHeightArray();
 
-    lbUpdatePaneHeightFromHeightArray()
+        project.paneHeights[oldId] += d;
+        project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
+        project.paneHeightAgeCounter++;
+
+        lbUpdatePaneHeightFromHeightArray()
+    }
 }
 
 
@@ -571,27 +588,48 @@ function lbProjectUpdateFrameDimensions() {
 function lbProjectUpdateProfileData() {
 
     var paneId = selector.selectedPane;
-
-    var nanError = false;
-
     var u = parseFloat($("#paneUg").val().replace(",", "."));
     
-    /*
-    if (isNaN(u)) {
-        alert("FUKAFNEFA");
-    }*/
-
     if (isNaN(u) || u < 0.0) {
         alert("Felaktigt Ug värde");
-        $("#paneUg").val(project.panes[paneId].ug);
-        nanError = true;
-    }
-
-    if (nanError) {
+        $("#paneUg").val(project.panes[paneId].ug);         // Reset Ug
         return;
     }
 
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
+}
+
+
+// Updates all pane profiles and Ug
+function lbProjectUpdateAllProfileData() {
+
+    //var nanError = false;
+    var u = parseFloat($("#paneUg").val().replace(",", "."));
+
+    if (isNaN(u) || u < 0.0) {
+        alert("Felaktigt Ug värde");
+        //$("#paneUg").val()        // Reset Ug value
+        return;
+    }
+
+    for (var i = 0; i < selector.nrOfPanes; i++) {
+        project.panes[i].ug = u;
+        project.panes[i].profileId = $("#profileList").val();
+    }
+}
+
+
+// Get selected profile Ug value
+function lbGetProfileUg() {
+
+    var profileId = $("#profileList").val();
+
+    for (var i = 0; i < profiles.length; i++) {
+        if (profileId == profiles[i].Id) {
+
+            return profiles[i].Ug;
+        }
+    }
 }
 
 
@@ -600,16 +638,20 @@ function lbProjectChangeProfile() {
     var id = selector.selectedPane;
     var profileId = $("#profileList").val();
 
-    if (profileId == null) {
+    if (profileId == -1) {
         project.panes[id].profileId = -1;
+        $("#paneUg").val("0");
     } else {
         project.panes[id].profileId = profileId;
+
+        // Update Ug
+        $("#paneUg").val(lbGetProfileUg());
+        //alert("Profile ug: " + lbGetProfileUg());
     }
 }
 
 
 function lbUpdateInputButtons() {
-
 
     if (selector == undefined) return;
 
@@ -693,6 +735,11 @@ function lbUpdateInputButtons() {
         $("#btnProfileUpdate").removeClass("btn-danger");
         $("#btnProfileUpdate").removeClass("btn-default");
         $("#btnProfileUpdate").addClass("btn-success");
+
+        $("#btnProfileUpdateAll").removeClass("btn-danger");
+        $("#btnProfileUpdateAll").removeClass("btn-default");
+        $("#btnProfileUpdateAll").addClass("btn-success");
+
         toGray = false;
     }
 
@@ -703,6 +750,11 @@ function lbUpdateInputButtons() {
         $("#btnProfileUpdate").removeClass("btn-success");
         $("#btnProfileUpdate").removeClass("btn-default");
         $("#btnProfileUpdate").addClass("btn-danger");
+
+        $("#btnProfileUpdateAll").removeClass("btn-success");
+        $("#btnProfileUpdateAll").removeClass("btn-default");
+        $("#btnProfileUpdateAll").addClass("btn-danger");
+
         toGray = false;
     }
 
@@ -710,12 +762,11 @@ function lbUpdateInputButtons() {
         $("#btnProfileUpdate").removeClass("btn-success");
         $("#btnProfileUpdate").removeClass("btn-danger");
         $("#btnProfileUpdate").addClass("btn-default");
+
+        $("#btnProfileUpdateAll").removeClass("btn-success");
+        $("#btnProfileUpdateAll").removeClass("btn-danger");
+        $("#btnProfileUpdateAll").addClass("btn-default");
     }
-
-
-    //if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
-
-    //}
 }
 
 
@@ -734,6 +785,6 @@ function lbProjectUpdateAndRender(action) {
     // Apart from that, it would be really nice to have a max/min input value to avoid negative pane dimension calculations, because they do happen
     // and add a minimum size for panes, perhaps 300mm or so.
 
-    $("#scrollTopper").text("Top: " + $(window).scrollTop());
+    //$("#scrollTopper").text("Top: " + $(window).scrollTop());
 }
 

@@ -59,6 +59,7 @@ $(function () {
     $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
     $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
     $("#btnProfileUpdate").click(function () { lbProjectUpdateProfileData(); });
+    $("#btnProfileUpdateAll").click(function () { lbProjectUpdateAllProfileData(); });
 
     // Input change events
     // Not in use, probably wont be either
