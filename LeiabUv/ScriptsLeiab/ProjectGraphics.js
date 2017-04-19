@@ -113,10 +113,10 @@ function lbRenderSelectorDebug() {
     ctx.textAlign = "left";
 
     ctx.fillText("Karm: " + (Math.round(project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
-        (Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 300);
+        (Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 350);
 
     ctx.textAlign = "right";
-    ctx.fillText("(mm)", 285, 300);
+    ctx.fillText("(mm)", 285, 350);
 
     // Render pane dimensions
     ctx.textAlign = "right";

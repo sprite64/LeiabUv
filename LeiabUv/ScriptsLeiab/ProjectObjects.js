@@ -32,6 +32,14 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
 }
 
 
+function lbPaneAreaParts() {
+    this.totalArea = 0.0;
+    this.frameArea = 0.0;
+    this.postArea = 0.0;
+    this.paneArea = 0.0;
+}
+
+
 function lbPaneDataGfx() {
 
     this.x = 0;

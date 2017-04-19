@@ -61,6 +61,8 @@ $(function () {
     $("#btnProfileUpdate").click(function () { lbProjectUpdateProfileData(); });
     $("#btnProfileUpdateAll").click(function () { lbProjectUpdateAllProfileData(); });
 
+    $("#btnTestAreaParts").click(function () { lbGetPaneAreaParts(selector.selectedPane) });
+
     // Input change events
     // Not in use, probably wont be either
     //$("#paneWidth").change(function () { lbProjectInputChange(); });

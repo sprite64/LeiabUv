@@ -528,6 +528,114 @@ function lbProjectUpdatePaneDimensions() {
 }
 
 
+// Gets pane area parts, frame, post and pane
+// Returns a PaneAreaParts object on success, -1 on missing profile
+function lbGetPaneAreaParts(paneId) {
+
+    var profileId = project.panes[paneId].profileId;
+
+    if(profileId == -1) { 
+        alert("Profile Id is -1, break operation");
+        return - 1;
+    }
+
+    var parts = new lbPaneAreaParts();
+    var profile = profiles[profileId];
+    var pane = project.panes[paneId];
+
+    // Calc Total area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    parts.totalArea = pane.width * pane.height;
+    //alert("Total Area: " + parts.totalArea);
+
+    // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    if (pane.yIndex == 0) {                                 // Top frame
+        parts.frameArea += pane.width * profile.Tf;
+        //alert("Frame Area1: " + parts.frameArea);
+    }
+
+    if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
+        parts.frameArea += pane.width * profile.Tf;
+        //alert("Frame Area2: " + parts.frameArea);
+    }
+
+    if (pane.xIndex == 0) {                                 // Left frame
+        parts.frameArea += pane.height * profile.Tf;
+
+        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        //alert("Frame Area3: " + parts.frameArea)
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        //alert("Frame Area4: " + parts.frameArea)
+    }
+
+    if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
+        parts.frameArea += pane.height * profile.Tf;
+
+        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        //alert("Frame Area5: " + parts.frameArea)
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        //alert("Frame Area6: " + parts.frameArea)
+    }
+
+
+    // Calc Post area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var half = 1;           // Setting to split post (or not to) width in half
+    // Half option is not yet implemented
+
+    if (pane.yIndex > 0) {                                  // Top post
+        parts.postArea += pane.width * profile.Tp;          // Calc total post area
+
+        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }      // Remove [frame * post] areas
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }    // Remove [post * post] area left
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }   // Remove [post * post] area right
+    }
+
+    if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
+        parts.postArea += pane.width * profile.Tp;           // Calc total post area
+
+        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }
+    }
+
+    
+    // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
+    if (pane.xIndex > 0) {                                  // Left post
+        parts.postArea += pane.height * profile.Tp;
+        
+        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+    }
+
+    // Right post
+    if (pane.xIndex + pane.colSpan < project.columns) {
+        
+        parts.postArea += pane.height * profile.Tp;
+
+        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+    }
+
+
+    // Calc Pane Area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    parts.paneArea = parts.totalArea - parts.frameArea - parts.postArea;
+    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane: " + parts.paneArea);
+
+    return parts;
+}
+
+
+/*
+this.totalArea = 0.0;
+this.frameArea = 0.0;
+this.postArea = 0.0;
+this.paneArea = 0.0;
+*/
+
+
 // Function below and function above need to correct a NaN input error, if Nan then make it zero
 // *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
@@ -601,20 +709,6 @@ function lbProjectUpdateProfileData() {
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
 }
 
-/*
-var id = selector.selectedPane;
-var profileId = $("#profileList").val();
-
-if (profileId == -1) {
-    project.panes[id].profileId = -1;
-    $("#paneUg").val("0");
-} else {
-    project.panes[id].profileId = profileId;
-
-    // Update Ug
-    $("#paneUg").val(lbGetProfileUg());
-    //alert("Profile ug: " + lbGetProfileUg());
-}*/
 
 
 // Updates all pane profiles and Ug
