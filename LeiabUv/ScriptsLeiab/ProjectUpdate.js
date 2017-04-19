@@ -596,8 +596,25 @@ function lbProjectUpdateProfileData() {
         return;
     }
 
+    project.panes[paneId].profileId = $("#profileList").val();
+
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
 }
+
+/*
+var id = selector.selectedPane;
+var profileId = $("#profileList").val();
+
+if (profileId == -1) {
+    project.panes[id].profileId = -1;
+    $("#paneUg").val("0");
+} else {
+    project.panes[id].profileId = profileId;
+
+    // Update Ug
+    $("#paneUg").val(lbGetProfileUg());
+    //alert("Profile ug: " + lbGetProfileUg());
+}*/
 
 
 // Updates all pane profiles and Ug
@@ -633,16 +650,17 @@ function lbGetProfileUg() {
 }
 
 
+// Update Ug value on profile list change
 function lbProjectChangeProfile() {
 
     var id = selector.selectedPane;
     var profileId = $("#profileList").val();
 
     if (profileId == -1) {
-        project.panes[id].profileId = -1;
+        //project.panes[id].profileId = -1;
         $("#paneUg").val("0");
     } else {
-        project.panes[id].profileId = profileId;
+        //project.panes[id].profileId = profileId;
 
         // Update Ug
         $("#paneUg").val(lbGetProfileUg());
@@ -730,7 +748,7 @@ function lbUpdateInputButtons() {
 
     // Update
     // This should also validate profile changes
-    if (project.panes[id].ug != ug) {
+    if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val()) {
         // Change to green
         $("#btnProfileUpdate").removeClass("btn-danger");
         $("#btnProfileUpdate").removeClass("btn-default");
