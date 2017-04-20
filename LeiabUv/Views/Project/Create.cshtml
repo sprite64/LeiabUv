@@ -24,52 +24,75 @@
 
 
         <!-- HTML5 Canvas -->
-        <div class="col-md-8" style="min-height: 500px; min-width: 584px;">
+        <div class="col-md-8" style="width: 700px;">
+        <!-- >div class="col-md-8" style="min-height: 500px; min-width: 584px;" -->
 
-            
 
-            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
 
-                <h4 id="titleProject" style="color: #ccc;"></h4>
-                
-                <!-- Project rendering -->
-                <canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;">
-                    Your browser doesn't support HTML5 canvas tag.
-                </canvas>
+                <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 680px; height: auto; background-color: #333;">
 
-                <!--form-->
-                <!-- div class="form-group" -->
-                <span>
-                    <label style="color: #ccc; width: 50px;">Profil</label>
-                    <select id="profileList" class="form-control" style="display: inline-block; width: 160px; color: #000;">
-                        <option value="-1">-</option>
-                    </select>
-                </span>
+                    <h4 id="titleProject" style="color: #ccc;"></h4>
 
-                <br />
+                    <!-- Project rendering -->
+                    <canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;">
+                        <!-- >canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;" -->
+                        Your browser doesn't support HTML5 canvas tag.
+                    </canvas>
 
-                <!-- >label style="color: #ccc;">Ug</!--label><br / -->
-                <span>
-                    <label style="color: #ccc; width: 50px;">Ug</label>
-                    <input id="paneUg" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
-                    <!--<input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />-->
-                    <!-- label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</!--label -->
-                </span>
-                <br />
+                    <!--form-->
+                    <!-- div class="form-group" -->
+                    <br />
+                    <span>
+                        <label style="color: #ccc; width: 50px;">Profil</label>
+                        <select id="profileList" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                            <option value="-1">-</option>
+                        </select>
 
-                <button id="btnProfileUpdate" class="btn btn-default">Uppdatera</button>
-                <button id="btnProfileUpdateAll" class="btn btn-default" style="width: 117px;">Uppdatera Alla</button>
-                <button id="btnTestAreaParts" class="btn btn-success" style="width: 130px; float: right; margin-right: 20px;">Testa Area Parts</button>
+                        <span class="glyphicon glyphicon-arrow-up" style="color: #ccc; margin-left: 16px;"></span>
+                        <select id="profileListTop" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                            <option value="-1">-</option>
+                        </select>
 
-                <!-- label id="scrollTopper" style="color: #ccc;">awe</!--label -->
+                        <span class="glyphicon glyphicon-arrow-left" style="color: #ccc; margin-left: 16px;"></span>
+                        <select id="profileListLeft" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                            <option value="-1">-</option>
+                        </select>
+                    </span>
+
+                    <br />
+
+                    <!-- >label style="color: #ccc;">Ug</!--label><br / -->
+                    <span>
+                        <label style="color: #ccc; width: 50px;">Ug</label>
+                        <input id="paneUg" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
+                        <!--<input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />-->
+                        <!-- label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</!--label -->
+
+                        <span class="glyphicon glyphicon-arrow-down" style="color: #ccc; margin-left: 16px;"></span>
+                        <select id="profileListBottom" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                            <option value="-1">-</option>
+                        </select>
+
+                        <span class="glyphicon glyphicon-arrow-right" style="color: #ccc; margin-left: 16px;"></span>
+                        <select id="profileListRight" class="form-control" style="display: inline-block; width: 160px; color: #000;">
+                            <option value="-1">-</option>
+                        </select>
+                    </span>
+                    <br />
+
+                    <button id="btnProfileUpdate" class="btn btn-default">Uppdatera</button>
+                    <button id="btnProfileUpdateAll" class="btn btn-default" style="width: 117px;">Uppdatera Alla</button>
+                    <button id="btnTestAreaParts" class="btn btn-success" style="width: 130px; float: right; margin-right: 20px;">Testa Area Parts</button>
+
+                    <!-- label id="scrollTopper" style="color: #ccc;">awe</!--label -->
+                </div>
+
             </div>
-            
-        </div>
 
 
 
         <!-- Controls -->
-        <div class="col-md-3" >
+        <div class="col-md-4" >
 
             <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 370px; height: 780px; background-color: #333;">
 
