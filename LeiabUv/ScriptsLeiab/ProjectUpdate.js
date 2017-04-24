@@ -136,6 +136,13 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 
                 var profileId = lbGetSelectedProfile();
                 $("#profileList").val(profileId);
+
+                // *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### 
+                // Update T/B/L/R profile inputs
+                $("#profileListTop").val(lbGetSelectedTopProfile());
+                $("#profileListBottom").val(lbGetSelectedBottomProfile());
+                $("#profileListLeft").val(lbGetSelectedLeftProfile());
+                $("#profileListRight").val(lbGetSelectedRightProfile());
             }
 
             break;
@@ -164,6 +171,27 @@ function lbGetSelectedProfile() {               // *** ### *** This shouldnt wor
     var paneId = selector.selectedPane;
     return project.panes[paneId].profileId;
 }
+
+function lbGetSelectedTopProfile() {
+    var i = selector.selectedPane;
+    return project.panes[i].profileTopId;
+}
+
+function lbGetSelectedBottomProfile() {
+    var i = selector.selectedPane;
+    return project.panes[i].profileBottomId;
+}
+
+function lbGetSelectedLeftProfile() {
+    var i = selector.selectedPane;
+    return project.panes[i].profileLeftId;
+}
+
+function lbGetSelectedRightProfile() {
+    var i = selector.selectedPane;
+    return project.panes[i].profileRightId;
+}
+
 
 function lbGetSelectedUg() {
     var paneId = selector.selectedPane;
@@ -796,6 +824,70 @@ function lbProjectUpdateFrameDimensions() {
 }
 
 
+// Update profile list items
+function UpdateProfileLists() {
+
+    // Update default profile list
+
+    // Beginning of list (used profiles)
+
+
+    // Middle of list (negative/null profile)
+
+
+    // End of list (unused profiles)
+    for (var i = 0; i < profiles.length; i++) {
+
+        $("#profileList").append(
+            $('<option/>', {
+                value: profiles[i].Id,
+                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
+            }));
+    }
+
+    // Update top profile list
+    for (var i = 0; i < profiles.length; i++) {
+
+        $("#profileListTop").append(
+            $('<option/>', {
+                value: profiles[i].Id,
+                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
+            }));
+    }
+
+    // Update bottom profile list
+    for (var i = 0; i < profiles.length; i++) {
+
+        $("#profileListBottom").append(
+            $('<option/>', {
+                value: profiles[i].Id,
+                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
+            }));
+    }
+
+    // Update left profile list
+    for (var i = 0; i < profiles.length; i++) {
+
+        $("#profileListLeft").append(
+            $('<option/>', {
+                value: profiles[i].Id,
+                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
+            }));
+    }
+
+    // Update right profile list
+    for (var i = 0; i < profiles.length; i++) {
+
+        $("#profileListRight").append(
+            $('<option/>', {
+                value: profiles[i].Id,
+                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
+            }));
+    }
+}
+
+
+
 // Updates pane Profile and Ug
 function lbProjectUpdateProfileData() {
 
@@ -808,9 +900,38 @@ function lbProjectUpdateProfileData() {
         return;
     }
 
-    project.panes[paneId].profileId = $("#profileList").val();
+    project.panes[paneId].profileId = $("#profileList").val();              // Update main profile
 
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
+
+    // Update direction specific profiles
+    if ($("#profileListTop").val() == -1) {                                 // Update top profile
+        project.panes[paneId].profileTopId = $("#profileList").val();
+        $("#profileListTop").val($("#profileList").val());
+    } else {
+        project.panes[paneId].profileTopId = $("#profileListTop").val();
+    }
+
+    if ($("#profileListBottom").val() == -1) {                              // Update bottom profile
+        project.panes[paneId].profileBottomId = $("#profileList").val();
+        $("#profileListBottom").val($("#profileList").val());
+    } else {
+        project.panes[paneId].profileBottomId = $("#profileListBottom").val();
+    }
+
+    if ($("#profileListLeft").val() == -1) {                                // Update left profile
+        project.panes[paneId].profileLeftId = $("#profileList").val();
+        $("#profileListLeft").val($("#profileList").val());
+    } else {
+        project.panes[paneId].profileLeftId = $("#profileListLeft").val();
+    }
+
+    if ($("#profileListRight").val() == -1) {                               // Update right profile
+        project.panes[paneId].profileRightId = $("#profileList").val();
+        $("#profileListRight").val($("#profileList").val());
+    } else {
+        project.panes[paneId].profileRightId = $("#profileListRight").val();
+    }
 }
 
 
@@ -819,6 +940,7 @@ function lbProjectUpdateProfileData() {
 function lbProjectUpdateAllProfileData() {
 
     //var nanError = false;
+    var paneId = selector.selectedPane;
     var u = parseFloat($("#paneUg").val().replace(",", "."));
 
     if (isNaN(u) || u < 0.0) {
@@ -827,9 +949,40 @@ function lbProjectUpdateAllProfileData() {
         return;
     }
 
+    // Loop through profiles
     for (var i = 0; i < selector.nrOfPanes; i++) {
-        project.panes[i].ug = u;
+        project.panes[i].ug = u;                                            // Update default profile
         project.panes[i].profileId = $("#profileList").val();
+
+        // Update direction specific profiles
+        if ($("#profileListTop").val() == -1) {                          // Update top profile
+            project.panes[i].profileTopId = $("#profileList").val();
+            $("#profileListTop").val($("#profileList").val());
+        } else {
+            project.panes[i].profileTopId = $("#profileListTop").val();
+        }
+
+        if ($("#profileListBottom").val() == -1) {                       // Update bottom profile
+            project.panes[i].profileBottomId = $("#profileList").val();
+            $("#profileListBottom").val($("#profileList").val());
+        } else {
+            project.panes[i].profileBottomId = $("#profileListBottom").val();
+        }
+
+        if ($("#profileListLeft").val() == -1) {                         // Update left profile
+            project.panes[i].profileLeftId = $("#profileList").val();
+            $("#profileListLeft").val($("#profileList").val());
+        } else {
+            project.panes[i].profileLeftId = $("#profileListLeft").val();
+        }
+
+        if ($("#profileListRight").val() == -1) {                        // Update right profile
+            project.panes[i].profileRightId = $("#profileList").val();
+            $("#profileListRight").val($("#profileList").val());
+        } else {
+            project.panes[i].profileRightId = $("#profileListRight").val();
+        }
+
     }
 }
 
@@ -946,7 +1099,10 @@ function lbUpdateInputButtons() {
 
     // Update
     // This should also validate profile changes
-    if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val()) {
+    if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val() || 
+        project.panes[id].profileTopId != $("#profileListTop").val() || project.panes[id].profileBottomId != $("#profileListBottom").val() ||
+        project.panes[id].profileLeftId != $("#profileListLeft").val() || project.panes[id].profileRightId != $("#profileListRight").val()) {
+
         // Change to green
         $("#btnProfileUpdate").removeClass("btn-danger");
         $("#btnProfileUpdate").removeClass("btn-default");
