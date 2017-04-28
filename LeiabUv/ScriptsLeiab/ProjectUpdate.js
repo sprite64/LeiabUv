@@ -954,7 +954,7 @@ function lbPrependProfiles() {
             var pid = "profile" + direction + "Id" + $(listId).val();
             var nid = $(listId).val();
             var txt = $("#" + pid).text();
-        
+
             // Changes made on one profile list has to be done to each one
             $("#profileId" + $(listId).val()).remove();
             $("#profileTopId" + $(listId).val()).remove();
@@ -963,22 +963,24 @@ function lbPrependProfiles() {
             $("#profileRightTopId" + $(listId).val()).remove();
             //$("#" + pid).remove();
 
-            $("#profileId").prepend( $("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
-            $("#profileTopId").prepend( $("<option/>", { id: "profileTopId" + nid, value: nid, text: txt }));
-            $("#profileBottomId").prepend( $("<option/>", { id: "profileBottomId" + nid, value: nid, text: txt }));
-            $("#profileLeftId").prepend( $("<option/>", { id: "profileLeftId" + nid, value: nid, text: txt }));
-            $("#profileRightId").prepend( $("<option/>", { id: "profileRightId" + nid, value: nid, text: txt }));
+            $("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
+            $("#profileTopId").prepend($("<option/>", { id: "profileTopId" + nid, value: nid, text: txt }));
+            $("#profileBottomId").prepend($("<option/>", { id: "profileBottomId" + nid, value: nid, text: txt }));
+            $("#profileLeftId").prepend($("<option/>", { id: "profileLeftId" + nid, value: nid, text: txt }));
+            $("#profileRightId").prepend($("<option/>", { id: "profileRightId" + nid, value: nid, text: txt }));
             //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
 
+            /*
             $("#profileList").val(nid);
             $("#profileListTop").val(nid);
             $("#profileListBottom").val(nid);
             $("#profileListLeft").val(nid);
-            $("#profileListRight").val(nid);
-            
+            $("#profileListRight").val(nid);*/
+
 
             //$(listId).val(nid);
 
+        }
     }
 }
 
