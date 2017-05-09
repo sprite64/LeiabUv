@@ -920,6 +920,7 @@ function lbPrependProfile(listId, direction) {
 }
 
 
+// This is seriously broken, start again...
 function lbPrependProfiles() {
 
     var listId = "";
@@ -949,37 +950,64 @@ function lbPrependProfiles() {
                 break;
         }
 
-        if ($(listId).val() != -1) {
+        if ($(listId).val() != -1 && $(listId).val() != null) {
 
             var pid = "profile" + direction + "Id" + $(listId).val();
             var nid = $(listId).val();
             var txt = $("#" + pid).text();
 
-            // Changes made on one profile list has to be done to each one
-            $("#profileId" + $(listId).val()).remove();
-            $("#profileTopId" + $(listId).val()).remove();
-            $("#profileBottomId" + $(listId).val()).remove();
-            $("#profileLeftId" + $(listId).val()).remove();
-            $("#profileRightTopId" + $(listId).val()).remove();
-            //$("#" + pid).remove();
-
-            $("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
-            $("#profileTopId").prepend($("<option/>", { id: "profileTopId" + nid, value: nid, text: txt }));
-            $("#profileBottomId").prepend($("<option/>", { id: "profileBottomId" + nid, value: nid, text: txt }));
-            $("#profileLeftId").prepend($("<option/>", { id: "profileLeftId" + nid, value: nid, text: txt }));
-            $("#profileRightId").prepend($("<option/>", { id: "profileRightId" + nid, value: nid, text: txt }));
-            //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
-
-            /*
-            $("#profileList").val(nid);
-            $("#profileListTop").val(nid);
-            $("#profileListBottom").val(nid);
-            $("#profileListLeft").val(nid);
-            $("#profileListRight").val(nid);*/
+            //if (txt == "") { alert("pid: " + pid + ", nid " + nid + ", empty string"); }
 
 
-            //$(listId).val(nid);
+                // Changes made on one profile list has to be done to each one
+                $("#profileId" + $(listId).val()).remove();
+                $("#profileTopId" + $(listId).val()).remove();
+                $("#profileBottomId" + $(listId).val()).remove();
+                $("#profileLeftId" + $(listId).val()).remove();
+                $("#profileRightId" + $(listId).val()).remove();
+                //$("#" + pid).remove();
 
+
+
+                //$("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
+                //$("#profileTopId").prepend($("<option/>", { id: "profileTopId" + nid, value: nid, text: txt }));
+                //$("#profileBottomId").prepend($("<option/>", { id: "profileBottomId" + nid, value: nid, text: txt }));
+                //$("#profileLeftId").prepend($("<option/>", { id: "profileLeftId" + nid, value: nid, text: txt }));
+                //$("#profileRightId").prepend($("<option/>", { id: "profileRightId" + nid, value: nid, text: txt }));
+                //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
+
+                //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
+                //$("#profileId").prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
+
+                //$("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
+
+                //$("#profileList").prepend($("<option/>", { text: txt }));
+                $("#profileList").prepend($('<option/>', { id: "profileId" + nid, value: nid, text: txt }));
+                $("#profileListTop").prepend($('<option/>', { id: "profileTopId" + nid, value: nid, text: txt }));
+
+                $("#profileListBottom").prepend($('<option/>', { id: "profileBottomId" + nid, value: nid, text: txt }));
+                $("#profileListLeft").prepend($('<option/>', { id: "profileLeftId" + nid, value: nid, text: txt }));
+                $("#profileListRight").prepend($('<option/>', { id: "profileRightId" + nid, value: nid, text: txt }));
+
+
+                $("#profileList").val(nid);
+                $("#profileListTop").val(nid);
+                $("#profileListBottom").val(nid);
+                $("#profileListLeft").val(nid);
+                $("#profileListRight").val(nid);
+
+                //alert("prependign");
+                //$("#profileListLeft").append( $('<option/>', { id: "profileLeftId" + profiles[i].Id, value: profiles[i].Id, text: txt }));
+
+                /*
+                $("#profileList").val(nid);
+                $("#profileListTop").val(nid);
+                $("#profileListBottom").val(nid);
+                $("#profileListLeft").val(nid);
+                $("#profileListRight").val(nid);*/
+
+
+                //$(listId).val(nid);
         }
     }
 }
