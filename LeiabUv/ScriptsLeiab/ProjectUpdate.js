@@ -824,194 +824,112 @@ function lbProjectUpdateFrameDimensions() {
 }
 
 
-// Update profile list items
-function UpdateProfileLists() {
+// Basic profile list management functions
+function lbAppendProfile(i) {       // i is the profile array index, not the profile id
 
-    // Update default profile list
-
-    // Beginning of list (used profiles)
-
-
-    // Middle of list (negative/null profile)
-
-
-    // End of list (unused profiles)
-    for (var i = 0; i < profiles.length; i++) {
-
-        $("#profileList").append(
-            $('<option/>', {
-                id: "profileId" + profiles[i].Id,
-                value: profiles[i].Id,
-                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
-            }));
-    }
-
-    // Update top profile list
-    for (var i = 0; i < profiles.length; i++) {
-
-        $("#profileListTop").append(
-            $('<option/>', {
-                id: "profileTopId" + profiles[i].Id,
-                value: profiles[i].Id,
-                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
-            }));
-    }
-
-    // Update bottom profile list
-    for (var i = 0; i < profiles.length; i++) {
-
-        $("#profileListBottom").append(
-            $('<option/>', {
-                id: "profileBottomId" + profiles[i].Id,
-                value: profiles[i].Id,
-                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
-            }));
-    }
-
-    // Update left profile list
-    for (var i = 0; i < profiles.length; i++) {
-
-        $("#profileListLeft").append(
-            $('<option/>', {
-                id: "profileLeftId" + profiles[i].Id,
-                value: profiles[i].Id,
-                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
-            }));
-    }
-
-    // Update right profile list
-    for (var i = 0; i < profiles.length; i++) {
-
-        $("#profileListRight").append(
-            $('<option/>', {
-                id: "profileRightId" + profiles[i].Id,
-                value: profiles[i].Id,
-                text: "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]"
-            }));
-    }
-}
-
-
-// Prepends a profile option to respective list
-// listId needs to be ID of profile list element
-// direction can be Top, Bottom, Left, Right or an empty string for the "default/main" profile list
-function lbPrependProfile(listId, direction) {
+    var pid = profiles[i].Id;
+    var ptext = "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]";
     
-    if ($(listId).val() != -1) {
+    $("#profileList").append($('<option/>', { id: "profileId" + pid, value: pid, text: ptext }));
 
-        var pid = "profile" + direction + "Id" + $(listId).val();
-        var nid = $(listId).val();
-        var txt = $("#" + pid).text();
-        
-
-        // Changes made on one profile list has to be done to each one
-        $("#" + pid).remove();
-
-        $(listId).prepend(
-            $('<option/>', {
-                id: "profile" + direction + "Id" + nid,
-                value: nid,
-                text: txt
-            }));
-
-        $(listId).val(nid);
-    }
-
+    $("#profileListTop").append($('<option/>', { id: "profileTopId" + pid, value: pid, text: ptext }));
+    $("#profileListBottom").append($('<option/>', { id: "profileBottomId" + pid, value: pid, text: ptext }));
+    $("#profileListLeft").append($('<option/>', { id: "profileLeftId" + pid, value: pid, text: ptext }));
+    $("#profileListRight").append($('<option/>', { id: "profileRightId" + pid, value: pid, text: ptext }));
 }
 
 
-// This is seriously broken, start again...
-function lbPrependProfiles() {
+function lbPrependProfile(i) {      // i is the profile id, not the profile array index
 
-    var listId = "";
-    var direction = "";
+    // Capture profile name/text
+    var txt = $("#profileId" + i).text();
 
-    var pid = -1;
-    var nid = -1;
-    var txt = "";
+    // Remove before prepending
+    $("#profileId" + i).remove();
 
-    for (var i = 0; i < 5; i++) {
+    $("#profileTopId" + i).remove();
+    $("#profileBottomId" + i).remove();
+    $("#profileLeftId" + i).remove();
+    $("#profileRightId" + i).remove();
 
-        switch (i) {
-            case 0:
-                listId = "#profileList"; direction = "";
-                break;
-            case 1:
-                listId = "#profileListTop"; direction = "Top";
-                break;
-            case 2:
-                listId = "#profileListBottom"; direction = "Bottom";
-                break;
-            case 3:
-                listId = "#profileListLeft"; direction = "Left";
-                break;
-            case 4:
-                listId = "#profileListRight"; direction = "Right";
-                break;
-        }
+    //alert("Prepending: " + txt);
 
-        if ($(listId).val() != -1 && $(listId).val() != null) {
+    // Prepend
+    $("#profileList").prepend($('<option/>', { id: "profileId" + i, value: i, text: txt }));
 
-            var pid = "profile" + direction + "Id" + $(listId).val();
-            var nid = $(listId).val();
-            var txt = $("#" + pid).text();
-
-            //if (txt == "") { alert("pid: " + pid + ", nid " + nid + ", empty string"); }
+    $("#profileListTop").prepend($('<option/>', { id: "profileTopId" + i, value: i, text: txt }));
+    $("#profileListBottom").prepend($('<option/>', { id: "profileBottomId" + i, value: i, text: txt }));
+    $("#profileListLeft").prepend($('<option/>', { id: "profileLeftId" + i, value: i, text: txt }));
+    $("#profileListRight").prepend($('<option/>', { id: "profileRightId" + i, value: i, text: txt }));
+}
 
 
-                // Changes made on one profile list has to be done to each one
-                $("#profileId" + $(listId).val()).remove();
-                $("#profileTopId" + $(listId).val()).remove();
-                $("#profileBottomId" + $(listId).val()).remove();
-                $("#profileLeftId" + $(listId).val()).remove();
-                $("#profileRightId" + $(listId).val()).remove();
-                //$("#" + pid).remove();
+// This function is called after lbPrependProfile to keep the selected profiles
+function lbResetSelectedProfile() {
+
+    var id = selector.selectedPane;
+
+    $("#profileList").val(project.panes[id].profileId);
+
+    $("#profileListTop").val(project.panes[id].profileTopId);
+    $("#profileListBottom").val(project.panes[id].profileBottomId);
+    $("#profileListLeft").val(project.panes[id].profileLeftId);
+    $("#profileListRight").val(project.panes[id].profileRightId);
+}
 
 
+// Update profile list items
+function lbInitProfileLists() {
 
-                //$("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
-                //$("#profileTopId").prepend($("<option/>", { id: "profileTopId" + nid, value: nid, text: txt }));
-                //$("#profileBottomId").prepend($("<option/>", { id: "profileBottomId" + nid, value: nid, text: txt }));
-                //$("#profileLeftId").prepend($("<option/>", { id: "profileLeftId" + nid, value: nid, text: txt }));
-                //$("#profileRightId").prepend($("<option/>", { id: "profileRightId" + nid, value: nid, text: txt }));
-                //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
+    for (var i = 0; i < profiles.length; i++) {
 
-                //$(listId).prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
-                //$("#profileId").prepend( $('<option/>', { id: "profile" + direction + "Id" + nid, value: nid, text: txt }));
+        //lbAppendProfile(profiles[i].Id, "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]");
+        lbAppendProfile(i);
 
-                //$("#profileId").prepend($("<option/>", { id: "profileId" + nid, value: nid, text: txt }));
-
-                //$("#profileList").prepend($("<option/>", { text: txt }));
-                $("#profileList").prepend($('<option/>', { id: "profileId" + nid, value: nid, text: txt }));
-                $("#profileListTop").prepend($('<option/>', { id: "profileTopId" + nid, value: nid, text: txt }));
-
-                $("#profileListBottom").prepend($('<option/>', { id: "profileBottomId" + nid, value: nid, text: txt }));
-                $("#profileListLeft").prepend($('<option/>', { id: "profileLeftId" + nid, value: nid, text: txt }));
-                $("#profileListRight").prepend($('<option/>', { id: "profileRightId" + nid, value: nid, text: txt }));
-
-
-                $("#profileList").val(nid);
-                $("#profileListTop").val(nid);
-                $("#profileListBottom").val(nid);
-                $("#profileListLeft").val(nid);
-                $("#profileListRight").val(nid);
-
-                //alert("prependign");
-                //$("#profileListLeft").append( $('<option/>', { id: "profileLeftId" + profiles[i].Id, value: profiles[i].Id, text: txt }));
-
-                /*
-                $("#profileList").val(nid);
-                $("#profileListTop").val(nid);
-                $("#profileListBottom").val(nid);
-                $("#profileListLeft").val(nid);
-                $("#profileListRight").val(nid);*/
-
-
-                //$(listId).val(nid);
-        }
+        // Init profile allocation
+        profiles[i].allocated = false;
     }
 }
 
+
+function lbUpdateProfileLists() {
+
+    // Find and "allocate" used profiles
+    var found = false;
+
+    for (var i = 0; i < profiles.length; i++) {
+
+        for(var x = 0; x < project.panes.length; x++) {
+
+            if (project.panes[x].profileId == profiles[i].Id) { found = true; }
+            if (project.panes[x].profileTopId == profiles[i].Id) { found = true; }
+            if (project.panes[x].profileBottomId == profiles[i].Id) { found = true; }
+            if (project.panes[x].profileLeftId == profiles[i].Id) { found = true; }
+            if (project.panes[x].profileRightId == profiles[i].Id) { found = true; }
+
+            if (found) {
+                profiles[i].allocated = true;
+                found = false;
+                break;
+            }
+        }
+        //project.panes[]
+    }
+
+    // Update lists
+    for (var i = 0; i < profiles.length; i++) {
+
+        // Prepend
+        if (profiles[i].allocated) {
+            lbPrependProfile(profiles[i].Id);
+            //alert("Prepending " + profiles[i].Id);
+        }
+        //alert("Prependign...-");
+        //lbPrependProfile(i) {      // i is the profile id, not the profile array index
+    }
+
+    lbResetSelectedProfile();
+}
 
 
 // Updates pane Profile and Ug
@@ -1063,15 +981,8 @@ function lbProjectUpdateProfileData() {
     } else {
         project.panes[paneId].profileRightId = $("#profileListRight").val();
     }
-    //lbPrependProfile("#profileListRight", "Right");
 
-    //lbPrependProfile("#profileList", "");                               // Prepend selected profile
-    //lbPrependProfile("#profileListTop", "Top");
-    //lbPrependProfile("#profileListBottom", "Bottom");
-    //lbPrependProfile("#profileListLeft", "Left");
-    //lbPrependProfile("#profileListRight", "Right");
-
-    lbPrependProfiles();
+    lbUpdateProfileLists();
 }
 
 
@@ -1127,13 +1038,7 @@ function lbProjectUpdateAllProfileData() {
             project.panes[i].profileRightId = $("#profileListRight").val();
         }
 
-        //lbPrependProfile("#profileList", "");                               // Prepend selected profile
-        //lbPrependProfile("#profileListTop", "Top");
-        //lbPrependProfile("#profileListBottom", "Bottom");
-        //lbPrependProfile("#profileListLeft", "Left");
-        //lbPrependProfile("#profileListRight", "Right");
-
-        lbPrependProfiles();
+        lbUpdateProfileLists();
     }
 }
 
