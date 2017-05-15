@@ -169,7 +169,7 @@ function lbGetSelectedPaneHeight() {
 
 function lbGetSelectedProfile() {               // *** ### *** This shouldnt work like this, consider the select dropdown list
     var paneId = selector.selectedPane;
-    return project.panes[paneId].profileId;
+    return -1;//project.panes[paneId].profileId;        // profileId should always be -1
 }
 
 function lbGetSelectedTopProfile() {
@@ -869,7 +869,8 @@ function lbResetSelectedProfile() {
 
     var id = selector.selectedPane;
 
-    $("#profileList").val(project.panes[id].profileId);
+    //$("#profileList").val(project.panes[id].profileId);
+    $("#profileList").val(-1);
 
     $("#profileListTop").val(project.panes[id].profileTopId);
     $("#profileListBottom").val(project.panes[id].profileBottomId);
@@ -901,7 +902,7 @@ function lbUpdateProfileLists() {
 
         for(var x = 0; x < project.panes.length; x++) {
 
-            if (project.panes[x].profileId == profiles[i].Id) { found = true; }
+            //if (project.panes[x].profileId == profiles[i].Id) { found = true; }
             if (project.panes[x].profileTopId == profiles[i].Id) { found = true; }
             if (project.panes[x].profileBottomId == profiles[i].Id) { found = true; }
             if (project.panes[x].profileLeftId == profiles[i].Id) { found = true; }
@@ -944,7 +945,7 @@ function lbProjectUpdateProfileData() {
         return;
     }
 
-    project.panes[paneId].profileId = $("#profileList").val();              // Update main profile
+    //project.panes[paneId].profileId = $("#profileList").val();              // Update main profile
     //lbPrependProfile("#profileList", "");                                   // Prepend selected profile
     
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
@@ -988,7 +989,7 @@ function lbProjectUpdateProfileData() {
 
 
 // Updates all pane profiles and Ug
-function lbProjectUpdateAllProfileData() {
+function lbProjectUpdateAllProfileData() {  // This functions is currently broken *** *** 
 
     //var nanError = false;
     var paneId = selector.selectedPane;
@@ -1002,8 +1003,12 @@ function lbProjectUpdateAllProfileData() {
 
     // Loop through profiles
     for (var i = 0; i < selector.nrOfPanes; i++) {
-        project.panes[i].ug = u;                                            // Update default profile
-        project.panes[i].profileId = $("#profileList").val();
+
+        if (project.panes[i].ug == 0.0) {       // Update only on "unset" u values
+            project.panes[i].ug = u;
+        }
+        
+        //project.panes[i].profileId = $("#profileList").val();
         
 
         // Update direction specific profiles
@@ -1155,7 +1160,9 @@ function lbUpdateInputButtons() {
 
     // Update
     // This should also validate profile changes
-    if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val() || 
+    //if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val() ||
+    // *** *** Not sure about this change, needs testing
+    if (project.panes[id].ug != ug || project.panes[id].profileId != -1 ||
         project.panes[id].profileTopId != $("#profileListTop").val() || project.panes[id].profileBottomId != $("#profileListBottom").val() ||
         project.panes[id].profileLeftId != $("#profileListLeft").val() || project.panes[id].profileRightId != $("#profileListRight").val()) {
 
