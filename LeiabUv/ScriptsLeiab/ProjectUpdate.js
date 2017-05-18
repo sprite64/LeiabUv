@@ -987,7 +987,6 @@ function lbProjectUpdateProfileData() {
 }
 
 
-
 // Updates all pane profiles and Ug
 function lbProjectUpdateAllProfileData() {  // This functions is currently broken *** *** 
 
@@ -1003,48 +1002,47 @@ function lbProjectUpdateAllProfileData() {  // This functions is currently broke
 
     // Loop through profiles
     for (var i = 0; i < selector.nrOfPanes; i++) {
-
+        
         if (project.panes[i].ug == 0.0) {       // Update only on "unset" u values
             project.panes[i].ug = u;
         }
         
-        //project.panes[i].profileId = $("#profileList").val();
-        
-
         // Update direction specific profiles
-        if ($("#profileListTop").val() == -1) {                          // Update top profile
-            project.panes[i].profileTopId = $("#profileList").val();
-            $("#profileListTop").val($("#profileList").val());
-        } else {
-            project.panes[i].profileTopId = $("#profileListTop").val();
-        }
-        
-
-        if ($("#profileListBottom").val() == -1) {                       // Update bottom profile
-            project.panes[i].profileBottomId = $("#profileList").val();
-            $("#profileListBottom").val($("#profileList").val());
-        } else {
-            project.panes[i].profileBottomId = $("#profileListBottom").val();
-        }
-        
-
-        if ($("#profileListLeft").val() == -1) {                         // Update left profile
-            project.panes[i].profileLeftId = $("#profileList").val();
-            $("#profileListLeft").val($("#profileList").val());
-        } else {
-            project.panes[i].profileLeftId = $("#profileListLeft").val();
-        }
-        
-
-        if ($("#profileListRight").val() == -1) {                        // Update right profile
-            project.panes[i].profileRightId = $("#profileList").val();
-            $("#profileListRight").val($("#profileList").val());
-        } else {
-            project.panes[i].profileRightId = $("#profileListRight").val();
+        // These if statements could be rewritten, right now they work but could be refined a bit more
+        if (project.panes[i].profileTopId == -1) {                                      // Update top
+            if ($("#profileListTop").val() != -1) {
+                project.panes[i].profileTopId = $("#profileListTop").val();
+            } else if ($("#profileList").val() != -1) {
+                project.panes[i].profileTopId = $("#profileList").val();
+            }
         }
 
-        lbUpdateProfileLists();
+        if (project.panes[i].profileBottomId == -1) {                                      // Update bottom
+            if ($("#profileListBottom").val() != -1) {
+                project.panes[i].profileBottomId = $("#profileListBottom").val();
+            } else {
+                project.panes[i].profileBottomId = $("#profileList").val();
+            }
+        }
+
+        if (project.panes[i].profileLeftId == -1) {                                      // Update left
+            if ($("#profileListLeft").val() != -1) {
+                project.panes[i].profileLeftId = $("#profileListLeft").val();
+            } else {
+                project.panes[i].profileLeftId = $("#profileList").val();
+            }
+        }
+
+        if (project.panes[i].profileRightId == -1) {                                      // Update right
+            if ($("#profileListRight").val() != -1) {
+                project.panes[i].profileRightId = $("#profileListRight").val();
+            } else {
+                project.panes[i].profileRightId = $("#profileList").val();
+            }
+        }
     }
+
+    lbUpdateProfileLists();
 }
 
 
@@ -1162,7 +1160,7 @@ function lbUpdateInputButtons() {
     // This should also validate profile changes
     //if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val() ||
     // *** *** Not sure about this change, needs testing
-    if (project.panes[id].ug != ug || project.panes[id].profileId != -1 ||
+    if (project.panes[id].ug != ug || $("#profileList").val() != -1 || //project.panes[id].profileId != -1 ||
         project.panes[id].profileTopId != $("#profileListTop").val() || project.panes[id].profileBottomId != $("#profileListBottom").val() ||
         project.panes[id].profileLeftId != $("#profileListLeft").val() || project.panes[id].profileRightId != $("#profileListRight").val()) {
 
