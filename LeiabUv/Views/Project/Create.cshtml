@@ -43,7 +43,7 @@
                     <!-- div class="form-group" -->
                     <br />
                     <span>
-                        <label style="color: #ccc; width: 50px;">Profil</label>
+                        <label style="color: #ccc; width: 60px;">Produkt</label>
                         <select id="profileList" class="form-control" style="display: inline-block; width: 160px; color: #000;">
                             <option value="-1">-</option>
                         </select>
@@ -51,23 +51,20 @@
                         <div style="border: 1px solid #ccc; border-top-width: 4px; width: 23px; height: 23px; margin-left: 16px; display: inline-block;">
                             <span class="glyphicon glyphicon-arrow-up" style="color: #ccc; margin-left: 3px;"></span>
                         </div>
-                        <select id="profileListTop" class="form-control" style="display: inline-block; width: 160px; color: #000;">
-                            <option value="-1">-</option>
-                        </select>
+                        <div style="color: #ccc; display: inline-block;">up</div>
 
                         <div style="border: 1px solid #ccc; border-left-width: 4px; width: 23px; height: 23px; margin-left: 16px; display: inline-block;">
                             <span class="glyphicon glyphicon-arrow-left" style="color: #ccc; margin-left: 3px;"></span>
                         </div>
-                        <select id="profileListLeft" class="form-control" style="display: inline-block; width: 160px; color: #000;">
-                            <option value="-1">-</option>
-                        </select>
+                        <div style="color: #ccc; display: inline-block;">left</div>
+
                     </span>
 
                     <br />
 
                     <!-- >label style="color: #ccc;">Ug</!--label><br / -->
                     <span>
-                        <label style="color: #ccc; width: 50px;">Ug</label>
+                        <label style="color: #ccc; width: 60px;">Ug</label>
                         <input id="paneUg" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />
                         <!--<input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" />-->
                         <!-- label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</!--label -->
@@ -75,18 +72,14 @@
                         <div style="border: 1px solid #ccc; border-bottom-width: 4px; width: 23px; height: 23px; margin-left: 16px; display: inline-block;">
                             <span class="glyphicon glyphicon-arrow-down" style="color: #ccc; margin-left: 3px;"></span>
                         </div>
-                        <select id="profileListBottom" class="form-control" style="display: inline-block; width: 160px; color: #000;">
-                            <option value="-1">-</option>
-                        </select>
+                        <div style="color: #ccc; display: inline-block;">down</div>
+
 
                         <div style="border: 1px solid #ccc; border-right-width: 4px; width: 23px; height: 23px; margin-left: 16px; display: inline-block;">
                             <span class="glyphicon glyphicon-arrow-right" style="color: #ccc; margin-left: 3px;"></span>
                         </div>
+                        <div style="color: #ccc; display: inline-block;">right</div>
 
-                        <!-- >span class="glyphicon glyphicon-arrow-right" style="color: #ccc; margin-left: 16px;"></!--span -->
-                        <select id="profileListRight" class="form-control" style="display: inline-block; width: 160px; color: #000;">
-                            <option value="-1">-</option>
-                        </select>
                     </span>
                     <br />
 
@@ -118,9 +111,9 @@
                     -->
 
                 <!-- Pane width/height input -->
-                <label style="color: #ccc;">Luftmått</label><br />
-                <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;"/><label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
-                <span><label style="color: #ccc; width: 50px;">Höjd: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label id="lblPaneHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span>
+                <label style="color: #ccc;">Postplacering</label><br />
+                <span><label style="color: #ccc; width: 50px;">X: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;"/><label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
+                <span><label style="color: #ccc; width: 50px;">Y: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label id="lblPaneHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span>
                 <br />
                 <button id="btnPaneDimensionsUpdate" class="btn btn-default">Uppdatera</button>
 

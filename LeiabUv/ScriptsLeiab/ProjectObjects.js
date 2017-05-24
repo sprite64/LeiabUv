@@ -28,12 +28,13 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
     this.height = height;
 
     this.ug = 0.0;                  // Pane Ug value
-    //this.profileId = -1;            // Pane profile
+    this.profileId = -1;            // Pane profile
 
+    /*
     this.profileTopId = -1;
     this.profileBottomId = -1;
     this.profileLeftId = -1;
-    this.profileRightId = -1;
+    this.profileRightId = -1;*/
 }
 
 
