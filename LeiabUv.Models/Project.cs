@@ -16,7 +16,7 @@ namespace LeiabUv.Models
         [Required]
         public int rowSpan { get; set; }
 
-        public Profile profile { get; set; }
+        public Product product { get; set; }
         public double Ug { get; set; }                      // Customizable Ug value that overrides the profile Ug value
 
         /*

@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace LeiabUv.Controllers
 {
-    public class ProfileController : Controller
+    public class ProductController : Controller
     {
         // GET: Profile
         public ActionResult Index()
@@ -33,10 +33,10 @@ namespace LeiabUv.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateWindow(Profile p)
+        public ActionResult CreateWindow(Product p)
         {
             Context ctx = new Context();
-            
+
             p.door = false;
 
             p.CreatedBy = "Admin";
@@ -47,7 +47,7 @@ namespace LeiabUv.Controllers
 
             if (ModelState.IsValid)
             {
-                ctx.Profiles.Add(p);
+                ctx.Products.Add(p);
                 ctx.SaveChanges();
             }
 
@@ -60,24 +60,24 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
 
             // Select window profiles
-            var model = ctx.Profiles.ToList().Where(m => m.door == false);//.OrderBy(m => m.door);
+            var model = ctx.Products.ToList().Where(m => m.door == false);//.OrderBy(m => m.door);
 
             return View(model);
         }
 
-        
+
         public ActionResult CreateDoor()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreateDoor(Profile p)
+        public ActionResult CreateDoor(Product p)
         {
             Context ctx = new Context();
 
             p.door = true;
-            
+
             p.CreatedBy = "Admin";
             p.Created = System.DateTime.Now;
 
@@ -86,7 +86,7 @@ namespace LeiabUv.Controllers
 
             if (ModelState.IsValid)
             {
-                ctx.Profiles.Add(p);
+                ctx.Products.Add(p);
                 ctx.SaveChanges();
             }
 
@@ -98,37 +98,37 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
 
             // Select window profiles
-            var model = ctx.Profiles.ToList().Where(m => m.door == true);
+            var model = ctx.Products.ToList().Where(m => m.door == true);
 
             return View(model);
         }
-        
+
 
         public ActionResult Show()
         {
             Context ctx = new Context();
 
-            var model = ctx.Profiles.ToList().OrderBy(m => m.door);
+            var model = ctx.Products.ToList().OrderBy(m => m.door);
 
             //model.OrderBy(m => m.door)
 
             return View(model);
         }
-        
+
 
         // Not currently in use
         [HttpGet]
         public JsonResult Save(string json)
         {
             Context ctx = new Context();
-            Profile p = JsonConvert.DeserializeObject<Profile>(json);
+            Product p = JsonConvert.DeserializeObject<Product>(json);
 
-            if (ctx.Profiles.Any(d => d.Name == p.Name))
+            if (ctx.Products.Any(d => d.Name == p.Name))
             {
                 return Json("Namnet används redan, välj ett unikt namn.", JsonRequestBehavior.AllowGet);
             }
-            
-            ctx.Profiles.Add(p);
+
+            ctx.Products.Add(p);
             ctx.SaveChanges();
 
             return Json("ok", JsonRequestBehavior.AllowGet);

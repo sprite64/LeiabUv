@@ -82,13 +82,13 @@ namespace LeiabUv.Controllers
 
         // Used to populate profile select list
         [HttpGet]
-        public ActionResult GetProfiles(int window)     // Template Id
+        public ActionResult GetProducts(int window)     // Template Id
         {
             Context ctx = new Context();
             
             if(window == 1)
             {
-                var profiles = ctx.Profiles.Where(m => m.door == false).Select(d => new ProfileViewModel
+                var profiles = ctx.Products.Where(m => m.door == false).Select(d => new ProductViewModel
                 {
                     Id = d.Id,
                     Name = d.Name,
@@ -100,18 +100,17 @@ namespace LeiabUv.Controllers
                     Tp = d.Tp,
                     Up = d.Up,
                     Yp = d.Yp,
-
-                    Tr = d.Tr,
+                    
                     Ug = d.Ug,
 
                     Glass = d.Glass,
                     door = d.door,
                     //info = d.info
-                }).ToList<ProfileViewModel>();
+                }).ToList<ProductViewModel>();
 
                 return Json(profiles, JsonRequestBehavior.AllowGet);
             } else {
-                var profiles = ctx.Profiles.Where(m => m.door == true).Select(d => new ProfileViewModel
+                var products = ctx.Products.Where(m => m.door == true).Select(d => new ProductViewModel
                 {
                     Id = d.Id,
                     Name = d.Name,
@@ -123,16 +122,15 @@ namespace LeiabUv.Controllers
                     Tp = d.Tp,
                     Up = d.Up,
                     Yp = d.Yp,
-
-                    Tr = d.Tr,
+                    
                     Ug = d.Ug,
 
                     Glass = d.Glass,
                     door = d.door,
                     //info = d.info
-                }).ToList<ProfileViewModel>();
+                }).ToList<ProductViewModel>();
 
-                return Json(profiles, JsonRequestBehavior.AllowGet);
+                return Json(products, JsonRequestBehavior.AllowGet);
             }
             
             return Json(null, JsonRequestBehavior.AllowGet);
