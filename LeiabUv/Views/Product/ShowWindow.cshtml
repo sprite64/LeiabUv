@@ -1,11 +1,11 @@
-﻿@model IEnumerable<LeiabUv.Models.Profile>
+﻿@model IEnumerable<LeiabUv.Models.Product>
 
 @{
-    ViewBag.Title = "Show";
+    ViewBag.Title = "ShowWindow";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Show</h2>
+<h2>ShowWindow</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -33,18 +33,14 @@
         <th>
             @Html.DisplayNameFor(model => model.Yp)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Tr)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.Ug)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Glass)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.door)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.info)
         </th>
@@ -86,18 +82,14 @@
         <td>
             @Html.DisplayFor(modelItem => item.Yp)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tr)
-        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.Ug)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Glass)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.door)
-        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.info)
         </td>

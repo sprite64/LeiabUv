@@ -204,16 +204,15 @@
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Show.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
-    <Content Include="Views\Profile\CreateWindow.cshtml" />
-    <Content Include="Views\Profile\CreateDoor.cshtml" />
-    <Content Include="Views\Profile\Show.cshtml" />
-    <Content Include="Views\Profile\ShowWindow.cshtml" />
-    <Content Include="Views\Profile\ShowDoor.cshtml" />
+    <Content Include="Views\Product\CreateDoor.cshtml" />
+    <Content Include="Views\Product\CreateWindow.cshtml" />
+    <Content Include="Views\Product\Show.cshtml" />
+    <Content Include="Views\Product\ShowDoor.cshtml" />
+    <Content Include="Views\Product\ShowWindow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Product\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -107,11 +107,9 @@ namespace LeiabUv.Controllers
         public ActionResult Show()
         {
             Context ctx = new Context();
-
+            
             var model = ctx.Products.ToList().OrderBy(m => m.door);
-
-            //model.OrderBy(m => m.door)
-
+            
             return View(model);
         }
 
