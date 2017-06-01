@@ -916,6 +916,16 @@ function lbProjectUpdateFrameDimensions() {
     project.paneHeightAgeCounter++;
 
     lbUpdatePaneHeightFromHeightArray();
+
+    // *** Update pane data
+    var paneId = selector.selectedPane;
+    if (project.columns == 1 || project.columns == project.panes[paneId].colSpan) {
+        $("#paneWidth").val(project.frameWidth);
+    }
+
+    if (project.rows == 1 || project.rows == project.panes[paneId].rowSpan) {
+        $("#paneHeight").val(project.frameHeight);
+    }
 }
 
 

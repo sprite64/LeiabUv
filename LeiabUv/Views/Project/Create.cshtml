@@ -239,7 +239,7 @@
         }
 
         // Populate profile select list
-        $.getJSON("/Project/GetProfiles/?window=" + @ViewBag.ProjectType, function (data) {
+        $.getJSON("/Project/GetProducts/?window=" + @ViewBag.ProjectType, function (data) {
             //alert(data.length);
             profiles = data;
 
