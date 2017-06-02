@@ -6,7 +6,7 @@
         Karm    - Frame
         Post    - Post
         Luft    - Pane
-        Profil  - Profile
+        Produkt - Product
         Mall    - Template
         Båge    - -
 */
@@ -58,19 +58,19 @@ $(function () {
 
     $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
     $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
-    $("#btnProfileUpdate").click(function () { lbProjectUpdateProfileData(); });
-    $("#btnProfileUpdateAll").click(function () { lbProjectUpdateAllProfileData(); });
+    $("#btnProductUpdate").click(function () { lbProjectUpdateProductData(); });
+    $("#btnProductUpdateAll").click(function () { lbProjectUpdateAllProductData(); });
 
     $("#btnTestAreaParts").click(function () { lbGetPaneAreaParts(selector.selectedPane) });
 
     // Input change events
     // Not in use, probably wont be either
     //$("#paneWidth").change(function () { lbProjectInputChange(); });
-    $("#profileList").change(function () {
-        //var id = document.getElementById("profileList").value;
-        lbProjectChangeProfile();
-        //var id = $("#profileList").val();
-        //alert("Profile change! " + id);
+    $("#productList").change(function () {
+        //var id = document.getElementById("productList").value;
+        lbProjectChangeProduct();
+        //var id = $("#productList").val();
+        //alert("Product change! " + id);
     });
 });
 

@@ -80,7 +80,7 @@ namespace LeiabUv.Controllers
             return Json(template, JsonRequestBehavior.AllowGet);
         }
 
-        // Used to populate profile select list
+        // Used to populate product select list
         [HttpGet]
         public ActionResult GetProducts(int window)     // Template Id
         {
@@ -88,7 +88,7 @@ namespace LeiabUv.Controllers
             
             if(window == 1)
             {
-                var profiles = ctx.Products.Where(m => m.door == false).Select(d => new ProductViewModel
+                var products = ctx.Products.Where(m => m.door == false).Select(d => new ProductViewModel
                 {
                     Id = d.Id,
                     Name = d.Name,
@@ -108,7 +108,7 @@ namespace LeiabUv.Controllers
                     //info = d.info
                 }).ToList<ProductViewModel>();
 
-                return Json(profiles, JsonRequestBehavior.AllowGet);
+                return Json(products, JsonRequestBehavior.AllowGet);
             } else {
                 var products = ctx.Products.Where(m => m.door == true).Select(d => new ProductViewModel
                 {

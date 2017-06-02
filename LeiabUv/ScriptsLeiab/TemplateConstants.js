@@ -6,7 +6,7 @@
         Karm    - Frame
         Post    - Post
         Luft    - Pane
-        Profil  - Profile
+        Produkt - Product
         Mall    - Template
         Båge    - -
 */

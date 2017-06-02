@@ -6,7 +6,7 @@
         Karm    - Frame
         Post    - Post
         Luft    - Pane
-        Profil  - Profile
+        Produkt - Product
         Mall    - Template
         Båge    - -
 */
@@ -220,7 +220,7 @@ function lbRenderSelectorDebug() {
         ctx.fillText("Ug " + uText, x + tw + 3, y);
         //ctx.fillText(hText + "", x, y + 16);
 
-        // Render profile null or not
+        // Render product null or not
         // ... Code ...
     }
 

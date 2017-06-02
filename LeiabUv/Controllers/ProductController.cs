@@ -20,13 +20,13 @@ namespace LeiabUv.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: Profile
+        // GET: Product
         public ActionResult Index()
         {
             return View();
         }
 
-        // Create window profile
+        // Create window product
         public ActionResult CreateWindow()
         {
             return View();
@@ -59,7 +59,7 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
 
-            // Select window profiles
+            // Select window products
             var model = ctx.Products.ToList().Where(m => m.door == false);//.OrderBy(m => m.door);
 
             return View(model);
@@ -97,7 +97,7 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
 
-            // Select window profiles
+            // Select window products
             var model = ctx.Products.ToList().Where(m => m.door == true);
 
             return View(model);

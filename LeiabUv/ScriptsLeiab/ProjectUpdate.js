@@ -6,7 +6,7 @@
         Karm    - Frame
         Post    - Post
         Luft    - Pane
-        Profil  - Profile
+        Produkt - Product
         Mall    - Template
         Båge    - -
 */
@@ -130,21 +130,13 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 $("#paneWidth").val(lbGetSelectedPaneWidth());
                 $("#paneHeight").val(lbGetSelectedPaneHeight());
 
-                // Update profile and Ug value
-                //$("#profileList").val(lbGetSelectedProfile());
+                // Update product and Ug value
+                //$("#productList").val(lbGetSelectedProduct());
                 $("#paneUg").val(lbGetSelectedUg());
 
-                var profileId = lbGetSelectedProfile();
-                $("#profileList").val(profileId);
+                var productId = lbGetSelectedProduct();
+                $("#productList").val(productId);
 
-                // *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### *** ### 
-                // Update T/B/L/R profile inputs
-                /*
-                $("#profileListTop").val(lbGetSelectedTopProfile());
-                $("#profileListBottom").val(lbGetSelectedBottomProfile());
-                $("#profileListLeft").val(lbGetSelectedLeftProfile());
-                $("#profileListRight").val(lbGetSelectedRightProfile());
-                */
             }
 
             break;
@@ -169,10 +161,10 @@ function lbGetSelectedPaneHeight() {
     return project.panes[paneId].height;
 }
 
-function lbGetSelectedProfile() {               // *** ### *** This shouldnt work like this, consider the select dropdown list
+function lbGetSelectedProduct() {               // *** ### *** This shouldnt work like this, consider the select dropdown list
     var paneId = selector.selectedPane;
-    return project.panes[paneId].profileId;        // profileId should always be -1
-    //return -1;//project.panes[paneId].profileId;        // profileId should always be -1
+    return project.panes[paneId].productId;        // productId should always be -1
+    //return -1;//project.panes[paneId].productId;        // productId should always be -1
 }
 
 
@@ -542,18 +534,18 @@ function lbProjectUpdatePaneDimensions() {
 
 
 // Gets pane area parts, frame, post and pane
-// Returns a PaneAreaParts object on success, -1 on missing profile
+// Returns a PaneAreaParts object on success, -1 on missing product
 function lbGetPaneAreaParts2(paneId) {
 
-    var profileId = project.panes[paneId].profileId;
+    var productId = project.panes[paneId].productId;
 
-    if(profileId == -1) { 
-        alert("Profile Id is -1, break operation");
+    if (productId == -1) {
+        alert("Product Id is -1, break operation");
         return - 1;
     }
 
     var parts = new lbPaneAreaParts();
-    var profile = profiles[profileId];
+    var product = products[productId];
     var pane = project.panes[paneId];
 
     // Calc Total area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
@@ -562,30 +554,30 @@ function lbGetPaneAreaParts2(paneId) {
 
     // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     if (pane.yIndex == 0) {                                 // Top frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area1: " + parts.frameArea);
     }
 
     if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area2: " + parts.frameArea);
     }
 
     if (pane.xIndex == 0) {                                 // Left frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area3: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area4: " + parts.frameArea)
     }
 
     if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area5: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area6: " + parts.frameArea)
     }
 
@@ -595,41 +587,41 @@ function lbGetPaneAreaParts2(paneId) {
     // Half option is not yet implemented
 
     if (pane.yIndex > 0) {                                  // Top post
-        parts.postArea += pane.width * profile.Tp;          // Calc total post area
+        parts.postArea += pane.width * product.Tp;          // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }      // Remove [frame * post] areas
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }      // Remove [frame * post] areas
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
         
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }    // Remove [post * post] area left
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }   // Remove [post * post] area right
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }    // Remove [post * post] area left
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }   // Remove [post * post] area right
     }
 
     if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
-        parts.postArea += pane.width * profile.Tp;           // Calc total post area
+        parts.postArea += pane.width * product.Tp;           // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
 
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }
     }
 
     
     // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
     if (pane.xIndex > 0) {                                  // Left post
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
         
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
     // Right post
     if (pane.xIndex + pane.colSpan < project.columns) {
         
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
 
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
 
@@ -642,20 +634,20 @@ function lbGetPaneAreaParts2(paneId) {
 
 
 // Gets pane area parts, frame, post and pane
-// Returns a PaneAreaParts object on success, -1 on missing profile
+// Returns a PaneAreaParts object on success, -1 on missing product
 
-// This calculates by separate top/bottom/left/right profiles
+// This calculates by separate top/bottom/left/right products
 function lbGetPaneAreaParts1(paneId) {
 
-    var profileId = project.panes[paneId].profileId;
+    var productId = project.panes[paneId].productId;
 
-    if (profileId == -1) {
-        alert("Profile Id is -1, break operation");
+    if (productId == -1) {
+        alert("Product Id is -1, break operation");
         return -1;
     }
 
     var parts = new lbPaneAreaParts();
-    var profile = profiles[profileId];
+    var product = products[productId];
     var pane = project.panes[paneId];
 
     var postMod = 1.0;      // Set to either 0.5 or 1.0 for post area calculation
@@ -668,30 +660,30 @@ function lbGetPaneAreaParts1(paneId) {
 
     // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     if (pane.yIndex == 0) {                                 // Top frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area1: " + parts.frameArea);
     }
 
     if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area2: " + parts.frameArea);
     }
 
     if (pane.xIndex == 0) {                                 // Left frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area3: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area4: " + parts.frameArea)
     }
 
     if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area5: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area6: " + parts.frameArea)
     }
 
@@ -702,41 +694,41 @@ function lbGetPaneAreaParts1(paneId) {
     // Use postMod var for halfing posts
 
     if (pane.yIndex > 0) {                                  // Top post
-        parts.postArea += pane.width * profile.Tp;          // Calc total post area
+        parts.postArea += pane.width * product.Tp;          // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }      // Remove [frame * post] areas
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }      // Remove [frame * post] areas
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
 
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }    // Remove [post * post] area left
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }   // Remove [post * post] area right
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }    // Remove [post * post] area left
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }   // Remove [post * post] area right
     }
 
     if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
-        parts.postArea += pane.width * profile.Tp;           // Calc total post area
+        parts.postArea += pane.width * product.Tp;           // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
 
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }
     }
 
 
     // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
     if (pane.xIndex > 0) {                                  // Left post
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
 
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
     // Right post
     if (pane.xIndex + pane.colSpan < project.columns) {
 
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
 
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
 
@@ -749,20 +741,20 @@ function lbGetPaneAreaParts1(paneId) {
 
 
 // Gets pane area parts, frame, post and pane
-// Returns a PaneAreaParts object on success, -1 on missing profile
+// Returns a PaneAreaParts object on success, -1 on missing product
 
-// This calculates by separate top/bottom/left/right profiles
+// This calculates by separate top/bottom/left/right products
 function lbGetPaneAreaParts(paneId) {
 
-    var profileId = project.panes[paneId].profileId;
+    var productId = project.panes[paneId].productId;
 
-    if (profileId == -1) {
-        alert("Profile Id is -1, break operation");
+    if (productId == -1) {
+        alert("Product Id is -1, break operation");
         return -1;
     }
 
     var parts = new lbPaneAreaParts();
-    var profile = profiles[profileId];
+    var product = products[productId];
     var pane = project.panes[paneId];
 
     var postMod = 1.0;      // Set to either 0.5 or 1.0 for post area calculation
@@ -775,30 +767,30 @@ function lbGetPaneAreaParts(paneId) {
 
     // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     if (pane.yIndex == 0) {                                 // Top frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area1: " + parts.frameArea);
     }
 
     if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
-        parts.frameArea += pane.width * profile.Tf;
+        parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area2: " + parts.frameArea);
     }
 
     if (pane.xIndex == 0) {                                 // Left frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area3: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area4: " + parts.frameArea)
     }
 
     if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
-        parts.frameArea += pane.height * profile.Tf;
+        parts.frameArea += pane.height * product.Tf;
 
-        if (pane.yIndex == 0) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area5: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= profile.Tf * 2; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
         //alert("Frame Area6: " + parts.frameArea)
     }
 
@@ -809,41 +801,41 @@ function lbGetPaneAreaParts(paneId) {
     // Use postMod var for halfing posts
 
     if (pane.yIndex > 0) {                                  // Top post
-        parts.postArea += pane.width * profile.Tp;          // Calc total post area
+        parts.postArea += pane.width * product.Tp;          // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }      // Remove [frame * post] areas
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }      // Remove [frame * post] areas
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
 
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }    // Remove [post * post] area left
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }   // Remove [post * post] area right
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }    // Remove [post * post] area left
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }   // Remove [post * post] area right
     }
 
     if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
-        parts.postArea += pane.width * profile.Tp;           // Calc total post area
+        parts.postArea += pane.width * product.Tp;           // Calc total post area
 
-        if (pane.xIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
 
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= profile.Tp * profile.Tp; }
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= profile.Tp * profile.Tp; }
+        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }
+        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }
     }
 
 
     // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
     if (pane.xIndex > 0) {                                  // Left post
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
 
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
     // Right post
     if (pane.xIndex + pane.colSpan < project.columns) {
 
-        parts.postArea += pane.height * profile.Tp;
+        parts.postArea += pane.height * product.Tp;
 
-        if (pane.yIndex == 0) { parts.postArea -= profile.Tf * profile.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= profile.Tf * profile.Tp; }
+        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
+        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
     }
 
 
@@ -929,66 +921,66 @@ function lbProjectUpdateFrameDimensions() {
 }
 
 
-// Basic profile list management functions
-function lbAppendProfile(i) {       // i is the profile array index, not the profile id
+// Basic product list management functions
+function lbAppendProduct(i) {       // i is the product array index, not the product id
 
-    var pid = profiles[i].Id;
-    var ptext = "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]";
+    var pid = products[i].Id;
+    var ptext = "[" + products[i].Name + "], [" + products[i].Glass + "]";
     
-    $("#profileList").append($('<option/>', { id: "profileId" + pid, value: pid, text: ptext }));
+    $("#productList").append($('<option/>', { id: "productId" + pid, value: pid, text: ptext }));
 }
 
 
-function lbPrependProfile(i) {      // i is the profile id, not the profile array index
+function lbPrependProduct(i) {      // i is the product id, not the product array index
 
-    // Capture profile name/text
-    var txt = $("#profileId" + i).text();
+    // Capture product name/text
+    var txt = $("#productId" + i).text();
 
     // Remove before prepending
-    $("#profileId" + i).remove();
+    $("#productId" + i).remove();
 
     // Prepend
-    $("#profileList").prepend($('<option/>', { id: "profileId" + i, value: i, text: txt }));
+    $("#productList").prepend($('<option/>', { id: "productId" + i, value: i, text: txt }));
 }
 
 
-// This function is called after lbPrependProfile to keep the selected profiles
-function lbResetSelectedProfile() {
+// This function is called after lbPrependProduct to keep the selected products
+function lbResetSelectedProduct() {
 
     var id = selector.selectedPane;
 
-    //$("#profileList").val(project.panes[id].profileId);
-    $("#profileList").val(project.panes[id].profileId);
+    //$("#productList").val(project.panes[id].productId);
+    $("#productList").val(project.panes[id].productId);
 }
 
 
-// Update profile list items
-function lbInitProfileLists() {
+// Update product list items
+function lbInitProductLists() {
 
-    for (var i = 0; i < profiles.length; i++) {
+    for (var i = 0; i < products.length; i++) {
 
-        //lbAppendProfile(profiles[i].Id, "[" + profiles[i].Name + "], [" + profiles[i].Glass + "]");
-        lbAppendProfile(i);
+        //lbAppendProduct(products[i].Id, "[" + products[i].Name + "], [" + products[i].Glass + "]");
+        lbAppendProduct(i);
 
-        // Init profile allocation
-        profiles[i].allocated = false;
+        // Init product allocation
+        products[i].allocated = false;
     }
 }
 
 
-function lbUpdateProfileLists() {
+function lbUpdateProductLists() {
 
-    // Find and "allocate" used profiles
+    // Find and "allocate" used products
     var found = false;
 
-    for (var i = 0; i < profiles.length; i++) {
+    for (var i = 0; i < products.length; i++) {
 
         for(var x = 0; x < project.panes.length; x++) {
 
-            if (project.panes[x].profileId == profiles[i].Id) { found = true; }
+            if (project.panes[x].productId == products[i].Id) { found = true; }
 
             if (found) {
-                profiles[i].allocated = true;
+                products[i].allocated = true;
                 found = false;
                 break;
             }
@@ -997,23 +989,23 @@ function lbUpdateProfileLists() {
     }
 
     // Update lists
-    for (var i = 0; i < profiles.length; i++) {
+    for (var i = 0; i < products.length; i++) {
 
         // Prepend
-        if (profiles[i].allocated) {
-            lbPrependProfile(profiles[i].Id);
-            //alert("Prepending " + profiles[i].Id);
+        if (products[i].allocated) {
+            lbPrependProduct(products[i].Id);
+            //alert("Prepending " + products[i].Id);
         }
         //alert("Prependign...-");
-        //lbPrependProfile(i) {      // i is the profile id, not the profile array index
+        //lbPrependProduct(i) {      // i is the product id, not the product array index
     }
 
-    lbResetSelectedProfile();
+    lbResetSelectedProduct();
 }
 
 
-// Updates pane Profile and Ug
-function lbProjectUpdateProfileData() {
+// Updates pane Product and Ug
+function lbProjectUpdateProductData() {
 
     var paneId = selector.selectedPane;
     var u = parseFloat($("#paneUg").val().replace(",", "."));
@@ -1024,28 +1016,28 @@ function lbProjectUpdateProfileData() {
         return;
     }
 
-    project.panes[paneId].profileId = $("#profileList").val();              // Update main profile
-    //lbPrependProfile("#profileList", "");                                   // Prepend selected profile
+    project.panes[paneId].productId = $("#productList").val();              // Update main product
+    //lbPrependProduct("#productList", "");                                   // Prepend selected product
     
     project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
 
 
-    // Update direction specific profiles
-    /*if ($("#profileListTop").val() == -1) {                                 // Update top profile
-        project.panes[paneId].profileTopId = $("#profileList").val();
-        $("#profileListTop").val($("#profileList").val());
+    // Update direction specific products
+    /*if ($("#productListTop").val() == -1) {                                 // Update top product
+        project.panes[paneId].productTopId = $("#productList").val();
+        $("#productListTop").val($("#productList").val());
     } else {
-        project.panes[paneId].profileTopId = $("#profileListTop").val();
+        project.panes[paneId].productTopId = $("#productListTop").val();
     }*/
-    //lbPrependProfile("#profileListTop", "Top");
+    //lbPrependProduct("#productListTop", "Top");
 
 
-    lbUpdateProfileLists();
+    lbUpdateProductLists();
 }
 
 
-// Updates all pane profiles and Ug
-function lbProjectUpdateAllProfileData() {  // This functions is currently broken *** *** 
+// Updates all pane products and Ug
+function lbProjectUpdateAllProductData() {  // This functions is currently broken *** *** 
 
     //var nanError = false;
     var paneId = selector.selectedPane;
@@ -1057,65 +1049,52 @@ function lbProjectUpdateAllProfileData() {  // This functions is currently broke
         return;
     }
 
-    // Loop through profiles
+    // Loop through products
     for (var i = 0; i < selector.nrOfPanes; i++) {
         
         if (project.panes[i].ug == 0.0) {       // Update only on "unset" u values
             project.panes[i].ug = u;
         }
 
-        if (project.panes[i].profileId == -1) {
-            project.panes[i].profileId = $("#profileList").val();              // Update main profile
+        if (project.panes[i].productId == -1) {
+            project.panes[i].productId = $("#productList").val();              // Update main product
         }
         
-        //lbPrependProfile("#profileList", "");                                   // Prepend selected profile
-
-        // Update direction specific profiles
-        // These if statements could be rewritten, right now they work but could be refined a bit more
-        /*
-        if (project.panes[i].profileTopId == -1) {                                      // Update top
-            if ($("#profileListTop").val() != -1) {
-                project.panes[i].profileTopId = $("#profileListTop").val();
-            } else if ($("#profileList").val() != -1) {
-                project.panes[i].profileTopId = $("#profileList").val();
-            }
-        } */
+        //lbPrependProduct("#productList", "");                                   // Prepend selected product
 
     }
 
-    lbUpdateProfileLists();
+    lbUpdateProductLists();
 }
 
 
-// Get selected profile Ug value
-function lbGetProfileUg() {
+// Get selected product Ug value
+function lbGetProductUg() {
 
-    var profileId = $("#profileList").val();
+    var productId = $("#productList").val();
 
-    for (var i = 0; i < profiles.length; i++) {
-        if (profileId == profiles[i].Id) {
+    for (var i = 0; i < products.length; i++) {
+        if (productId == products[i].Id) {
 
-            return profiles[i].Ug;
+            return products[i].Ug;
         }
     }
 }
 
 
-// Update Ug value on profile list change
-function lbProjectChangeProfile() {
+// Update Ug value on product list change
+function lbProjectChangeProduct() {
 
     var id = selector.selectedPane;
-    var profileId = $("#profileList").val();
+    var productId = $("#productList").val();
 
-    if (profileId == -1) {
-        //project.panes[id].profileId = -1;
+    if (productId == -1) {
+        //project.panes[id].productId = -1;
         $("#paneUg").val("0");
     } else {
-        //project.panes[id].profileId = profileId;
 
         // Update Ug
-        $("#paneUg").val(lbGetProfileUg());
-        //alert("Profile ug: " + lbGetProfileUg());
+        $("#paneUg").val(lbGetProductUg());
     }
 }
 
@@ -1191,54 +1170,62 @@ function lbUpdateInputButtons() {
         $("#btnFrameDimensionsUpdate").addClass("btn-default");
     }
 
-    // Profile/Ug button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    // Product/Ug button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var ug = parseFloat($("#paneUg").val().replace(",", "."));
     
     // Default to gray
     toGray = true;
 
     // Update
-    // This should also validate profile changes
-    //if (project.panes[id].ug != ug || project.panes[id].profileId != $("#profileList").val() ||
+    // This should also validate product changes
+    //if (project.panes[id].ug != ug || project.panes[id].productId != $("#productList").val() ||
     // *** *** Not sure about this change, needs testing
-    if (project.panes[id].ug != ug || $("#profileList").val() != -1 || project.panes[id].profileId != -1) {
+    if (project.panes[id].ug != ug || $("#productList").val() != -1 || project.panes[id].productId != -1) {
 
         // Change to green
-        $("#btnProfileUpdate").removeClass("btn-danger");
-        $("#btnProfileUpdate").removeClass("btn-default");
-        $("#btnProfileUpdate").addClass("btn-success");
+        $("#btnProductUpdate").removeClass("btn-danger");
+        $("#btnProductUpdate").removeClass("btn-default");
+        $("#btnProductUpdate").addClass("btn-success");
 
-        $("#btnProfileUpdateAll").removeClass("btn-danger");
-        $("#btnProfileUpdateAll").removeClass("btn-default");
-        $("#btnProfileUpdateAll").addClass("btn-success");
+        $("#btnProductUpdateAll").removeClass("btn-danger");
+        $("#btnProductUpdateAll").removeClass("btn-default");
+        $("#btnProductUpdateAll").addClass("btn-success");
 
         toGray = false;
     }
 
     // Error
-    // This should also validate profile changes
+    // This should also validate product changes
     if (isNaN(ug) || ug < 0.0) {
         // Change to red
-        $("#btnProfileUpdate").removeClass("btn-success");
-        $("#btnProfileUpdate").removeClass("btn-default");
-        $("#btnProfileUpdate").addClass("btn-danger");
+        $("#btnProductUpdate").removeClass("btn-success");
+        $("#btnProductUpdate").removeClass("btn-default");
+        $("#btnProductUpdate").addClass("btn-danger");
 
-        $("#btnProfileUpdateAll").removeClass("btn-success");
-        $("#btnProfileUpdateAll").removeClass("btn-default");
-        $("#btnProfileUpdateAll").addClass("btn-danger");
+        $("#btnProductUpdateAll").removeClass("btn-success");
+        $("#btnProductUpdateAll").removeClass("btn-default");
+        $("#btnProductUpdateAll").addClass("btn-danger");
 
         toGray = false;
     }
 
     if (toGray) {
-        $("#btnProfileUpdate").removeClass("btn-success");
-        $("#btnProfileUpdate").removeClass("btn-danger");
-        $("#btnProfileUpdate").addClass("btn-default");
+        $("#btnProductUpdate").removeClass("btn-success");
+        $("#btnProductUpdate").removeClass("btn-danger");
+        $("#btnProductUpdate").addClass("btn-default");
 
-        $("#btnProfileUpdateAll").removeClass("btn-success");
-        $("#btnProfileUpdateAll").removeClass("btn-danger");
-        $("#btnProfileUpdateAll").addClass("btn-default");
+        $("#btnProductUpdateAll").removeClass("btn-success");
+        $("#btnProductUpdateAll").removeClass("btn-danger");
+        $("#btnProductUpdateAll").addClass("btn-default");
     }
+}
+
+
+function lbUpdateFrameAndPostTables() {
+
+    var paneId = selector.selectedPane;
+
+    // Update values
 }
 
 
@@ -1251,6 +1238,8 @@ function lbProjectUpdateAndRender(action) {
     // If a dimension value has been entered but not updated the update button changes to green appearance
     // and if there is nothing to udpate the button is gray
     lbUpdateInputButtons();
+
+    lbUpdateFrameAndPostTables();
 
     // There should also be a limit to how many decimal points are allowed, two but three at the most
 

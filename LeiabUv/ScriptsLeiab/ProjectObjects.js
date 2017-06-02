@@ -6,7 +6,7 @@
         Karm    - Frame
         Post    - Post
         Luft    - Pane
-        Profil  - Profile
+        Produkt - Product
         Mall    - Template
         Båge    - -
 
@@ -28,13 +28,8 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
     this.height = height;
 
     this.ug = 0.0;                  // Pane Ug value
-    this.profileId = -1;            // Pane profile
+    this.productId = -1;
 
-    /*
-    this.profileTopId = -1;
-    this.profileBottomId = -1;
-    this.profileLeftId = -1;
-    this.profileRightId = -1;*/
 }
 
 
@@ -231,5 +226,5 @@ function lbPaneSelector(data) {
 
 var project = undefined;                // Project data
 var selector = undefined;               // Pane selector data
-var profiles = undefined;               // List of profile data
+var products = undefined;               // List of product data
 
