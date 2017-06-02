@@ -956,6 +956,7 @@ function lbResetSelectedProduct() {
 
 // Update product list items
 function lbInitProductLists() {
+         
 
     for (var i = 0; i < products.length; i++) {
 
@@ -1221,11 +1222,44 @@ function lbUpdateInputButtons() {
 }
 
 
+// This is currently called through lbProjectUpdateAndRender(action)
+// but it should only be run when initiation or when selecting a new pane, fix this later
 function lbUpdateFrameAndPostTables() {
 
     var paneId = selector.selectedPane;
+    var productId = project.panes[paneId].productId;
 
-    // Update values
+    // Update table data
+    if (productId == -1) {
+
+        $(".FrameTf").text("-");
+        $(".FrameUf").text("-");
+        $(".FrameYf").text("-");
+
+        $(".PostTp").text("-");
+        $(".PostUp").text("-");
+        $(".PostYp").text("-");
+    } else {
+
+        $(".FrameTf").text(products[productId].Tf);
+        $(".FrameUf").text(products[productId].Uf);
+        $(".FrameYf").text(products[productId].Yf);
+
+        $(".PostTp").text(products[productId].Tp);
+        $(".PostUp").text(products[productId].Up);
+        $(".PostYp").text(products[productId].Yp);
+    }
+
+
+    // Hide/Show used tables
+    /*
+    if (project.panes[paneId].yIndex == 0) {            // Top frame
+        $("#FrameTableTop").show();
+        $("#PostTableTop").hide();
+    } else {
+        $("#FrameTableTop").hide();
+        $("#PostTableTop").show();
+    }*/
 }
 
 
