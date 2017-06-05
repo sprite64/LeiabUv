@@ -137,6 +137,7 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 var productId = lbGetSelectedProduct();
                 $("#productList").val(productId);
 
+                lbUpdateFrameAndPostTables();       // Update frame/post tables
             }
 
             break;
@@ -1034,6 +1035,8 @@ function lbProjectUpdateProductData() {
 
 
     lbUpdateProductLists();
+
+    lbUpdateFrameAndPostTables();
 }
 
 
@@ -1066,6 +1069,8 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
     }
 
     lbUpdateProductLists();
+
+    lbUpdateFrameAndPostTables();
 }
 
 
@@ -1228,38 +1233,85 @@ function lbUpdateFrameAndPostTables() {
 
     var paneId = selector.selectedPane;
     var productId = project.panes[paneId].productId;
+    var pane = project.panes[paneId];
 
     // Update table data
     if (productId == -1) {
-
-        $(".FrameTf").text("-");
-        $(".FrameUf").text("-");
-        $(".FrameYf").text("-");
-
-        $(".PostTp").text("-");
-        $(".PostUp").text("-");
-        $(".PostYp").text("-");
+        $(".FrameTf").text("-"); $(".FrameUf").text("-"); $(".FrameYf").text("-");
+        $(".PostTp").text("-"); $(".PostUp").text("-"); $(".PostYp").text("-");
+    //} else if(  ) {
+    //}
     } else {
 
-        $(".FrameTf").text(products[productId].Tf);
-        $(".FrameUf").text(products[productId].Uf);
-        $(".FrameYf").text(products[productId].Yf);
+        // ERROR: When the last product item in the list is selected through update/updateall, an error shows
+        // "Uncaught typeError: cannot read property Tf of undefined"
+        // This could come from a mistake, mixing the wrong ID in arrays
 
-        $(".PostTp").text(products[productId].Tp);
-        $(".PostUp").text(products[productId].Up);
-        $(".PostYp").text(products[productId].Yp);
+        //alert("Tip: " + products[productId]);   // This is undefined when last in list
+
+        //alert("Product: " + productId);//+ ", productsTg: " + products[productId].Tf);
+        if (products[productId] != undefined) {
+            $(".FrameTf").text(products[productId].Tf); $(".FrameUf").text(products[productId].Uf); $(".FrameYf").text(products[productId].Yf);
+            $(".PostTp").text(products[productId].Tp); $(".PostUp").text(products[productId].Up); $(".PostYp").text(products[productId].Yp);
+        }
+        
     }
 
 
+    // Calculate frame/post parts of pane
+    var frameTop = true;
+    var frameBottom = true;
+    var frameLeft = true;
+    var frameRight = true;
+
+    if (pane.yIndex > 0) {                                          // Top part
+        frameTop = false;
+    }
+
+    if (pane.yIndex + pane.rowSpan <= project.rows - 1) {           // Bottom part
+        frameBottom = false;
+    }
+
+    if (pane.xIndex > 0) {                                          // Left part
+        frameLeft = false;
+    }
+
+    if (pane.xIndex + pane.colSpan <= project.columns - 1) {        // Right part
+        frameRight = false;
+    }
+
     // Hide/Show used tables
-    /*
-    if (project.panes[paneId].yIndex == 0) {            // Top frame
-        $("#FrameTableTop").show();
-        $("#PostTableTop").hide();
+    if (frameTop) {
+        document.getElementById("FrameTableTop").style.display = "inline-block";
+        document.getElementById("PostTableTop").style.display = "none";
     } else {
-        $("#FrameTableTop").hide();
-        $("#PostTableTop").show();
-    }*/
+        document.getElementById("FrameTableTop").style.display = "none";
+        document.getElementById("PostTableTop").style.display = "inline-block";
+    }
+
+    if (frameBottom) {
+        document.getElementById("FrameTableBottom").style.display = "inline-block";
+        document.getElementById("PostTableBottom").style.display = "none";
+    } else {
+        document.getElementById("FrameTableBottom").style.display = "none";
+        document.getElementById("PostTableBottom").style.display = "inline-block";
+    }
+
+    if (frameLeft) {
+        document.getElementById("FrameTableLeft").style.display = "inline-block";
+        document.getElementById("PostTableLeft").style.display = "none";
+    } else {
+        document.getElementById("FrameTableLeft").style.display = "none";
+        document.getElementById("PostTableLeft").style.display = "inline-block";
+    }
+
+    if (frameRight) {
+        document.getElementById("FrameTableRight").style.display = "inline-block";
+        document.getElementById("PostTableRight").style.display = "none";
+    } else {
+        document.getElementById("FrameTableRight").style.display = "none";
+        document.getElementById("PostTableRight").style.display = "inline-block";
+    }
 }
 
 
@@ -1273,7 +1325,7 @@ function lbProjectUpdateAndRender(action) {
     // and if there is nothing to udpate the button is gray
     lbUpdateInputButtons();
 
-    lbUpdateFrameAndPostTables();
+    //lbUpdateFrameAndPostTables();
 
     // There should also be a limit to how many decimal points are allowed, two but three at the most
 
