@@ -1227,12 +1227,28 @@ function lbUpdateInputButtons() {
 }
 
 
+// This is a function for finding the array index by product id
+function lbGetProductId(id) {
+
+    for (var i = 0; i < products.length; i++) {
+
+        if (products[i].Id == id) {
+            //alert("ProductId: " + id + ", index " + i);
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
 // This is currently called through lbProjectUpdateAndRender(action)
 // but it should only be run when initiation or when selecting a new pane, fix this later
 function lbUpdateFrameAndPostTables() {
 
     var paneId = selector.selectedPane;
     var productId = project.panes[paneId].productId;
+    var pIndex = lbGetProductId(productId);
     var pane = project.panes[paneId];
 
     // Update table data
@@ -1250,9 +1266,13 @@ function lbUpdateFrameAndPostTables() {
         //alert("Tip: " + products[productId]);   // This is undefined when last in list
 
         //alert("Product: " + productId);//+ ", productsTg: " + products[productId].Tf);
-        if (products[productId] != undefined) {
-            $(".FrameTf").text(products[productId].Tf); $(".FrameUf").text(products[productId].Uf); $(".FrameYf").text(products[productId].Yf);
-            $(".PostTp").text(products[productId].Tp); $(".PostUp").text(products[productId].Up); $(".PostYp").text(products[productId].Yp);
+        if (pIndex != -1) {
+            $(".FrameTf").text(products[pIndex].Tf); $(".FrameUf").text(products[pIndex].Uf); $(".FrameYf").text(products[pIndex].Yf);
+            $(".PostTp").text(products[pIndex].Tp); $(".PostUp").text(products[pIndex].Up); $(".PostYp").text(products[pIndex].Yp);
+        } else {
+
+            //alert("PID: " + productId + ", PaneID " + paneId + ", products " + products.length);
+            //lbGetProductId(productId);
         }
         
     }
