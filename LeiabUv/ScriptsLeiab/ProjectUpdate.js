@@ -532,212 +532,18 @@ function lbProjectUpdatePaneDimensions() {
 }
 
 
+// This is a function for finding the array index by product id
+function lbGetProductId(id) {
 
+    for (var i = 0; i < products.length; i++) {
 
-// Gets pane area parts, frame, post and pane
-// Returns a PaneAreaParts object on success, -1 on missing product
-function lbGetPaneAreaParts2(paneId) {
-
-    var productId = project.panes[paneId].productId;
-
-    if (productId == -1) {
-        alert("Product Id is -1, break operation");
-        return - 1;
+        if (products[i].Id == id) {
+            //alert("ProductId: " + id + ", index " + i);
+            return i;
+        }
     }
 
-    var parts = new lbPaneAreaParts();
-    var product = products[productId];
-    var pane = project.panes[paneId];
-
-    // Calc Total area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    parts.totalArea = pane.width * pane.height;
-    //alert("Total Area: " + parts.totalArea);
-
-    // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    if (pane.yIndex == 0) {                                 // Top frame
-        parts.frameArea += pane.width * product.Tf;
-        //alert("Frame Area1: " + parts.frameArea);
-    }
-
-    if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
-        parts.frameArea += pane.width * product.Tf;
-        //alert("Frame Area2: " + parts.frameArea);
-    }
-
-    if (pane.xIndex == 0) {                                 // Left frame
-        parts.frameArea += pane.height * product.Tf;
-
-        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area3: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area4: " + parts.frameArea)
-    }
-
-    if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
-        parts.frameArea += pane.height * product.Tf;
-
-        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area5: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area6: " + parts.frameArea)
-    }
-
-
-    // Calc Post area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    var half = 1;           // Setting to split post (or not to) width in half
-    // Half option is not yet implemented
-
-    if (pane.yIndex > 0) {                                  // Top post
-        parts.postArea += pane.width * product.Tp;          // Calc total post area
-
-        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }      // Remove [frame * post] areas
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
-        
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }    // Remove [post * post] area left
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }   // Remove [post * post] area right
-    }
-
-    if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
-        parts.postArea += pane.width * product.Tp;           // Calc total post area
-
-        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
-
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }
-    }
-
-    
-    // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
-    if (pane.xIndex > 0) {                                  // Left post
-        parts.postArea += pane.height * product.Tp;
-        
-        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
-    }
-
-    // Right post
-    if (pane.xIndex + pane.colSpan < project.columns) {
-        
-        parts.postArea += pane.height * product.Tp;
-
-        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
-    }
-
-
-    // Calc Pane Area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    parts.paneArea = parts.totalArea - parts.frameArea - parts.postArea;
-    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane: " + parts.paneArea);
-
-    return parts;
-}
-
-
-// Gets pane area parts, frame, post and pane
-// Returns a PaneAreaParts object on success, -1 on missing product
-
-// This calculates by separate top/bottom/left/right products
-function lbGetPaneAreaParts1(paneId) {
-
-    var productId = project.panes[paneId].productId;
-
-    if (productId == -1) {
-        alert("Product Id is -1, break operation");
-        return -1;
-    }
-
-    var parts = new lbPaneAreaParts();
-    var product = products[productId];
-    var pane = project.panes[paneId];
-
-    var postMod = 1.0;      // Set to either 0.5 or 1.0 for post area calculation
-    var window = false;     // Setting for calculating either window or door
-
-
-    // Calc Total area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    parts.totalArea = pane.width * pane.height;
-    //alert("Total Area: " + parts.totalArea);
-
-    // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    if (pane.yIndex == 0) {                                 // Top frame
-        parts.frameArea += pane.width * product.Tf;
-        //alert("Frame Area1: " + parts.frameArea);
-    }
-
-    if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
-        parts.frameArea += pane.width * product.Tf;
-        //alert("Frame Area2: " + parts.frameArea);
-    }
-
-    if (pane.xIndex == 0) {                                 // Left frame
-        parts.frameArea += pane.height * product.Tf;
-
-        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area3: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area4: " + parts.frameArea)
-    }
-
-    if (pane.xIndex + pane.colSpan == project.columns) {    // Right frame
-        parts.frameArea += pane.height * product.Tf;
-
-        if (pane.yIndex == 0) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area5: " + parts.frameArea)
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.frameArea -= product.Tf * 2; }
-        //alert("Frame Area6: " + parts.frameArea)
-    }
-
-
-    // Calc Post area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    //var half = 1;           // Setting to split post (or not to) width in half
-    // Half option is not yet implemented
-    // Use postMod var for halfing posts
-
-    if (pane.yIndex > 0) {                                  // Top post
-        parts.postArea += pane.width * product.Tp;          // Calc total post area
-
-        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }      // Remove [frame * post] areas
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
-
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }    // Remove [post * post] area left
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }   // Remove [post * post] area right
-    }
-
-    if (pane.yIndex + pane.rowSpan < project.rows) {        // Bottom post
-        parts.postArea += pane.width * product.Tp;           // Calc total post area
-
-        if (pane.xIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.xIndex + pane.colSpan == project.columns) { parts.postArea -= product.Tf * product.Tp; }
-
-        if (pane.xIndex > 0 && pane.xIndex + pane.colSpan <= project.columns) { parts.postArea -= product.Tp * product.Tp; }
-        if (pane.xIndex >= 0 && pane.xIndex < project.columns - 1) { parts.postArea -= product.Tp * product.Tp; }
-    }
-
-
-    // Left post only needs to take frame areas into consideration, they are already removed in horizontal posts
-    if (pane.xIndex > 0) {                                  // Left post
-        parts.postArea += pane.height * product.Tp;
-
-        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
-    }
-
-    // Right post
-    if (pane.xIndex + pane.colSpan < project.columns) {
-
-        parts.postArea += pane.height * product.Tp;
-
-        if (pane.yIndex == 0) { parts.postArea -= product.Tf * product.Tp; }
-        if (pane.yIndex + pane.rowSpan == project.rows) { parts.postArea -= product.Tf * product.Tp; }
-    }
-
-
-    // Calc Pane Area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    parts.paneArea = parts.totalArea - parts.frameArea - parts.postArea;
-    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane: " + parts.paneArea);
-
-    return parts;
+    return -1;
 }
 
 
@@ -754,13 +560,22 @@ function lbGetPaneAreaParts(paneId) {
         return -1;
     }
 
+    var pid = lbGetProductId(productId);
+
     var parts = new lbPaneAreaParts();
-    var product = products[productId];
+    var product = products[pid];
     var pane = project.panes[paneId];
 
-    var postMod = 1.0;      // Set to either 0.5 or 1.0 for post area calculation
-    var window = false;     // Setting for calculating either window or door
+    //lbGetProductId(id);         // Get product array index by product id
 
+    /*
+    lbPaneAreaParts()
+        this.totalArea = 0.0;
+        this.frameArea = 0.0;
+        this.postArea = 0.0;
+        this.paneArea = 0.0; */
+
+    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane " + parts.paneArea);
 
     // Calc Total area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     parts.totalArea = pane.width * pane.height;
@@ -771,11 +586,13 @@ function lbGetPaneAreaParts(paneId) {
         parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area1: " + parts.frameArea);
     }
+    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane " + parts.paneArea);
 
     if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
         parts.frameArea += pane.width * product.Tf;
         //alert("Frame Area2: " + parts.frameArea);
     }
+    alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane " + parts.paneArea);
 
     if (pane.xIndex == 0) {                                 // Left frame
         parts.frameArea += pane.height * product.Tf;
@@ -841,7 +658,7 @@ function lbGetPaneAreaParts(paneId) {
 
 
     // Calc Pane Area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    parts.paneArea = parts.totalArea - parts.frameArea - parts.postArea;
+    parts.paneArea = parts.totalArea - (parts.frameArea + parts.postArea);
     alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane: " + parts.paneArea);
 
     return parts;
@@ -1227,19 +1044,7 @@ function lbUpdateInputButtons() {
 }
 
 
-// This is a function for finding the array index by product id
-function lbGetProductId(id) {
 
-    for (var i = 0; i < products.length; i++) {
-
-        if (products[i].Id == id) {
-            //alert("ProductId: " + id + ", index " + i);
-            return i;
-        }
-    }
-
-    return -1;
-}
 
 
 // This is currently called through lbProjectUpdateAndRender(action)
