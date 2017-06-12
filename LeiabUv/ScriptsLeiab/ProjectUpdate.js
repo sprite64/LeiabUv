@@ -568,6 +568,16 @@ function lbGetPaneAreaParts(paneId) {
 
     //lbGetProductId(id);         // Get product array index by product id
 
+    var frameTop = 0;
+    var frameBottom = 0;
+    var frameLeft = 0;
+    var frameRight = 0;
+
+    var postTop = 0;
+    var postBottom = 0;
+    var postLeft = 0;
+    var postRight = 0;
+
     /*
     lbPaneAreaParts()
         this.totalArea = 0.0;
@@ -584,12 +594,14 @@ function lbGetPaneAreaParts(paneId) {
     // Calc Frame area *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     if (pane.yIndex == 0) {                                 // Top frame
         parts.frameArea += pane.width * product.Tf;
+        frameTop = pane.width * product.Tf;                 // Debug top frame
         //alert("Frame Area1: " + parts.frameArea);
     }
     alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane " + parts.paneArea);
 
     if (pane.yIndex + pane.rowSpan == project.rows) {       // Bottom frame
         parts.frameArea += pane.width * product.Tf;
+        frameBottom = pane.width * product.Tf;              // Debug bottom frame
         //alert("Frame Area2: " + parts.frameArea);
     }
     alert("Total: " + parts.totalArea + ", Frame: " + parts.frameArea + ", Post: " + parts.postArea + ", Pane " + parts.paneArea);
