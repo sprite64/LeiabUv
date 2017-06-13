@@ -41,6 +41,25 @@ function lbPaneAreaParts() {
 }
 
 
+function lbPaneParts() {
+
+    this.totalArea = 0.0;           // Total pane area
+
+    this.paneArea = 0.0;            // Pane inner area
+    this.paneCirum = 0.0;           // Cirumference of pane
+
+    this.frameTop = 0.0;            // Frame border areas
+    this.frameBottom = 0.0;
+    this.frameLeft = 0.0;
+    this.frameRight = 0.0;
+
+    this.postTop = 0.0;             // Post border areas
+    this.postBottom = 0.0;
+    this.postLeft = 0.0;
+    this.postRight = 0.0;
+}
+
+
 function lbPaneDataGfx() {
 
     this.x = 0;

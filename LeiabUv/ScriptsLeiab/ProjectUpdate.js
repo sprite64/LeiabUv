@@ -677,6 +677,62 @@ function lbGetPaneAreaParts(paneId) {
 }
 
 
+function lbGetPaneAreaPartsExt(paneId) {
+
+    // Valid Id check
+    var productId = project.panes[paneId].productId;
+    if (productId == -1) { alert("Product Id is -1, break operation"); return -1; }
+
+    // Init target product and pane
+    var product = products[lbGetProductId(productId)];      // Get product array index by product DB Id
+    var pane = project.panes[paneId];                       // Select project pane
+
+    // Init parts
+    var parts = new lbPaneParts();
+    parts.totalArea = pane.width * pane.height;             // Get total pane area  (including frame/post borders)
+
+    // Init border configuration, frame or post
+    var frameTop = true; var frameBottom = true;
+    var frameLeft = true; var frameRight = true;
+
+    if (pane.yIndex > 0) { frameTop = false; }          // Top and bottom vvv
+    if (pane.yIndex + pane.rowSpan <= project.rows - 1) { frameBottom = false; }
+
+    if (pane.xIndex > 0) { frameLeft = false; }         // Left and right vvv
+    if (pane.xIndex + pane.colSpan <= project.columns - 1) { frameRight = false; }
+
+    // Basic border area calculation, does not account for overlapping areas
+    if (frameTop) { parts.frameTop = pane.width * product.Tf; } else { parts.postTop = pane.width * product.Tp; }
+    if (frameBottom) { parts.frameBottom = pane.width * product.Tf; } else { parts.postBottom = pane.width * product.Tp; }
+
+    if (frameLeft) { parts.frameLeft = pane.height * product.Tf; } else { parts.postLeft = pane.height * product.Tp; }
+    if (frameRight) { parts.frameRight = pane.height * product.Tf; } else { parts.postRight = pane.height * product.Tp; }
+
+    // Remove overlapping frame areas
+    if (frameLeft && frameTop) { parts.frameLeft -= product.Tf * product.Tf; }
+    if (frameLeft && frameBottom) { parts.frameLeft -= product.Tf * product.Tf; }
+
+    if (frameRight && frameTop) { parts.frameRight -= product.Tf * product.Tf; }
+    if (frameRight && frameBottom) { parts.frameRight -= product.Tf * product.Tf; }
+
+    // Remove overlapping post areas
+
+
+    /*
+    product.Tf
+    product.Uf
+    product.Yf
+    
+    product.Tp
+    product.Up
+    product.Yp
+
+    product.Ug
+    */
+
+}
+
+
 /*
 this.totalArea = 0.0;
 this.frameArea = 0.0;
