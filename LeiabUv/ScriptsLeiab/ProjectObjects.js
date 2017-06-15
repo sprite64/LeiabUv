@@ -46,7 +46,7 @@ function lbPaneParts() {
     this.totalArea = 0.0;           // Total pane area
 
     this.paneArea = 0.0;            // Pane inner area
-    this.paneCirum = 0.0;           // Cirumference of pane
+    this.paneCircum = 0.0;          // Cirumference of pane
 
     this.frameTop = 0.0;            // Frame border areas
     this.frameBottom = 0.0;

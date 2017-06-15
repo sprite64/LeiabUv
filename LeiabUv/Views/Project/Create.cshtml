@@ -29,15 +29,49 @@
 
 
 
-                <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 680px; height: auto; background-color: #333;">
+            <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 680px; height: auto; background-color: #333;">
 
-                    <h4 id="titleProject" style="color: #ccc;"></h4>
+                <h4 id="titleProject" style="color: #ccc;"></h4>
 
-                    <!-- Project rendering -->
-                    <canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;">
-                        <!-- >canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;" -->
-                        Your browser doesn't support HTML5 canvas tag.
-                    </canvas>
+                <!-- Project rendering -->
+                <canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible; display: none;">
+                    <!-- >canvas id="ProjectCanvas" width="534" height="534" style="visibility: visible;" -->
+                    Your browser doesn't support HTML5 canvas tag.
+                </canvas>
+
+                <!-- Parts debug -->
+                <h4 style="color: #ccc;">Misc</h4>
+                <table style="color: #ccc; display: inline-block;">
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Total Area</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="totalArea">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Pane Area</td> <td style="text-align: right; padding-right: 5px;" id="paneArea">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Pane Circum</td> <td style="text-align: right; padding-right: 5px;" id="paneCircum">0</td> </tr>
+                </table>
+
+                
+                <h4 style="color: #ccc;">Frame</h4>
+                <table style="color: #ccc; display: inline-block;">
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Top</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="frameTop">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Bottom</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameBottom">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Left</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameLeft">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Right</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameRight">0</td> </tr>
+                </table>
+
+                <h4 style="color: #ccc;">Post</h4>
+                <table style="color: #ccc; display: inline-block;">
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Top</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="postTop">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Bottom</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postBottom">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Left</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postLeft">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Right</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postRight">0</td> </tr>
+                </table>
+
+                <br />
+
+                    <!--
+        <table id="FrameTableBottom" style="display: inline-block; color: #ccc;">
+            <tr style="border: 1px solid #ccc;">
+                <td style="width: 28px; padding-left: 5px; border-right: 1px solid #ccc;">Tf</td>
+                -->
+
                     <br />
 
                     <div style="width: 100%;">
@@ -61,11 +95,11 @@
 
                             <br />
 
-                        
+
                         </div>
-                    
+
                         <div style="display: inline-block; float: right; margin-right: 16px;">
-                        
+
                             <div style="vertical-align: top; border: 1px solid #ccc; border-top-width: 4px; width: 23px; height: 23px; margin-left: 16px; display: inline-block;">
                                 <span class="glyphicon glyphicon-arrow-up" style="color: #ccc; margin-left: 3px;"></span>
                             </div>
@@ -200,10 +234,10 @@
                                     <td class="PostYp" style="width: 64px; padding-right: 5px; text-align: right;">-</td>
                                 </tr>
                             </table>
-                        
+
                         </div>
                     </div>
-                    
+
                     <br />
                     <br />
                     <br />
@@ -214,7 +248,7 @@
                     <button id="btnTestAreaParts" class="btn btn-success" style="width: 130px; float: right; margin-right: 20px;">Testa Area Parts</button>
 
                     <!-- label id="scrollTopper" style="color: #ccc;">awe</!--label -->
-                </div>
+</div>
 
             </div>
 
