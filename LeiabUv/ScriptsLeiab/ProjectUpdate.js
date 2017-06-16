@@ -138,6 +138,8 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 $("#productList").val(productId);
 
                 lbUpdateFrameAndPostTables();       // Update frame/post tables
+
+                lbGetPaneAreaPartsExt(selector.selectedPane);       // Update debug parts
             }
 
             break;
@@ -633,8 +635,14 @@ function lbGetPaneAreaPartsExt(paneId) {
     if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
     if (frameRight) { cw -= product.Tf; } else { cw -= product.Tp; }
 
-    parts.paneCircum = cw * 2 + ch * 2;
+    parts.totalCircum = cw * 2 + ch * 2;
     
+    if (frameTop) { parts.frameCircum += cw; } else { parts.postCircum += cw; }
+    if (frameBottom) { parts.frameCircum += cw; } else { parts.postCircum += cw; }
+
+    if (frameLeft) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
+    if (frameRight) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
+
     // Calculate inner pane area
     parts.paneArea = parts.totalArea - ( parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight +
         parts.postTop + parts.postBottom + parts.postLeft + parts.postRight);
@@ -644,7 +652,10 @@ function lbGetPaneAreaPartsExt(paneId) {
     if (debugParts) {
         $("#totalArea").text(parts.totalArea.toFixed(3));
         $("#paneArea").text(parts.paneArea.toFixed(3));
-        $("#paneCircum").text(parts.paneCircum.toFixed(3));
+
+        $("#totalCircum").text(parts.totalCircum.toFixed(3));
+        $("#frameCircum").text(parts.frameCircum.toFixed(3));
+        $("#postCircum").text(parts.postCircum.toFixed(3));
 
         $("#frameTop").text(parts.frameTop.toFixed(3));
         $("#frameBottom").text(parts.frameBottom.toFixed(3));
@@ -855,6 +866,8 @@ function lbProjectUpdateProductData() {
     lbUpdateProductLists();
 
     lbUpdateFrameAndPostTables();
+
+    lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
 
@@ -889,6 +902,8 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
     lbUpdateProductLists();
 
     lbUpdateFrameAndPostTables();
+
+    lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
 

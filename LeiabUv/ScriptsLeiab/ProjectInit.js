@@ -61,7 +61,7 @@ $(function () {
     $("#btnProductUpdate").click(function () { lbProjectUpdateProductData(); });
     $("#btnProductUpdateAll").click(function () { lbProjectUpdateAllProductData(); });
 
-    $("#btnTestAreaParts").click(function () { lbGetPaneAreaPartsExt(selector.selectedPane) });
+    $("#btnTestAreaParts").click(function () { lbGetPaneAreaPartsExt(selector.selectedPane); });
 
     // Input change events
     // Not in use, probably wont be either
