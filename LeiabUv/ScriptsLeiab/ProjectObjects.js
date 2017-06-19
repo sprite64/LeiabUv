@@ -108,7 +108,7 @@ function lbProject(data) {
     }
 
     this.frameWidth = LB_DefaultPaneWidthMM * data.columns;           // Frame dimensions
-    this.frameHeight = LB_DefaultPaneHeightMM * data.rows;
+    this.frameHeight = LB_DefaultPaneHeightMM * data.rows;            // Update this for dimension of 1230x1480
 
     this.paneWidths = new Array(this.columns);      // Pane origin widths and heights
     this.paneHeights = new Array(this.rows);

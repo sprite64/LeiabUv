@@ -685,6 +685,86 @@ function lbGetPaneAreaPartsExt(paneId) {
 }
 
 
+// Final calculation on Uv
+function lbFinalizeUv() {
+
+    // Init
+    var productId = -1;
+    var product;
+    var parts;
+
+    var frameU;
+    var frameY;
+    var postU;
+    var postY;
+    var paneU;
+
+    var uw = 0.0;
+
+    // Loop through each pane
+    for (var i = 0; i < project.nrOfPanes; i++) {
+
+        // Get parts object
+        productId = project.panes[i].productId;
+        product = products[lbGetProductId(productId)];
+        parts = lbGetPaneAreaPartsExt(i);
+
+        if (parts == -1) {              // Validity check
+            alert("Parts are -1, break operation");
+            return -1;
+        }
+
+        // Calculate frame
+        frameU = ((parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight) / 1000000.0) * product.Uf;
+        frameY = (parts.frameCircum / 1000.0) * product.Yf;
+
+        // Calc post
+        postU = ((parts.postTop + parts.postBottom + parts.postLeft + parts.postRight) / 1000000.0) * product.Up;
+        postY = (parts.postCircum / 1000.0) * product.Yp;
+
+        // Calc pane
+        paneU = (parts.paneArea / 1000000.0) * product.Ug;
+
+        alert("frameU: " + frameU + ", frameY :" + frameY + ", postU: " + postU + ", postY: " + postY + ", paneU: " + paneU);
+        uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
+
+        // 1,035  1230 x 1480
+
+        // Result         1.216847
+        // Actual result: 1.210
+        // Delta:         0,006847
+        // Calculation or round error?
+
+
+        /*
+        [Tf] [Uf] [Yf]
+        [Tp] [Up] [Yp] [Ug]
+        */
+
+        /*
+        this.totalArea = 0.0;           // Total pane area
+        this.paneArea = 0.0;            // Pane inner area
+
+        this.totalCircum = 0.0;          // Circumference of pane
+        this.frameCircum = 0.0;         // Circumference of frame borders
+        this.postCircum = 0.0;          // Circumference of post borders
+
+        this.frameTop = 0.0;            // Frame border areas
+        this.frameBottom = 0.0;
+        this.frameLeft = 0.0;
+        this.frameRight = 0.0;
+
+        this.postTop = 0.0;             // Post border areas
+        this.postBottom = 0.0;
+        this.postLeft = 0.0;
+        this.postRight = 0.0;
+            */
+    }
+
+    alert("Uv: " + uw);
+}
+
+
 // Function below and function above need to correct a NaN input error, if Nan then make it zero
 // *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
