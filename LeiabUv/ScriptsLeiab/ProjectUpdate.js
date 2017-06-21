@@ -577,11 +577,13 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     // Pre-calculate overlap areas
     var fxf = product.Tf * product.Tf;                  // Frame x frame
-    var fxp = product.Tg * product.Tp;                  // Frame x post
+    var fxp = product.Tf * product.Tp;                  // Frame x post
 
     var pxp = product.Tp * product.Tp;                  // Post x post
     var pxf = product.Tp * product.Tf;                  // Post x frame
-    
+
+    //alert("fxf " + fxf + ", fxp " + fxp + ", pxp " + pxp + ", pxf " + pxf);
+
     // Basic border area calculation, does not account for overlapping areas
     if (frameTop) { parts.frameTop = pane.width * product.Tf; } else { parts.postTop = pane.width * product.Tp; }
     if (frameBottom) { parts.frameBottom = pane.width * product.Tf; } else { parts.postBottom = pane.width * product.Tp; }
@@ -589,12 +591,16 @@ function lbGetPaneAreaPartsExt(paneId) {
     if (frameLeft) { parts.frameLeft = pane.height * product.Tf; } else { parts.postLeft = pane.height * product.Tp; }
     if (frameRight) { parts.frameRight = pane.height * product.Tf; } else { parts.postRight = pane.height * product.Tp; }
 
+    //alert("Frame1 top " + parts.frameTop + ", bottom " + parts.frameBottom + ", left " + parts.frameLeft + ", right " + parts.frameRight);
+
     // Remove overlapping frame areas
     if (frameLeft && frameTop) { parts.frameLeft -= fxf; }
     if (frameLeft && frameBottom) { parts.frameLeft -= fxf; }
 
     if (frameRight && frameTop) { parts.frameRight -= fxf; }
     if (frameRight && frameBottom) { parts.frameRight -= fxf; }
+
+    //alert("Frame2 top " + parts.frameTop + ", bottom " + parts.frameBottom + ", left " + parts.frameLeft + ", right " + parts.frameRight);
 
     // Remove overlapping post areas
     if (!frameTop) {
@@ -644,8 +650,19 @@ function lbGetPaneAreaPartsExt(paneId) {
     if (frameRight) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
 
     // Calculate inner pane area
+    //parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight);
+    //parts.paneArea = (pane.width * pane.height) - ;
+
+
+    //alert("frameParts: " + parts.frameTop + ", " + parts.frameBottom + ", " + parts.frameLeft + ", " + parts.frameRight);
+    //parts.paneArea = 1430272;
     parts.paneArea = parts.totalArea - ( parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight +
         parts.postTop + parts.postBottom + parts.postLeft + parts.postRight);
+
+
+
+    //parts.paneArea = 1419320;
+    //alert("frame area: " + (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight));
 
     // Debug 
     var debugParts = true;
@@ -725,7 +742,8 @@ function lbFinalizeUv() {
         // Calc pane
         paneU = (parts.paneArea / 1000000.0) * product.Ug;
 
-        alert("frameU: " + frameU + ", frameY :" + frameY + ", postU: " + postU + ", postY: " + postY + ", paneU: " + paneU);
+        //alert("frameU: " + frameU + ", frameY :" + frameY + ", postU: " + postU + ", postY: " + postY + ", paneU: " + paneU);
+        //uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
         uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
 
         // 1,035  1230 x 1480
