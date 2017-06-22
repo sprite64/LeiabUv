@@ -758,14 +758,29 @@ function lbGetPaneAreaPartsExt(paneId) {
     var pxp = product.Tp * product.Tp;                  // Post x post
     var pxf = product.Tp * product.Tf;                  // Post x frame
 
+    parts.frameTop = pane.width * product.Tf;
+    parts.frameBottom = parts.frameTop;
+
+    // Sort this and everything will be fine
+    parts.frameLeft = (pane.height - product.Tf * 2) * product.Tf;
+
+    parts.frameRight = parts.frameLeft;
+
+    if (!frameTop) { parts.frameTop = 0.0 }
+    if (!frameBottom) { parts.frameBottom = 0.0 }
+    if (!frameLeft) { parts.frameLeft = 0.0 }
+    if (!frameRight) { parts.frameRight = 0.0 }
+
     //alert("fxf " + fxf + ", fxp " + fxp + ", pxp " + pxp + ", pxf " + pxf);
 
     // Basic border area calculation, does not account for overlapping areas
+    /*
     if (frameTop) { parts.frameTop = pane.width * product.Tf; } else { parts.postTop = pane.width * product.Tp; }
     if (frameBottom) { parts.frameBottom = pane.width * product.Tf; } else { parts.postBottom = pane.width * product.Tp; }
 
     if (frameLeft) { parts.frameLeft = pane.height * product.Tf; } else { parts.postLeft = pane.height * product.Tp; }
     if (frameRight) { parts.frameRight = pane.height * product.Tf; } else { parts.postRight = pane.height * product.Tp; }
+    */
 
     //alert("Frame: " + (parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight)) + " true: " + 1419912.0);
 
