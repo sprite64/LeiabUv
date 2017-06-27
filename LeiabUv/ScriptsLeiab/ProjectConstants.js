@@ -12,6 +12,9 @@
 */
 
 
+var LB_ENDL = String.fromCharCode(10);
+
+
 /* Canvases */
 var LB_ProjectCanvasId = "ProjectCanvas";
 var LB_PaneSelectCanvasId = "PaneSelectCanvas";

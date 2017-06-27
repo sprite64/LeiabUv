@@ -721,6 +721,102 @@ function lbGetPaneAreaPartsExt2(paneId) {
 }
 
 
+function lbGetPaneAreaPartsExt2(paneId) {
+
+    // Id check
+    var productId = project.panes[paneId].productId;
+    if (productId == -1) { alert("Product Id is -1, break operating"); return -1; }
+
+    // Init 
+    var product = products[lbGetProductId(productId)];
+    var pane = project.panes[paneId];
+
+    var parts = new lbPaneParts();
+    parts.totalArea = pane.width * pane.height / 1000000.0;
+
+    // Init border configuration, frame or post
+    var frameTop = true; var frameBottom = true;
+    var frameLeft = true; var frameRight = true;
+
+    if (pane.yIndex > 0) { frameTop = false; }          // Top and bottom vvv
+    if (pane.yIndex + pane.rowSpan <= project.rows - 1) { frameBottom = false; }
+
+    if (pane.xIndex > 0) { frameLeft = false; }         // Left and right vvv
+    if (pane.xIndex + pane.colSpan <= project.columns - 1) { frameRight = false; }
+
+    //alert("Frames: " + frameTop + ", " + frameBottom + ", " + frameLeft + ", " + frameRight);
+    var fxf = product.Tf * product.Tf / 1000000.0;                  // Frame x frame
+    var fxp = product.Tf * product.Tp / 1000000.0;                  // Frame x post
+
+    var pxp = product.Tp * product.Tp / 1000000.0;                  // Post x post
+    var pxf = product.Tp * product.Tf / 1000000.0;                  // Post x frame
+
+
+    // Calc frame area
+    parts.frameTop = pane.width * product.Tf / 1000000.0;
+    parts.frameBottom = pane.width * product.Tf / 1000000.0;
+
+    parts.frameLeft = pane.height * product.Tf / 1000000.0;
+    parts.frameRight = pane.height * product.Tf / 1000000.0;
+
+    // Shade off 
+    if (frameLeft && frameTop) { parts.frameLeft -= fxf; }
+    if (frameLeft && frameBottom) { parts.frameLeft -= fxf; }
+
+    if (frameRight && frameTop) { parts.frameRight -= fxf; }
+    if (frameRight && frameBottom) { parts.frameRight -= fxf; }
+
+    //alert("FTop" + parts.frameTop);
+
+    var cw = pane.width;
+    var ch = pane.height;
+
+    if (frameTop) { ch -= product.Tf; } else { ch -= product.Tp; }
+    if (frameBottom) { ch -= product.Tf; } else { ch -= product.Tp; }
+
+    if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
+    if (frameRight) { cw -= product.Tf; } else { cw -= product.Tp; }
+
+    parts.totalCircum = (cw * 2 + ch * 2) / 1000.0;
+
+    if (frameTop) { parts.frameCircum += cw; } else { parts.postCircum += cw; }
+    if (frameBottom) { parts.frameCircum += cw; } else { parts.postCircum += cw; }
+
+    if (frameLeft) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
+    if (frameRight) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
+
+    parts.frameCircum = parts.frameCircum / 1000.0;
+    parts.postCircum = parts.postCircum / 1000.0;
+
+    // Calculate inner pane area
+    //    alert("Frame: " + (parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight)) + " true: " + 1419912.0);
+
+    parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight);
+
+    var debugParts = true;
+    if (debugParts) {
+        $("#totalArea").text(parts.totalArea.toFixed(3));
+        $("#paneArea").text(parts.paneArea.toFixed(3));
+
+        $("#totalCircum").text(parts.totalCircum.toFixed(3));
+        $("#frameCircum").text(parts.frameCircum.toFixed(3));
+        $("#postCircum").text(parts.postCircum.toFixed(3));
+
+        $("#frameTop").text(parts.frameTop.toFixed(3));
+        $("#frameBottom").text(parts.frameBottom.toFixed(3));
+        $("#frameLeft").text(parts.frameLeft.toFixed(3));
+        $("#frameRight").text(parts.frameRight.toFixed(3));
+
+        $("#postTop").text(parts.postTop.toFixed(3));
+        $("#postBottom").text(parts.postBottom.toFixed(3));
+        $("#postLeft").text(parts.postLeft.toFixed(3));
+        $("#postRight").text(parts.postRight.toFixed(3));
+    }
+
+    return parts;
+}
+
+
 // Gets pane area parts, frame, post and pane
 // Returns a PaneParts object on success, -1 on missing product
 function lbGetPaneAreaPartsExt(paneId) {
@@ -733,13 +829,12 @@ function lbGetPaneAreaPartsExt(paneId) {
     var product = products[lbGetProductId(productId)];      // Get product array index by product DB Id
     var pane = project.panes[paneId];                       // Select project pane
 
-    // Debug product object
-    //alert("Product Tf: " + product.Tf + ", Uf: " + product.Uf + ", Yf: " + product.Yf + ", Tp: " +
-    //    product.Tp + ", Up: " + product.Up + ", Yp: " + product.Yp + ", Ug: " + product.Ug);
-
     // Init parts
     var parts = new lbPaneParts();
     parts.totalArea = pane.width * pane.height;             // Get total pane area  (including frame/post borders)
+
+    // LIF1001YE	106	1,386	0,037	79,5	1,307	0,037	0,889	4-49-4-15-4E	1,129
+
 
     // Init border configuration, frame or post
     var frameTop = true; var frameBottom = true;
@@ -759,17 +854,28 @@ function lbGetPaneAreaPartsExt(paneId) {
     var pxf = product.Tp * product.Tf;                  // Post x frame
 
     parts.frameTop = pane.width * product.Tf;
-    parts.frameBottom = parts.frameTop;
+    parts.frameBottom = pane.width * product.Tf;
 
     // Sort this and everything will be fine
-    parts.frameLeft = (pane.height - product.Tf * 2) * product.Tf;
-
-    parts.frameRight = parts.frameLeft;
+    parts.frameLeft = pane.height * product.Tf;//(pane.height - product.Tf * 2) * product.Tf;
+    parts.frameRight = pane.height * product.Tf;
 
     if (!frameTop) { parts.frameTop = 0.0 }
     if (!frameBottom) { parts.frameBottom = 0.0 }
     if (!frameLeft) { parts.frameLeft = 0.0 }
     if (!frameRight) { parts.frameRight = 0.0 }
+
+    if (frameLeft && frameTop) { parts.frameLeft -= fxf; }
+    if (frameLeft && frameBottom) { parts.frameLeft -= fxf; }
+
+    if (frameRight && frameTop) { parts.frameRight -= fxf; }
+    if (frameRight && frameBottom) { parts.frameRight -= fxf; }
+
+    /*
+    parts.frameTop *= product.Tf;
+    parts.frameBottom *= product.Tf;
+    parts.frameLeft *= product.Tf;
+    parts.frameRight *= product.Tf;*/
 
     //alert("fxf " + fxf + ", fxp " + fxp + ", pxp " + pxp + ", pxf " + pxf);
 
@@ -788,14 +894,6 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     // Remove overlapping frame areas
     
-
-    /*
-    if (frameLeft && frameTop) { parts.frameLeft -= fxf; }
-    if (frameLeft && frameBottom) { parts.frameLeft -= fxf; }
-
-    if (frameRight && frameTop) { parts.frameRight -= fxf; }
-    if (frameRight && frameBottom) { parts.frameRight -= fxf; }
-    */
 
     /*
     if (frameLeft) {
@@ -862,9 +960,11 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     // Calculate inner pane area
 //    alert("Frame: " + (parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight)) + " true: " + 1419912.0);
+    
+    parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight);
+
     //parts.paneArea = 1419912.0; // This is close enough, just rounds the third decimal and everything is fine
 
-    parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight);
     //alert("Panearea: " + parts.paneArea + ", " + 1419912.0);
 
 
@@ -933,7 +1033,6 @@ function lbFinalizeUv() {
         // Calc pane
         paneU = (parts.paneArea / 1000000.0) * product.Ug;
 
-        //uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
         uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
 
         // 1,035  1230 x 1480
@@ -969,7 +1068,9 @@ function lbFinalizeUv() {
             */
     }
 
-    alert("Uv: " + uw);
+    var uw2 = Math.round(uw * 1000.0) / 1000.0;
+    alert("Uv: " + uw + LB_ENDL + "Uv: " + uw2);
+
 }
 
 
