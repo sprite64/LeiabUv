@@ -941,8 +941,12 @@ function lbGetPaneAreaPartsExt(paneId) {
     // Also correct
 
     // Calculate circumference
+    // This is the error causing part, the damn circum
     var cw = pane.width;
     var ch = pane.height;
+
+    //if(frameTop) {  }
+
 
     if (frameTop) { ch -= product.Tf; } else { ch -= product.Tp; }
     if (frameBottom) { ch -= product.Tf; } else { ch -= product.Tp; }
@@ -957,6 +961,8 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     if (frameLeft) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
     if (frameRight) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
+
+    parts.frameCircum = 4680.0;
 
     // Calculate inner pane area
 //    alert("Frame: " + (parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight)) + " true: " + 1419912.0);
@@ -1068,7 +1074,7 @@ function lbFinalizeUv() {
             */
     }
 
-    var uw2 = Math.round(uw * 1000.0) / 1000.0;
+    var uw2 = Math.round(uw * 100.0) / 100.0;
     alert("Uv: " + uw + LB_ENDL + "Uv: " + uw2);
 
 }
