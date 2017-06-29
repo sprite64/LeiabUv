@@ -944,15 +944,17 @@ function lbGetPaneAreaPartsExt(paneId) {
     // This is the error causing part, the damn circum
     var cw = pane.width;
     var ch = pane.height;
-
+    
+    alert("A W/H: " + cw + ", " + ch);
     //if(frameTop) {  }
 
+    if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
+    if (frameRight) { cw -= product.Tf; } else { cw -= product.Tp; }
 
     if (frameTop) { ch -= product.Tf; } else { ch -= product.Tp; }
     if (frameBottom) { ch -= product.Tf; } else { ch -= product.Tp; }
 
-    if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
-    if (frameRight) { cw -= product.Tf; } else { cw -= product.Tp; }
+    alert("C W/H: " + cw + ", " + ch);
 
     parts.totalCircum = cw * 2 + ch * 2;
 
@@ -962,7 +964,11 @@ function lbGetPaneAreaPartsExt(paneId) {
     if (frameLeft) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
     if (frameRight) { parts.frameCircum += ch; } else { parts.postCircum += ch; }
 
-    parts.frameCircum = 4680.0;
+    //nm = parts.frameCircum;
+    //parts.frameCircum = 4680.0;       // False
+    //parts.frameCircum -= 74;
+
+    //alert(parts.frameCircum + " " + LB_ENDL + nm);
 
     // Calculate inner pane area
 //    alert("Frame: " + (parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight)) + " true: " + 1419912.0);
@@ -1028,6 +1034,23 @@ function lbFinalizeUv() {
             return -1;
         }
 
+
+        // Calculate frame
+        frameU = ((parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight) * product.Uf) / 1000000.0;
+        frameY = (parts.frameCircum * product.Yf) / 1000.0;
+
+        // Calc post
+        postU = ((parts.postTop + parts.postBottom + parts.postLeft + parts.postRight) * product.Up) / 1000000.0;
+        postY = (parts.postCircum * product.Yp) / 1000.0;
+
+        // Calc pane
+        paneU = (parts.paneArea * product.Ug) / 1000000.0;
+
+        uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
+
+
+        // Prepaid
+        /*
         // Calculate frame
         frameU = ((parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight) / 1000000.0) * product.Uf;
         frameY = (parts.frameCircum / 1000.0) * product.Yf;
@@ -1040,6 +1063,7 @@ function lbFinalizeUv() {
         paneU = (parts.paneArea / 1000000.0) * product.Ug;
 
         uw += (frameU + frameY + postU + postY + paneU) / (parts.totalArea / 1000000.0);
+        */
 
         // 1,035  1230 x 1480
 
@@ -1074,7 +1098,7 @@ function lbFinalizeUv() {
             */
     }
 
-    var uw2 = Math.round(uw * 100.0) / 100.0;
+    var uw2 = Math.round(uw * 1000.0) / 1000.0;
     alert("Uv: " + uw + LB_ENDL + "Uv: " + uw2);
 
 }
