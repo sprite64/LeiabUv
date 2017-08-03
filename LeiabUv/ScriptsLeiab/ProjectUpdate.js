@@ -744,7 +744,8 @@ function lbFinalizeUv() {
         totalPostU += (parts.postTop + parts.postBottom + parts.postLeft + parts.postRight) * product.Up;
         totalPostY += parts.postCircum * product.Yp;
 
-        totalPaneU += parts.paneArea * product.Ug;
+        //totalPaneU += parts.paneArea * product.Ug;
+        totalPaneU += parts.paneArea * project.panes[i].ug;     // Utilize the custom Ug value setting
 
         totalArea += parts.totalArea;
         
