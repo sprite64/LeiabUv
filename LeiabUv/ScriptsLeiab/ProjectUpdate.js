@@ -658,8 +658,8 @@ function lbGetPaneAreaPartsExt(paneId) {
     }
 
     // Calculate circumference
-    var cw = pane.width;
-    var ch = pane.height;
+    var cw = pane.width + 26;       // Indentendation
+    var ch = pane.height + 26;
     
     // Remove out of bounds/overlap
     if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
