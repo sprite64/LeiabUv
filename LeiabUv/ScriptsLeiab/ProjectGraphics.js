@@ -112,11 +112,12 @@ function lbRenderSelectorDebug() {
     // Render frame dimensions
     ctx.textAlign = "left";
 
-    ctx.fillText("Karm: " + (Math.round(project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
-        (Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 350);
+    ctx.fillText("Karm: " + Math.round(project.frameWidth) + "x" + Math.round(project.frameHeight), 15, 350);
+    //ctx.fillText("Karm: " + (Math.round(project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
+        //(Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 350);
 
     ctx.textAlign = "right";
-    ctx.fillText("(mm)", 285, 350);
+    ctx.fillText("(mm)", 335, 350);
 
     // Render pane dimensions
     ctx.textAlign = "right";
@@ -139,8 +140,11 @@ function lbRenderSelectorDebug() {
         // Render width / height *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
         // Format dimensions
-        wText = (Math.round(project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
-        hText = (Math.round(project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
+        wText = (Math.round(project.panes[i].width * 10.0) / 10.0).toFixed(1);      // Round to one decimal
+        hText = (Math.round(project.panes[i].height * 10.0) / 10.0).toFixed(1);
+
+        //wText = (Math.round(project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
+        //hText = (Math.round(project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
         uText = (Math.round(project.panes[i].ug * 1000.0) / 1000.0).toFixed(3);
 
         //hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);

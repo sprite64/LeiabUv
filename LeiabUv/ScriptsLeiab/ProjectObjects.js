@@ -90,10 +90,12 @@ function lbFrameDataGfx() {
 }
 
 
+// To be renamed ProjectEntry
+// New Project object is to contain a projectEntries[] array of entries
 function lbProject(data) {
 
-    this.name = "Project Name";
-    this.description = "Project description";
+    this.name = "Entryname";
+    this.description = "Entry description";
 
     this.columns = data.columns;
     this.rows = data.rows;
@@ -142,10 +144,16 @@ function lbProject(data) {
 }
 
 
-function lbProjectGraphics() {
-    
-}
+function lbProject2() {
 
+    this.name = "Project name";     // Project name & descrition
+    this.description = "";          // 
+
+    this.orderNr = -1;              // Unique
+
+    this.numEntries                 // Nr of project entries
+    //this.entries = 0;
+}
 
 
 // Pane Selector constructor

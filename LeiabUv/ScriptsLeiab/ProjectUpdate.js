@@ -140,6 +140,9 @@ function lbProjectUpdate(action) {          // action specifies what action to p
                 lbUpdateFrameAndPostTables();       // Update frame/post tables
 
                 lbGetPaneAreaPartsExt(selector.selectedPane);       // Update debug parts
+
+                // Update parts info table
+                lbUpdatePartsInfo();
             }
 
             break;
@@ -495,6 +498,7 @@ function lbProjectUpdatePaneDimensions() {
     
 
     // Correct frame dimensions conditionaly else do nothing
+    /*
     if (project.panes[paneId].colSpan == project.columns) {
         if(project.frameWidth != parseFloat($("#paneWidth").val().replace(",", "."))) {
 
@@ -516,22 +520,33 @@ function lbProjectUpdatePaneDimensions() {
                 return;
             }
         }
-    }
+    }*/
 
     // Update frame input if any changes were made above
-    $("#frameWidth").val(project.frameWidth);
-    $("#frameHeight").val(project.frameHeight);
+    //$("#frameWidth").val(project.frameWidth);             // Frame dimensions arent supposed to be possible to edit by x/y placement of posts, hence this is not needed
+    //$("#frameHeight").val(project.frameHeight);
 
 
     // Update pane dimensions
-    project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
-    project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
+    var x = parseFloat($("#paneWidth").val().replace(",", "."));
+    var y = parseFloat($("#paneHeight").val().replace(",", "."));
+
+    project.panes[paneId].width = Math.round(x * 100.0) / 100.0;      // Set new widths/heights and replace
+    project.panes[paneId].height = Math.round(y * 100.0) / 100.0;    // "," with "." to be float compatible
+
+    //project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
+    //project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
 
     $("#paneWidth").val(project.panes[paneId].width);           // Update input boxes to remove garbage values
     $("#paneHeight").val(project.panes[paneId].height);
 
+    //Math.round(project.panes[i].width * 100.0) / 100.0);//.toFixed(2);
+
     lbUpdatePanes();
+
+    lbUpdatePartsInfo();
 }
+
 
 
 // This is a function for finding the array index by product id
@@ -555,7 +570,8 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     // Valid Id check
     var productId = project.panes[paneId].productId;
-    if (productId == -1) { alert("Product Id is -1, break operation"); return -1; }
+    if (productId == -1) { return -1; }     // Error message: "Selected [paneId] pane doesn't have a selected product"
+    //if (productId == -1) { alert("Product Id is -1, break operation"); return -1; }
 
     // Init target product and pane
     var product = products[lbGetProductId(productId)];      // Get product array index by product DB Id
@@ -681,25 +697,8 @@ function lbGetPaneAreaPartsExt(paneId) {
         parts.postTop + parts.postBottom + parts.postLeft + parts.postRight);
 
     // Debug 
-    var debugParts = true;
-    if (debugParts) {
-        $("#totalArea").text(parts.totalArea.toFixed(3) + " mm²");
-        $("#paneArea").text(parts.paneArea.toFixed(3) + " mm²");
-
-        $("#totalCircum").text(parts.totalCircum.toFixed(3) + " mm");
-        $("#frameCircum").text(parts.frameCircum.toFixed(3) + " mm");
-        $("#postCircum").text(parts.postCircum.toFixed(3) + " mm");
-
-        $("#frameTop").text(parts.frameTop.toFixed(3) + " mm²");
-        $("#frameBottom").text(parts.frameBottom.toFixed(3) + " mm²");
-        $("#frameLeft").text(parts.frameLeft.toFixed(3) + " mm²");
-        $("#frameRight").text(parts.frameRight.toFixed(3) + " mm²");
-
-        $("#postTop").text(parts.postTop.toFixed(3) + " mm²");
-        $("#postBottom").text(parts.postBottom.toFixed(3) + " mm²");
-        $("#postLeft").text(parts.postLeft.toFixed(3) + " mm²");
-        $("#postRight").text(parts.postRight.toFixed(3) + " mm²");
-    }
+    // ### This is not the place to update parts info table
+    //lbUpdatePartsInfo(parts);
 
     return parts;
 }
@@ -736,7 +735,8 @@ function lbFinalizeUv() {
         product = products[lbGetProductId(productId)];
         parts = lbGetPaneAreaPartsExt(i);
 
-        if (parts == -1) { alert("Parts are -1, break operation"); return -1; }
+        if (parts == -1) { return -1; } // Error message: One or more panes dont have applied products
+        //if (parts == -1) { alert("Parts are -1, break operation"); return -1; }
 
         totalFrameU += (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight) * product.Uf;
         totalFrameY += parts.frameCircum * product.Yf;
@@ -763,8 +763,113 @@ function lbFinalizeUv() {
 // Function below and function above need to correct a NaN input error, if Nan then make it zero
 // *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
+
+// Basic function to limit a nr of decimals, utilized in lbUpdatePartsInfo()
+function lbLimitDecimals(val, max) {
+
+    if (isNaN(parseFloat(val))) { return ""; }
+
+    if (val.length == undefined) { val = val + ""; }        // "Typecast"
+
+    if (val.length > max) {
+        //alert("Mod! " + val.length);
+        val = val.substring(0, max);
+    }
+    
+    return val;
+}
+
+
+// Updates parts information from _selected_ pane
+function lbUpdatePartsInfo() {
+
+    var paneId = selector.selectedPane;
+
+    // Valid Id check
+    var productId = project.panes[paneId].productId;
+    if (productId == -1) {
+
+        // Set default/zero values
+        $("#totalArea").text("");
+        $("#paneArea").text("");
+
+        $("#totalCircum").text("");
+        $("#frameCircum").text("");
+        $("#postCircum").text("");
+
+        $("#frameTop").text("");
+        $("#frameBottom").text("");
+        $("#frameLeft").text("");
+        $("#frameRight").text("");
+
+        $("#postTop").text("");
+        $("#postBottom").text("");
+        $("#postLeft").text("");
+        $("#postRight").text("");
+
+        // Error message "Pane doesnt have a product"
+
+        return -1;
+    }
+    //if (productId == -1) { alert("lbUpdatePartsInfo: No pane selected[" + paneId + "]"); return -1; }
+
+    // Init target product and pane
+    //var product = products[lbGetProductId(productId)];      // Get product array index by product DB Id
+    //var pane = project.panes[paneId];                       // Select project pane
+
+    // Update parts info of selected pane
+    var parts = lbGetPaneAreaPartsExt(paneId);
+
+    // Update table data
+    var limitChars = false;     // Turn chr limiting on or off
+    var limit = 18;             // Limit to # of characters including .
+
+    if (!limitChars) {
+
+        $("#totalArea").text(parts.totalArea / 1000000.0 + " m²");
+        $("#paneArea").text(parts.paneArea / 1000000.0 + " m²");
+
+        $("#totalCircum").text(parts.totalCircum / 1000.0 + " m");
+        $("#frameCircum").text(parts.frameCircum / 1000.0 + " m");
+        $("#postCircum").text(parts.postCircum / 1000.0 + " m");
+
+        $("#frameTop").text(parts.frameTop / 1000000.0 + " m²");
+        $("#frameBottom").text(parts.frameBottom / 1000000.0 + " m²");
+        $("#frameLeft").text(parts.frameLeft / 1000000.0 + " m²");
+        $("#frameRight").text(parts.frameRight / 1000000.0 + " m²");
+
+        $("#postTop").text(parts.postTop / 1000000.0 + " m²");
+        $("#postBottom").text(parts.postBottom / 1000000.0 + " m²");
+        $("#postLeft").text(parts.postLeft / 1000000.0 + " m²");
+        $("#postRight").text(parts.postRight / 1000000.0 + " m²");
+
+    } else {
+
+        $("#totalArea").text(lbLimitDecimals(parts.totalArea / 1000000.0, limit) + " m²");
+        $("#paneArea").text(lbLimitDecimals(parts.paneArea / 1000000.0, limit) + " m²");
+
+        $("#totalCircum").text(lbLimitDecimals(parts.totalCircum / 1000.0, limit) + " m");
+        $("#frameCircum").text(lbLimitDecimals(parts.frameCircum / 1000.0, limit) + " m");
+        $("#postCircum").text(lbLimitDecimals(parts.postCircum / 1000.0, limit) + " m");
+
+        $("#frameTop").text(lbLimitDecimals(parts.frameTop / 1000000.0, limit) + " m²");
+        $("#frameBottom").text(lbLimitDecimals(parts.frameBottom / 1000000.0, limit) + " m²");
+        $("#frameLeft").text(lbLimitDecimals(parts.frameLeft / 1000000.0, limit) + " m²");
+        $("#frameRight").text(lbLimitDecimals(parts.frameRight / 1000000.0, limit) + " m²");
+
+        $("#postTop").text(lbLimitDecimals(parts.postTop / 1000000.0, limit) + " m²");
+        $("#postBottom").text(lbLimitDecimals(parts.postBottom / 1000000.0, limit) + " m²");
+        $("#postLeft").text(lbLimitDecimals(parts.postLeft / 1000000.0, limit) + " m²");
+        $("#postRight").text(lbLimitDecimals(parts.postRight / 1000000.0, limit) + " m²");
+    }
+
+    //$("#paneArea").text(lbLimitDecimals(parts.paneArea / 1000000.0, 18) + " m²");
+}
+
+
 // Update changes made to frame dimensions
-function lbProjectUpdateFrameDimensions() {
+// Frame dimensions are limited to fractionless mm
+function lbProjectUpdateFrameDimensionsOriginal() {
 
     // Correct NaN errors, fall back on previous values or return; and show 
     
@@ -823,7 +928,94 @@ function lbProjectUpdateFrameDimensions() {
     if (project.rows == 1 || project.rows == project.panes[paneId].rowSpan) {
         $("#paneHeight").val(project.frameHeight);
     }
+
+    /*
+    // Update parts info of selected pane
+    var parts = lbGetPaneAreaPartsExt(paneId);
+
+    // Valid Id check
+    var productId = project.panes[paneId].productId;
+    if (productId != -1) {
+        lbUpdatePartsInfo(parts);
+    }*/
+
+    lbUpdatePartsInfo();
 }
+
+
+
+// Updated version of lpProjectUpdateFrameDimensions()
+
+// Update changes made to frame dimensions
+// Frame dimensions are limited to fractionless mm
+function lbProjectUpdateFrameDimensions() {
+
+    // Check for NaN and negative input values and revert original value
+    var nanError = false;
+
+    // Following parseFloat statements may as well be using parseInt, probably
+    if (isNaN(parseFloat($("#frameWidth").val().replace(",", "."))) || parseFloat($("#frameWidth").val().replace(",", ".")) < 0.0) {
+        alert("Felaktigt bredd värde");
+        $("#frameWidth").val(project.frameWidth);
+        nanError = true;
+    }
+
+    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
+        alert("Felaktigt höjd värde");
+        $("#frameHeight").val(project.frameHeight);
+        nanError = true;
+    }
+
+    if (nanError) {     // Reverting value happens above
+        return;
+        // Possible error message: "Invalid number, "reset/revert" to original number"
+    }
+
+
+    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var id = lbGetAnyOldestPaneWidthArray();
+    var delta = parseInt($("#frameWidth").val()) - project.frameWidth;        // This will hopefully guard against floating/decimal frame values
+    //var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
+
+    project.paneWidths[id] += delta;
+    project.frameWidth += delta;
+
+    project.paneWidthAge[id] = project.paneWidthAgeCounter;
+    project.paneWidthAgeCounter++;
+
+    lbUpdatePaneWidthFromWidthArray();
+
+    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    id = lbGetAnyOldestPaneHeightArray();
+    delta = parseInt($("#frameHeight").val().replace(",", ".")) - project.frameHeight;
+
+    project.paneHeights[id] += delta;
+    project.frameHeight += delta;
+
+    project.paneHeightAge[id] = project.paneHeightAgeCounter;
+    project.paneHeightAgeCounter++;
+
+    lbUpdatePaneHeightFromHeightArray();
+
+    // *** Update pane data
+    var paneId = selector.selectedPane;
+    if (project.columns == 1 || project.columns == project.panes[paneId].colSpan) {
+        $("#paneWidth").val(project.frameWidth);
+    }
+
+    if (project.rows == 1 || project.rows == project.panes[paneId].rowSpan) {
+        $("#paneHeight").val(project.frameHeight);
+    }
+
+
+    // Clear frame dimension fractions
+    $("#frameWidth").val(parseInt($("#frameWidth").val()));
+    $("#frameHeight").val(parseInt($("#frameHeight").val()));
+    
+    // Update selected pane parts info
+    lbUpdatePartsInfo();
+}
+
 
 
 // Basic product list management functions
@@ -942,6 +1134,8 @@ function lbProjectUpdateProductData() {
 
     lbUpdateFrameAndPostTables();
 
+
+    lbUpdatePartsInfo();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
@@ -978,6 +1172,8 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
 
     lbUpdateFrameAndPostTables();
 
+
+    lbUpdatePartsInfo();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
@@ -1009,6 +1205,66 @@ function lbProjectChangeProduct() {
 
         // Update Ug
         $("#paneUg").val(lbGetProductUg());
+    }
+}
+
+
+// Update visibility of pane dimension/post placement x y input
+function lbUpdatePaneDimensionInput() {
+    
+    // Init
+    var paneId = selector.selectedPane;
+    var productId = project.panes[paneId].productId;
+    var pIndex = lbGetProductId(productId);
+    var pane = project.panes[paneId];
+
+    var showX = true;
+    var showY = true;
+
+    if (project.columns == pane.colSpan) {
+        // Hide X
+        showX = false;
+    }
+
+    if (project.rows == pane.rowSpan) {
+        // Hide Y
+        showY = false;
+    }
+
+    if (showX == false && showY == false) {
+        // Hide all controls
+        document.getElementById("paneLabel").style.display = "none";
+        document.getElementById("paneX").style.display = "none";
+        document.getElementById("paneY").style.display = "none";
+        document.getElementById("paneBrX").style.display = "none";
+        document.getElementById("paneBrY").style.display = "inline-block";
+        document.getElementById("btnPaneDimensionsUpdate").style.display = "none";
+
+        //document.getElementById("paneFrameSplit1").style.display = "none";
+        //document.getElementById("paneFrameSplit2").style.display = "none";
+    } else {
+
+        if (showX) {
+            document.getElementById("paneX").style.display = "inline-block";
+            document.getElementById("paneBrX").style.display = "inline-block";
+        } else {
+            document.getElementById("paneX").style.display = "none";
+            document.getElementById("paneBrX").style.display = "none";
+        }
+
+        if (showY) {
+            document.getElementById("paneY").style.display = "inline-block";
+            document.getElementById("paneBrY").style.display = "inline-block";
+        } else {
+            document.getElementById("paneY").style.display = "none";
+            document.getElementById("paneBrY").style.display = "none";
+        }
+
+        document.getElementById("paneLabel").style.display = "inline-block";
+        document.getElementById("btnPaneDimensionsUpdate").style.display = "inline-block";
+
+        //document.getElementById("paneFrameSplit1").style.display = "inline-block";
+        //document.getElementById("paneFrameSplit2").style.display = "inline-block";
     }
 }
 
@@ -1240,6 +1496,7 @@ function lbProjectUpdateAndRender(action) {
     // If a dimension value has been entered but not updated the update button changes to green appearance
     // and if there is nothing to udpate the button is gray
     lbUpdateInputButtons();
+    lbUpdatePaneDimensionInput();
 
     //lbUpdateFrameAndPostTables();
 

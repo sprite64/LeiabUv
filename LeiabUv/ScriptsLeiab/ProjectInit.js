@@ -62,7 +62,7 @@ $(function () {
     $("#btnProductUpdateAll").click(function () { lbProjectUpdateAllProductData(); });
 
     $("#btnTestAreaParts").click(function () {
-        lbGetPaneAreaPartsExt(selector.selectedPane);
+        //lbGetPaneAreaPartsExt(selector.selectedPane);         // Might not be needed here
         lbFinalizeUv();
     });
 

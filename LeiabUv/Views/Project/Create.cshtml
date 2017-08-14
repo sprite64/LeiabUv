@@ -40,7 +40,7 @@
                 <!-- Parts debug -->
                 <!-- >h4 style="color: #ccc;">Misc</!--h4 -->
                 <table style="color: #ccc; display: inline-block;">
-                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Luft Area</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="totalArea">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Total Area</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="totalArea">0</td> </tr>
                     <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Glas Area</td> <td style="text-align: right; padding-right: 5px;" id="paneArea">0</td> </tr>
                     <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Total omkrets</td> <td style="text-align: right; padding-right: 5px;" id="totalCircum">0</td> </tr>
                     <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Karm omkrets</td> <td style="text-align: right; padding-right: 5px;" id="frameCircum">0</td> </tr>
@@ -279,17 +279,18 @@
                     -->
 
                 <!-- Pane width/height input -->
-                <label style="color: #ccc;">Postplacering</label><br />
-                <span><label style="color: #ccc; width: 50px;">X: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;"/><label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
-                <span><label style="color: #ccc; width: 50px;">Y: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label id="lblPaneHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span>
-                <br />
-                <button id="btnPaneDimensionsUpdate" class="btn btn-default">Uppdatera</button>
+                <!-- Pane elements should all be "display: none" at init -->
+                <label id="paneLabel" style="display: none; color: #ccc;">Postplacering</label><br />
+                <span id="paneX" style="display: none;"><label style="color: #ccc; width: 50px;">X: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br id="paneBrX" style="display: none;"/>
+                <span id="paneY" style="display: none;"><label style="color: #ccc; width: 50px;">Y: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;"/><label id="lblPaneHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span><br id="paneBrY" style="display: none;"/>
+                <button id="btnPaneDimensionsUpdate" style="display: none; " class="btn btn-default">Uppdatera</button>
 
-                <br/>
+                <!-- This section is uneven, if all pane elements are hidden there will be a larger gap to the frame label than from that of the pane label -->
+                <br />
 
                 <!-- Frame width/height input -->
                 <label style="color: #ccc;">Karmmått</label><br/>
-                <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="frameWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 10px; margin-bottom: 10px;" /><label id="lblFrameWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
+                <span><label style="color: #ccc; width: 50px;">Bredd: </label><input id="frameWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label id="lblFrameWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br>
                 <span><label style="color: #ccc; width: 50px;">Höjd: </label><input id="frameHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label id="lblFrameHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span>
                 <br />
                 <button id="btnFrameDimensionsUpdate" class="btn btn-default">Uppdatera</button>
