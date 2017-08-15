@@ -13,20 +13,6 @@
 
 
 
-
-// Get HTML5 canvas object area
-function lbGetProjectCanvas() {
-    return document.getElementById(LB_ProjectCanvasId);
-}
-
-
-// Get canvas 2D context
-function lbGetProjectCanvasContext() {
-    var canvas = lbGetProjectCanvas();
-    return canvas.getContext("2d");
-}
-
-
 // Get HTML5 canvas object area
 function lbGetPaneSelectCanvas() {
     return document.getElementById(LB_PaneSelectCanvasId);
@@ -337,11 +323,6 @@ function lbProjectRender() {
 
     lbRenderSelectorDebug()
 
-    // Dummy render
-    ctx = lbGetProjectCanvasContext()
-
-    ctx.fillStyle = "#fff";
-    ctx.fillRect(0, 0, 534, 534);
 }
 
 

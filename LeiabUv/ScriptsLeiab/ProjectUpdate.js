@@ -542,6 +542,8 @@ function lbProjectUpdatePaneDimensions() {
 
     //Math.round(project.panes[i].width * 100.0) / 100.0);//.toFixed(2);
 
+    project.uv = -1.0;          // Reset Uv, it needs recalculation
+
     lbUpdatePanes();
 
     lbUpdatePartsInfo();
@@ -735,7 +737,7 @@ function lbFinalizeUv() {
         product = products[lbGetProductId(productId)];
         parts = lbGetPaneAreaPartsExt(i);
 
-        if (parts == -1) { return -1; } // Error message: One or more panes dont have applied products
+        if (parts == -1) { $("#totalUValue").text("-"); return -1; } // Error message: One or more panes dont have applied products
         //if (parts == -1) { alert("Parts are -1, break operation"); return -1; }
 
         totalFrameU += (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight) * product.Uf;
@@ -756,7 +758,11 @@ function lbFinalizeUv() {
     uv = (((totalFrameU + totalPostU + totalPaneU) / 1000000.0) + ((totalFrameY + totalPostY) / 1000.0)) / (totalArea / 1000000.0);
     uvr = Math.round(uv * 1000.0) / 1000.0;
 
-    alert("Uv: " + uv + LB_ENDL + "UvR: " + uvr);
+    $("#totalUValue").text(uvr);
+
+    // Update project value
+    project.uv = uvr;
+    //alert("Uv: " + uv + LB_ENDL + "UvR: " + uvr);
 }
 
 
@@ -1014,6 +1020,8 @@ function lbProjectUpdateFrameDimensions() {
     
     // Update selected pane parts info
     lbUpdatePartsInfo();
+
+    project.uv = -1.0;          // Reset Uv, it needs recalculation
 }
 
 
@@ -1129,6 +1137,7 @@ function lbProjectUpdateProductData() {
     }*/
     //lbPrependProduct("#productListTop", "Top");
 
+    project.uv = -1.0;          // Reset Uv, it needs recalculation
 
     lbUpdateProductLists();
 
@@ -1136,6 +1145,7 @@ function lbProjectUpdateProductData() {
 
 
     lbUpdatePartsInfo();
+    lbUpdateTotalUValueButton();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
@@ -1168,12 +1178,15 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
 
     }
 
+    project.uv = -1.0;          // Reset Uv, it needs recalculation
+
     lbUpdateProductLists();
 
     lbUpdateFrameAndPostTables();
 
 
     lbUpdatePartsInfo();
+    lbUpdateTotalUValueButton();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
@@ -1352,6 +1365,8 @@ function lbUpdateInputButtons() {
     // *** *** Not sure about this change, needs testing
     if (project.panes[id].ug != ug || $("#productList").val() != -1 || project.panes[id].productId != -1) {
 
+        // Above if statement is incomplete, causing the buttons to show green when not suppose to
+
         // Change to green
         $("#btnProductUpdate").removeClass("btn-danger");
         $("#btnProductUpdate").removeClass("btn-default");
@@ -1391,7 +1406,39 @@ function lbUpdateInputButtons() {
 }
 
 
+// Update Uv update button
+// Doesn't account for all changes, perhaps an easy fix is to set project.uv to -1 again when other changes are made
+function lbUpdateTotalUValueButton() {
 
+    var state = "normal";
+
+    for (var i = 0; i < project.nrOfPanes; i++) {
+        if (project.panes[i].productId == -1) {
+            state = "incomplete";
+            break;
+        }
+    }
+
+    if (state == "normal") {
+
+        if($("#totalUValue").text() == Math.round(project.uv * 1000.0) / 1000.0 + "") {
+            // Make gray
+            $("#btnUpdateUValue").removeClass("btn-success");
+            $("#btnUpdateUValue").removeClass("btn-danger");
+            $("#btnUpdateUValue").addClass("btn-default");
+        } else {
+            // Make green
+            $("#btnUpdateUValue").removeClass("btn-default");
+            $("#btnUpdateUValue").removeClass("btn-danger");
+            $("#btnUpdateUValue").addClass("btn-success");
+        }
+    } else {
+        // Make red
+        $("#btnUpdateUValue").removeClass("btn-default");
+        $("#btnUpdateUValue").removeClass("btn-success");
+        $("#btnUpdateUValue").addClass("btn-danger");
+    }
+}
 
 
 // This is currently called through lbProjectUpdateAndRender(action)
@@ -1497,6 +1544,7 @@ function lbProjectUpdateAndRender(action) {
     // and if there is nothing to udpate the button is gray
     lbUpdateInputButtons();
     lbUpdatePaneDimensionInput();
+    lbUpdateTotalUValueButton();
 
     //lbUpdateFrameAndPostTables();
 

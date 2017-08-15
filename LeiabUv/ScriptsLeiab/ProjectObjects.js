@@ -141,6 +141,8 @@ function lbProject(data) {
         this.paneHeightAge[i] = this.paneHeightAgeCounter;
         this.paneHeightAgeCounter ++;
     }
+
+    this.uv = -1.0;
 }
 
 
