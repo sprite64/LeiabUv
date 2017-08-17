@@ -1363,7 +1363,9 @@ function lbUpdateInputButtons() {
     // This should also validate product changes
     //if (project.panes[id].ug != ug || project.panes[id].productId != $("#productList").val() ||
     // *** *** Not sure about this change, needs testing
-    if (project.panes[id].ug != ug || $("#productList").val() != -1 || project.panes[id].productId != -1) {
+
+    //if (project.panes[id].ug != ug || $("#productList").val() != -1 || project.panes[id].productId != -1) {
+    if (project.panes[id].ug != ug) {
 
         // Above if statement is incomplete, causing the buttons to show green when not suppose to
 
