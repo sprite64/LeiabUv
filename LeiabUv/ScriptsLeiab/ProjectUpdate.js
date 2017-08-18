@@ -20,7 +20,7 @@
 */
 
 
-lbRenderSelectorFrame();
+//lbRenderSelectorFrame();
 
 
 function lbGetInnerSelectorFrameRect() {
@@ -78,7 +78,7 @@ function lbGetSelectorPaneRect(index) {
 // Update mouse position
 function lbUpdateMousePosition(e) {
 
-    if (selector == undefined) return;
+    if (entry == undefined || selector == undefined) return;
 
     var mouseX = parseInt(e.clientX);                               // Get event data
     var mouseY = parseInt(e.clientY);
@@ -92,9 +92,9 @@ function lbUpdateMousePosition(e) {
 }
 
 
-function lbProjectUpdate(action) {          // action specifies what action to preform
+function lbSelectorUpdate(action) {          // action specifies what action to preform
 
-    if (selector == undefined) return;
+    if (entry == undefined || selector == undefined) return;
 
     var yOffset = $(window).scrollTop();    // Taking scroll y offset into account for pane collision
 
@@ -105,9 +105,9 @@ function lbProjectUpdate(action) {          // action specifies what action to p
             // Find hover pane
             selector.hoverPane = -1;
             for (var i = 0; i < selector.nrOfPanes; i++) {
-                
+
                 var rect = lbGetSelectorPaneRect(i);
-                
+
 
                 // Check collision
                 if (selector.mouseX > rect.x && selector.mouseX <= rect.x + rect.width) {
@@ -157,46 +157,48 @@ function lbProjectUpdate(action) {          // action specifies what action to p
 function lbGetSelectedPaneWidth() {
 
     var paneId = selector.selectedPane;
-    return project.panes[paneId].width;
+    return entry.panes[paneId].width;
 }
 
 
 function lbGetSelectedPaneHeight() {
 
     var paneId = selector.selectedPane;
-    return project.panes[paneId].height;
+    return entry.panes[paneId].height;
 }
 
 function lbGetSelectedProduct() {               // *** ### *** This shouldnt work like this, consider the select dropdown list
+
     var paneId = selector.selectedPane;
-    return project.panes[paneId].productId;        // productId should always be -1
+    return entry.panes[paneId].productId;        // productId should always be -1
     //return -1;//project.panes[paneId].productId;        // productId should always be -1
 }
 
 
 function lbGetSelectedUg() {
+
     var paneId = selector.selectedPane;
-    return project.panes[paneId].ug;
+    return entry.panes[paneId].ug;
 }
 
 function lbGetFrameWidth() {
 
-    if (isNaN(project.frameWidth)) {                // This NaN check is probably not necessary, it's all  handled by the update input functions
-        project.frameWidth = 0.0;
+    if (isNaN(entry.frameWidth)) {                // This NaN check is probably not necessary, it's all  handled by the update input functions
+        entry.frameWidth = 0.0;
         alert("NaN error!");
     }
 
-    return project.frameWidth;
+    return entry.frameWidth;
 }
 
 function lbGetFrameHeight() {
 
-    if (isNaN(project.frameHeight)) {               // This NaN check is probably not necessary, it's all  handled by the update input functions
-        project.frameHeight = 0.0;
+    if (isNaN(entry.frameHeight)) {               // This NaN check is probably not necessary, it's all  handled by the update input functions
+        entry.frameHeight = 0.0;
         alert("NaN error!");
     }
 
-    return project.frameHeight;
+    return entry.frameHeight;
 }
 
 
@@ -206,8 +208,8 @@ function lbGetTotalPaneWidth() {
     var id = selector.selectedPane;
     var t = 0.0;
 
-    for (var i = project.panes[id].xIndex; i < project.panes[id].xIndex + project.panes[id].colSpan; i++) {
-        t += parseFloat(project.paneWidths[i]);
+    for (var i = entry.panes[id].xIndex; i < entry.panes[id].xIndex + entry.panes[id].colSpan; i++) {
+        t += parseFloat(entry.paneWidths[i]);
     }
 
     return t;
@@ -218,8 +220,8 @@ function lbGetTotalPaneHeight() {
     var id = selector.selectedPane;
     var t = 0.0;
 
-    for (var i = project.panes[id].yIndex; i < project.panes[id].yIndex + project.panes[id].rowSpan; i++) {
-        t += parseFloat(project.paneHeights[i]);
+    for (var i = entry.panes[id].yIndex; i < entry.panes[id].yIndex + entry.panes[id].rowSpan; i++) {
+        t += parseFloat(entry.paneHeights[i]);
     }
 
     return t;
@@ -233,7 +235,7 @@ function lbGetPaneWidthDelta() {
     var id = selector.selectedPane;
     var t = lbGetTotalPaneWidth();
 
-    return (project.panes[id].width - t);
+    return (entry.panes[id].width - t);
 }
 
 function lbGetPaneHeightDelta() {
@@ -241,7 +243,7 @@ function lbGetPaneHeightDelta() {
     var id = selector.selectedPane;
     var t = lbGetTotalPaneHeight();
 
-    return (project.panes[id].height - t);
+    return (entry.panes[id].height - t);
 }
 
 
@@ -249,12 +251,12 @@ function lbGetPaneHeightDelta() {
 function lbGetOldestSelectedPaneWidthArray() {
 
     var id = selector.selectedPane;
-    var oldest = project.paneWidthAgeCounter + 1;
-    var oldId = - 1;
+    var oldest = entry.paneWidthAgeCounter + 1;
+    var oldId = -1;
 
-    for (var i = project.panes[id].xIndex; i < project.panes[id].xIndex + project.panes[id].colSpan; i++) {
-        if (project.paneWidthAge[i] < oldest) {
-            oldest = project.paneWidthAge[i];
+    for (var i = entry.panes[id].xIndex; i < entry.panes[id].xIndex + entry.panes[id].colSpan; i++) {
+        if (entry.paneWidthAge[i] < oldest) {
+            oldest = entry.paneWidthAge[i];
             oldId = i;
         }
     }
@@ -263,14 +265,14 @@ function lbGetOldestSelectedPaneWidthArray() {
 }
 
 function lbGetOldestSelectedPaneHeightArray() {
-         
+
     var id = selector.selectedPane;
-    var oldest = project.paneHeightAgeCounter + 1;
+    var oldest = entry.paneHeightAgeCounter + 1;
     var oldId = -1;
 
-    for (var i = project.panes[id].yIndex; i < project.panes[id].yIndex + project.panes[id].rowSpan; i++) {
-        if (project.paneHeightAge[i] < oldest) {
-            oldest = project.paneHeightAge[i];
+    for (var i = entry.panes[id].yIndex; i < entry.panes[id].yIndex + entry.panes[id].rowSpan; i++) {
+        if (entry.paneHeightAge[i] < oldest) {
+            oldest = entry.paneHeightAge[i];
             oldId = i;
         }
     }
@@ -283,17 +285,17 @@ function lbGetOldestSelectedPaneHeightArray() {
 function lbGetOldestUnselectedPaneWidthArray() {
 
     var id = selector.selectedPane;
-    var oldest = project.paneWidthAgeCounter + 1;
-    var oldId = - 1;
+    var oldest = entry.paneWidthAgeCounter + 1;
+    var oldId = -1;
 
     // Find oldest unselected width array index
-    for (var i = 0; i < project.columns; i++) {
+    for (var i = 0; i < entry.columns; i++) {
 
         //if(i < project.panes[id].xIndex || i >= project.panes[id].xIndex + project.panes[id].colSpan) {
-        if(i < project.panes[id].xIndex || i >= project.panes[id].xIndex + project.panes[id].colSpan) {
+        if (i < entry.panes[id].xIndex || i >= entry.panes[id].xIndex + entry.panes[id].colSpan) {
 
-            if(project.paneWidthAge[i] < oldest) {
-                oldest = project.paneWidthAge[i];
+            if (entry.paneWidthAge[i] < oldest) {
+                oldest = entry.paneWidthAge[i];
                 oldId = i;
             }
         }
@@ -305,16 +307,16 @@ function lbGetOldestUnselectedPaneWidthArray() {
 function lbGetOldestUnselectedPaneHeightArray() {
 
     var id = selector.selectedPane;
-    var oldest = project.paneHeightAgeCounter + 1;
-    var oldId = - 1;
+    var oldest = entry.paneHeightAgeCounter + 1;
+    var oldId = -1;
 
     // 
-    for(var i = 0; i < project.rows; i ++) {
+    for (var i = 0; i < entry.rows; i++) {
 
-        if(i < project.panes[id].yIndex || i >= project.panes[id].yIndex + project.panes[id].rowSpan) {
+        if (i < entry.panes[id].yIndex || i >= entry.panes[id].yIndex + entry.panes[id].rowSpan) {
 
-            if(project.paneHeightAge[i] < oldest) {
-                oldest = project.paneHeightAge[i];
+            if (entry.paneHeightAge[i] < oldest) {
+                oldest = entry.paneHeightAge[i];
                 oldId = i;
             }
         }
@@ -328,13 +330,13 @@ function lbGetOldestUnselectedPaneHeightArray() {
 function lbGetAnyOldestPaneWidthArray() {
 
     //var id = -1;
-    var oldest = project.paneWidthAgeCounter + 1;
+    var oldest = entry.paneWidthAgeCounter + 1;
     var oldId = -1;
 
-    for (var i = 0; i < project.columns; i++) {
+    for (var i = 0; i < entry.columns; i++) {
 
-        if (project.paneWidthAge[i] < oldest) {
-            oldest = project.paneWidthAge[i];
+        if (entry.paneWidthAge[i] < oldest) {
+            oldest = entry.paneWidthAge[i];
             oldId = i;
         }
     }
@@ -344,13 +346,13 @@ function lbGetAnyOldestPaneWidthArray() {
 
 function lbGetAnyOldestPaneHeightArray() {
 
-    var oldest = project.paneHeightAgeCounter + 1;
+    var oldest = entry.paneHeightAgeCounter + 1;
     var oldId = -1;
 
-    for (var i = 0; i < project.rows; i++) {
+    for (var i = 0; i < entry.rows; i++) {
 
-        if (project.paneHeightAge[i] < oldest) {
-            oldest = project.paneHeightAge[i];
+        if (entry.paneHeightAge[i] < oldest) {
+            oldest = entry.paneHeightAge[i];
             oldId = i;
         }
     }
@@ -366,13 +368,13 @@ function lbUpdatePaneWidthFromWidthArray() {
     //var id = selector.selectedPane;
     var total = 0.0;
 
-    for (var i = 0; i < project.nrOfPanes; i++) {
+    for (var i = 0; i < entry.nrOfPanes; i++) {
 
-        for (var x = project.panes[i].xIndex; x < project.panes[i].xIndex + project.panes[i].colSpan; x ++) {
-            total += project.paneWidths[x];
+        for (var x = entry.panes[i].xIndex; x < entry.panes[i].xIndex + entry.panes[i].colSpan; x++) {
+            total += entry.paneWidths[x];
         }
 
-        project.panes[i].width = total;
+        entry.panes[i].width = total;
         total = 0.0;
     }
 }
@@ -383,13 +385,13 @@ function lbUpdatePaneHeightFromHeightArray() {
     //var id = selector.selectedPane;
     var total = 0.0;
 
-    for (var i = 0; i < project.nrOfPanes; i++) {
+    for (var i = 0; i < entry.nrOfPanes; i++) {
 
-        for (var y = project.panes[i].yIndex; y < project.panes[i].yIndex + project.panes[i].rowSpan; y++) {
-            total += project.paneHeights[y];
+        for (var y = entry.panes[i].yIndex; y < entry.panes[i].yIndex + entry.panes[i].rowSpan; y++) {
+            total += entry.paneHeights[y];
         }
 
-        project.panes[i].height = total;
+        entry.panes[i].height = total;
         total = 0.0;
     }
 }
@@ -411,10 +413,10 @@ function lbUpdatePanes() {
     var d = lbGetPaneWidthDelta();
     var oldId = lbGetOldestUnselectedPaneWidthArray();
 
-    
+
     if (d != 0) {       // Update only if delta exists
 
-        project.paneWidths[oldId] -= d;
+        entry.paneWidths[oldId] -= d;
         /*
         // This should be removed
         project.paneWidthAge[oldId] = project.paneWidthAgeCounter;
@@ -426,9 +428,9 @@ function lbUpdatePanes() {
 
         //alert("Oldest pane: " + lbGetOldestSelectedPaneWidthArray());
 
-        project.paneWidths[oldId] += d;
-        project.paneWidthAge[oldId] = project.paneWidthAgeCounter;      // Update widths age
-        project.paneWidthAgeCounter++;
+        entry.paneWidths[oldId] += d;
+        entry.paneWidthAge[oldId] = entry.paneWidthAgeCounter;      // Update widths age
+        entry.paneWidthAgeCounter++;
 
 
 
@@ -444,13 +446,13 @@ function lbUpdatePanes() {
 
     // Update unselected pane height
     d = lbGetPaneHeightDelta();
-    
-    
+
+
     oldId = lbGetOldestUnselectedPaneHeightArray();
 
     if (d != 0) {       // Update only if delta exists
 
-        project.paneHeights[oldId] -= d;
+        entry.paneHeights[oldId] -= d;
 
         /*
         // This should be removed
@@ -462,9 +464,9 @@ function lbUpdatePanes() {
         //d = lbGetPaneHeightDelta();
         oldId = lbGetOldestSelectedPaneHeightArray();
 
-        project.paneHeights[oldId] += d;
-        project.paneHeightAge[oldId] = project.paneHeightAgeCounter;
-        project.paneHeightAgeCounter++;
+        entry.paneHeights[oldId] += d;
+        entry.paneHeightAge[oldId] = entry.paneHeightAgeCounter;
+        entry.paneHeightAgeCounter++;
 
         lbUpdatePaneHeightFromHeightArray()
     }
@@ -472,7 +474,7 @@ function lbUpdatePanes() {
 
 
 // Runs on "Update" button hit
-function lbProjectUpdatePaneDimensions() {
+function lbUpdatePaneDimensions() {
 
     var paneId = selector.selectedPane;                         // Selected pane ID
 
@@ -481,13 +483,13 @@ function lbProjectUpdatePaneDimensions() {
 
     if (isNaN(parseFloat($("#paneWidth").val().replace(",", "."))) || parseFloat($("#paneWidth").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt bredd värde");
-        $("#paneWidth").val(project.panes[paneId].width);
+        $("#paneWidth").val(entry.panes[paneId].width);
         nanError = true;
     }
 
     if (isNaN(parseFloat($("#paneHeight").val().replace(",", "."))) || parseFloat($("#paneHeight").val().replace(",", ".")) < 0.0) {
         alert("Felaktigt höjd värde");
-        $("#paneHeight").val(project.panes[paneId].height);
+        $("#paneHeight").val(entry.panes[paneId].height);
         nanError = true;
     }
 
@@ -495,60 +497,101 @@ function lbProjectUpdatePaneDimensions() {
         //alert("NaN error!");
         return;
     }
-    
-
-    // Correct frame dimensions conditionaly else do nothing
-    /*
-    if (project.panes[paneId].colSpan == project.columns) {
-        if(project.frameWidth != parseFloat($("#paneWidth").val().replace(",", "."))) {
-
-            if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (WIDTH)") == true) {
-                project.frameWidth = parseFloat($("#paneWidth").val().replace(",", "."));//project.panes[paneId].width;
-            } else {
-                $("#paneWidth").val(project.panes[paneId].width);
-                return;
-            }
-        }
-    }
-
-    if (project.panes[paneId].rowSpan == project.rows) {
-        if(project.frameHeight != parseFloat($("#paneHeight").val().replace(",", "."))) {
-            if (confirm("Värde stämmer inte med karm mått, vill du uppdatera karm? (HEIGHT)") == true) {
-                project.frameHeight = parseFloat($("#paneHeight").val().replace(",", "."));//project.panes[paneId].width;
-            } else {
-                $("#paneHeight").val(project.panes[paneId].height);
-                return;
-            }
-        }
-    }*/
-
-    // Update frame input if any changes were made above
-    //$("#frameWidth").val(project.frameWidth);             // Frame dimensions arent supposed to be possible to edit by x/y placement of posts, hence this is not needed
-    //$("#frameHeight").val(project.frameHeight);
 
 
     // Update pane dimensions
     var x = parseFloat($("#paneWidth").val().replace(",", "."));
     var y = parseFloat($("#paneHeight").val().replace(",", "."));
 
-    project.panes[paneId].width = Math.round(x * 100.0) / 100.0;      // Set new widths/heights and replace
-    project.panes[paneId].height = Math.round(y * 100.0) / 100.0;    // "," with "." to be float compatible
+    entry.panes[paneId].width = Math.round(x * 100.0) / 100.0;      // Set new widths/heights and replace
+    entry.panes[paneId].height = Math.round(y * 100.0) / 100.0;    // "," with "." to be float compatible
 
-    //project.panes[paneId].width = parseFloat($("#paneWidth").val().replace(",", "."));      // Set new widths/heights and replace
-    //project.panes[paneId].height = parseFloat($("#paneHeight").val().replace(",", "."));    // "," with "." to be float compatible
-
-    $("#paneWidth").val(project.panes[paneId].width);           // Update input boxes to remove garbage values
-    $("#paneHeight").val(project.panes[paneId].height);
+    $("#paneWidth").val(entry.panes[paneId].width);           // Update input boxes to remove garbage values
+    $("#paneHeight").val(entry.panes[paneId].height);
 
     //Math.round(project.panes[i].width * 100.0) / 100.0);//.toFixed(2);
 
-    project.uv = -1.0;          // Reset Uv, it needs recalculation
+    entry.uv = -1.0;          // Reset Uv, it needs recalculation
 
     lbUpdatePanes();
 
     lbUpdatePartsInfo();
 }
 
+
+// Updated version of lpProjectUpdateFrameDimensions()
+
+// Update changes made to frame dimensions
+// Frame dimensions are limited to fractionless mm
+function lbUpdateFrameDimensions() {
+
+    // Check for NaN and negative input values and revert original value
+    var nanError = false;
+
+    // Following parseFloat statements may as well be using parseInt, probably
+    if (isNaN(parseFloat($("#frameWidth").val().replace(",", "."))) || parseFloat($("#frameWidth").val().replace(",", ".")) < 0.0) {
+        alert("Felaktigt bredd värde");
+        $("#frameWidth").val(entry.frameWidth);
+        nanError = true;
+    }
+
+    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
+        alert("Felaktigt höjd värde");
+        $("#frameHeight").val(entry.frameHeight);
+        nanError = true;
+    }
+
+    if (nanError) {     // Reverting value happens above
+        return;
+        // Possible error message: "Invalid number, "reset/revert" to original number"
+    }
+
+
+    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    var id = lbGetAnyOldestPaneWidthArray();
+    var delta = parseInt($("#frameWidth").val()) - entry.frameWidth;        // This will hopefully guard against floating/decimal frame values
+    //var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
+
+    entry.paneWidths[id] += delta;
+    entry.frameWidth += delta;
+
+    entry.paneWidthAge[id] = entry.paneWidthAgeCounter;
+    entry.paneWidthAgeCounter++;
+
+    lbUpdatePaneWidthFromWidthArray();
+
+    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+    id = lbGetAnyOldestPaneHeightArray();
+    delta = parseInt($("#frameHeight").val().replace(",", ".")) - entry.frameHeight;
+
+    entry.paneHeights[id] += delta;
+    entry.frameHeight += delta;
+
+    entry.paneHeightAge[id] = entry.paneHeightAgeCounter;
+    entry.paneHeightAgeCounter++;
+
+    lbUpdatePaneHeightFromHeightArray();
+
+    // *** Update pane data
+    var paneId = selector.selectedPane;
+    if (entry.columns == 1 || entry.columns == entry.panes[paneId].colSpan) {
+        $("#paneWidth").val(entry.frameWidth);
+    }
+
+    if (entry.rows == 1 || entry.rows == entry.panes[paneId].rowSpan) {
+        $("#paneHeight").val(entry.frameHeight);
+    }
+
+
+    // Clear frame dimension fractions
+    $("#frameWidth").val(parseInt($("#frameWidth").val()));
+    $("#frameHeight").val(parseInt($("#frameHeight").val()));
+
+    // Update selected pane parts info
+    lbUpdatePartsInfo();
+
+    entry.uv = -1.0;          // Reset Uv, it needs recalculation
+}
 
 
 // This is a function for finding the array index by product id
@@ -571,13 +614,13 @@ function lbGetProductId(id) {
 function lbGetPaneAreaPartsExt(paneId) {
 
     // Valid Id check
-    var productId = project.panes[paneId].productId;
+    var productId = entry.panes[paneId].productId;
     if (productId == -1) { return -1; }     // Error message: "Selected [paneId] pane doesn't have a selected product"
     //if (productId == -1) { alert("Product Id is -1, break operation"); return -1; }
 
     // Init target product and pane
     var product = products[lbGetProductId(productId)];      // Get product array index by product DB Id
-    var pane = project.panes[paneId];                       // Select project pane
+    var pane = entry.panes[paneId];                       // Select project pane
 
     // Init parts
     var parts = new lbPaneParts();
@@ -588,10 +631,10 @@ function lbGetPaneAreaPartsExt(paneId) {
     var frameLeft = true; var frameRight = true;
 
     if (pane.yIndex > 0) { frameTop = false; }          // Top and bottom vvv
-    if (pane.yIndex + pane.rowSpan <= project.rows - 1) { frameBottom = false; }
+    if (pane.yIndex + pane.rowSpan <= entry.rows - 1) { frameBottom = false; }
 
     if (pane.xIndex > 0) { frameLeft = false; }         // Left and right vvv
-    if (pane.xIndex + pane.colSpan <= project.columns - 1) { frameRight = false; }
+    if (pane.xIndex + pane.colSpan <= entry.columns - 1) { frameRight = false; }
 
     // Pre-calculate overlap areas
     var fxf = product.Tf * product.Tf;                  // Frame x frame
@@ -678,7 +721,7 @@ function lbGetPaneAreaPartsExt(paneId) {
     // Calculate circumference
     var cw = pane.width + 13 * 2;       // 13mm indentation on circumference
     var ch = pane.height + 13 * 2;
-    
+
     // Remove out of bounds/overlap
     if (frameLeft) { cw -= product.Tf; } else { cw -= product.Tp; }
     if (frameRight) { cw -= product.Tf; } else { cw -= product.Tp; }
@@ -695,7 +738,7 @@ function lbGetPaneAreaPartsExt(paneId) {
 
     // Get total circumference
     parts.totalCircum = cw * 2 + ch * 2;
-    parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight + 
+    parts.paneArea = parts.totalArea - (parts.frameTop + parts.frameBottom + parts.frameLeft + parts.frameRight +
         parts.postTop + parts.postBottom + parts.postLeft + parts.postRight);
 
     // Debug 
@@ -728,12 +771,12 @@ function lbFinalizeUv() {
 
 
     // Loop through each pane
-    for (var i = 0; i < project.nrOfPanes; i++) {
+    for (var i = 0; i < entry.nrOfPanes; i++) {
 
         //alert("Iteration: " + i);
 
         // Get parts object
-        productId = project.panes[i].productId;
+        productId = entry.panes[i].productId;
         product = products[lbGetProductId(productId)];
         parts = lbGetPaneAreaPartsExt(i);
 
@@ -747,10 +790,10 @@ function lbFinalizeUv() {
         totalPostY += parts.postCircum * product.Yp;
 
         //totalPaneU += parts.paneArea * product.Ug;
-        totalPaneU += parts.paneArea * project.panes[i].ug;     // Utilize the custom Ug value setting
+        totalPaneU += parts.paneArea * entry.panes[i].ug;     // Utilize the custom Ug value setting
 
         totalArea += parts.totalArea;
-        
+
 
     }
 
@@ -761,7 +804,7 @@ function lbFinalizeUv() {
     $("#totalUValue").text(uvr);
 
     // Update project value
-    project.uv = uvr;
+    entry.uv = uvr;
     //alert("Uv: " + uv + LB_ENDL + "UvR: " + uvr);
 }
 
@@ -781,7 +824,7 @@ function lbLimitDecimals(val, max) {
         //alert("Mod! " + val.length);
         val = val.substring(0, max);
     }
-    
+
     return val;
 }
 
@@ -792,7 +835,7 @@ function lbUpdatePartsInfo() {
     var paneId = selector.selectedPane;
 
     // Valid Id check
-    var productId = project.panes[paneId].productId;
+    var productId = entry.panes[paneId].productId;
     if (productId == -1) {
 
         // Set default/zero values
@@ -873,165 +916,12 @@ function lbUpdatePartsInfo() {
 }
 
 
-// Update changes made to frame dimensions
-// Frame dimensions are limited to fractionless mm
-function lbProjectUpdateFrameDimensionsOriginal() {
-
-    // Correct NaN errors, fall back on previous values or return; and show 
-    
-    // Check for NaN
-
-    // Check for NaN and negative input values and revert original value
-    var nanError = false;
-
-    if (isNaN(parseFloat($("#frameWidth").val().replace(",", "."))) || parseFloat($("#frameWidth").val().replace(",", ".")) < 0.0) {
-        alert("Felaktigt bredd värde");
-        $("#frameWidth").val(project.frameWidth);
-        nanError = true;
-    }
-
-    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
-        alert("Felaktigt höjd värde");
-        $("#frameHeight").val(project.frameHeight);
-        nanError = true;
-    }
-
-    if (nanError) {
-        return;
-    }
-
-
-    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    var id = lbGetAnyOldestPaneWidthArray();
-    var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
-    
-    project.paneWidths[id] += delta;
-    project.frameWidth += delta;
-
-    project.paneWidthAge[id] = project.paneWidthAgeCounter;
-    project.paneWidthAgeCounter++;
-
-    lbUpdatePaneWidthFromWidthArray();
-
-    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    id = lbGetAnyOldestPaneHeightArray();
-    delta = parseFloat($("#frameHeight").val().replace(",", ".")) - project.frameHeight;
-
-    project.paneHeights[id] += delta;
-    project.frameHeight += delta;
-
-    project.paneHeightAge[id] = project.paneHeightAgeCounter;
-    project.paneHeightAgeCounter++;
-
-    lbUpdatePaneHeightFromHeightArray();
-
-    // *** Update pane data
-    var paneId = selector.selectedPane;
-    if (project.columns == 1 || project.columns == project.panes[paneId].colSpan) {
-        $("#paneWidth").val(project.frameWidth);
-    }
-
-    if (project.rows == 1 || project.rows == project.panes[paneId].rowSpan) {
-        $("#paneHeight").val(project.frameHeight);
-    }
-
-    /*
-    // Update parts info of selected pane
-    var parts = lbGetPaneAreaPartsExt(paneId);
-
-    // Valid Id check
-    var productId = project.panes[paneId].productId;
-    if (productId != -1) {
-        lbUpdatePartsInfo(parts);
-    }*/
-
-    lbUpdatePartsInfo();
-}
-
-
-
-// Updated version of lpProjectUpdateFrameDimensions()
-
-// Update changes made to frame dimensions
-// Frame dimensions are limited to fractionless mm
-function lbProjectUpdateFrameDimensions() {
-
-    // Check for NaN and negative input values and revert original value
-    var nanError = false;
-
-    // Following parseFloat statements may as well be using parseInt, probably
-    if (isNaN(parseFloat($("#frameWidth").val().replace(",", "."))) || parseFloat($("#frameWidth").val().replace(",", ".")) < 0.0) {
-        alert("Felaktigt bredd värde");
-        $("#frameWidth").val(project.frameWidth);
-        nanError = true;
-    }
-
-    if (isNaN(parseFloat($("#frameHeight").val().replace(",", "."))) || parseFloat($("#frameHeight").val().replace(",", ".")) < 0.0) {
-        alert("Felaktigt höjd värde");
-        $("#frameHeight").val(project.frameHeight);
-        nanError = true;
-    }
-
-    if (nanError) {     // Reverting value happens above
-        return;
-        // Possible error message: "Invalid number, "reset/revert" to original number"
-    }
-
-
-    // *** Update width data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    var id = lbGetAnyOldestPaneWidthArray();
-    var delta = parseInt($("#frameWidth").val()) - project.frameWidth;        // This will hopefully guard against floating/decimal frame values
-    //var delta = parseFloat($("#frameWidth").val().replace(",", ".")) - project.frameWidth;
-
-    project.paneWidths[id] += delta;
-    project.frameWidth += delta;
-
-    project.paneWidthAge[id] = project.paneWidthAgeCounter;
-    project.paneWidthAgeCounter++;
-
-    lbUpdatePaneWidthFromWidthArray();
-
-    // *** Update height data *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-    id = lbGetAnyOldestPaneHeightArray();
-    delta = parseInt($("#frameHeight").val().replace(",", ".")) - project.frameHeight;
-
-    project.paneHeights[id] += delta;
-    project.frameHeight += delta;
-
-    project.paneHeightAge[id] = project.paneHeightAgeCounter;
-    project.paneHeightAgeCounter++;
-
-    lbUpdatePaneHeightFromHeightArray();
-
-    // *** Update pane data
-    var paneId = selector.selectedPane;
-    if (project.columns == 1 || project.columns == project.panes[paneId].colSpan) {
-        $("#paneWidth").val(project.frameWidth);
-    }
-
-    if (project.rows == 1 || project.rows == project.panes[paneId].rowSpan) {
-        $("#paneHeight").val(project.frameHeight);
-    }
-
-
-    // Clear frame dimension fractions
-    $("#frameWidth").val(parseInt($("#frameWidth").val()));
-    $("#frameHeight").val(parseInt($("#frameHeight").val()));
-    
-    // Update selected pane parts info
-    lbUpdatePartsInfo();
-
-    project.uv = -1.0;          // Reset Uv, it needs recalculation
-}
-
-
-
 // Basic product list management functions
 function lbAppendProduct(i) {       // i is the product array index, not the product id
 
     var pid = products[i].Id;
     var ptext = "[" + products[i].Name + "], [" + products[i].Glass + "]";
-    
+
     $("#productList").append($('<option/>', { id: "productId" + pid, value: pid, text: ptext }));
 }
 
@@ -1055,13 +945,13 @@ function lbResetSelectedProduct() {
     var id = selector.selectedPane;
 
     //$("#productList").val(project.panes[id].productId);
-    $("#productList").val(project.panes[id].productId);
+    $("#productList").val(entry.panes[id].productId);
 }
 
 
 // Update product list items
 function lbInitProductLists() {
-         
+
 
     for (var i = 0; i < products.length; i++) {
 
@@ -1081,9 +971,9 @@ function lbUpdateProductLists() {
 
     for (var i = 0; i < products.length; i++) {
 
-        for(var x = 0; x < project.panes.length; x++) {
+        for (var x = 0; x < entry.panes.length; x++) {
 
-            if (project.panes[x].productId == products[i].Id) { found = true; }
+            if (entry.panes[x].productId == products[i].Id) { found = true; }
 
             if (found) {
                 products[i].allocated = true;
@@ -1091,7 +981,7 @@ function lbUpdateProductLists() {
                 break;
             }
         }
-        
+
     }
 
     // Update lists
@@ -1111,21 +1001,21 @@ function lbUpdateProductLists() {
 
 
 // Updates pane Product and Ug
-function lbProjectUpdateProductData() {
+function lbUpdateProductData() {
 
     var paneId = selector.selectedPane;
     var u = parseFloat($("#paneUg").val().replace(",", "."));
-    
+
     if (isNaN(u) || u < 0.0) {
         alert("Felaktigt Ug värde");
-        $("#paneUg").val(project.panes[paneId].ug);         // Reset Ug
+        $("#paneUg").val(entry.panes[paneId].ug);         // Reset Ug
         return;
     }
 
-    project.panes[paneId].productId = $("#productList").val();              // Update main product
+    entry.panes[paneId].productId = $("#productList").val();              // Update main product
     //lbPrependProduct("#productList", "");                                   // Prepend selected product
-    
-    project.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
+
+    entry.panes[paneId].ug = $("#paneUg").val().replace(",", ".");
 
 
     // Update direction specific products
@@ -1137,7 +1027,7 @@ function lbProjectUpdateProductData() {
     }*/
     //lbPrependProduct("#productListTop", "Top");
 
-    project.uv = -1.0;          // Reset Uv, it needs recalculation
+    entry.uv = -1.0;          // Reset Uv, it needs recalculation
 
     lbUpdateProductLists();
 
@@ -1145,13 +1035,13 @@ function lbProjectUpdateProductData() {
 
 
     lbUpdatePartsInfo();
-    lbUpdateTotalUValueButton();
+    lbUpdateTotalUvButton();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
 
 // Updates all pane products and Ug
-function lbProjectUpdateAllProductData() {  // This functions is currently broken *** *** 
+function lbUpdateAllProductData() {  // This functions is currently broken *** *** 
 
     //var nanError = false;
     var paneId = selector.selectedPane;
@@ -1165,20 +1055,20 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
 
     // Loop through products
     for (var i = 0; i < selector.nrOfPanes; i++) {
-        
-        if (project.panes[i].ug == 0.0) {       // Update only on "unset" u values
-            project.panes[i].ug = u;
+
+        if (entry.panes[i].ug == 0.0) {       // Update only on "unset" u values
+            entry.panes[i].ug = u;
         }
 
-        if (project.panes[i].productId == -1) {
-            project.panes[i].productId = $("#productList").val();              // Update main product
+        if (entry.panes[i].productId == -1) {
+            entry.panes[i].productId = $("#productList").val();              // Update main product
         }
-        
+
         //lbPrependProduct("#productList", "");                                   // Prepend selected product
 
     }
 
-    project.uv = -1.0;          // Reset Uv, it needs recalculation
+    entry.uv = -1.0;          // Reset Uv, it needs recalculation
 
     lbUpdateProductLists();
 
@@ -1186,7 +1076,7 @@ function lbProjectUpdateAllProductData() {  // This functions is currently broke
 
 
     lbUpdatePartsInfo();
-    lbUpdateTotalUValueButton();
+    lbUpdateTotalUvButton();
     //lbGetPaneAreaPartsExt(selector.selectedPane);
 }
 
@@ -1206,7 +1096,7 @@ function lbGetProductUg() {
 
 
 // Update Ug value on product list change
-function lbProjectChangeProduct() {
+function lbChangeProduct() {
 
     var id = selector.selectedPane;
     var productId = $("#productList").val();
@@ -1224,22 +1114,24 @@ function lbProjectChangeProduct() {
 
 // Update visibility of pane dimension/post placement x y input
 function lbUpdatePaneDimensionInput() {
-    
+
+    if (entry == undefined || selector == undefined) return;
+
     // Init
     var paneId = selector.selectedPane;
-    var productId = project.panes[paneId].productId;
+    var productId = entry.panes[paneId].productId;
     var pIndex = lbGetProductId(productId);
-    var pane = project.panes[paneId];
+    var pane = entry.panes[paneId];
 
     var showX = true;
     var showY = true;
 
-    if (project.columns == pane.colSpan) {
+    if (entry.columns == pane.colSpan) {
         // Hide X
         showX = false;
     }
 
-    if (project.rows == pane.rowSpan) {
+    if (entry.rows == pane.rowSpan) {
         // Hide Y
         showY = false;
     }
@@ -1284,7 +1176,7 @@ function lbUpdatePaneDimensionInput() {
 
 function lbUpdateInputButtons() {
 
-    if (selector == undefined) return;
+    if (entry == undefined || selector == undefined) return;
 
     var id = selector.selectedPane;
     //var paneId = selector.selectedPane;                         // Selected pane ID
@@ -1292,12 +1184,12 @@ function lbUpdateInputButtons() {
     // Pane button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var w = parseFloat($("#paneWidth").val().replace(",", "."));
     var h = parseFloat($("#paneHeight").val().replace(",", "."));
-    
+
     // Default to gray
     var toGray = true;
 
     // Update
-    if(project.panes[id].width != w || project.panes[id].height != h) {
+    if (entry.panes[id].width != w || entry.panes[id].height != h) {
         // Change to green
         $("#btnPaneDimensionsUpdate").removeClass("btn-danger");
         $("#btnPaneDimensionsUpdate").removeClass("btn-default");
@@ -1306,7 +1198,7 @@ function lbUpdateInputButtons() {
     }
 
     // Error
-    if(isNaN(w) || w < 0.0 || isNaN(h) || h < 0.0) {
+    if (isNaN(w) || w < 0.0 || isNaN(h) || h < 0.0) {
         // Change to red
         $("#btnPaneDimensionsUpdate").removeClass("btn-success");
         $("#btnPaneDimensionsUpdate").removeClass("btn-default");
@@ -1314,7 +1206,7 @@ function lbUpdateInputButtons() {
         toGray = false;
     }
 
-    if(toGray) {
+    if (toGray) {
         $("#btnPaneDimensionsUpdate").removeClass("btn-success");
         $("#btnPaneDimensionsUpdate").removeClass("btn-danger");
         $("#btnPaneDimensionsUpdate").addClass("btn-default");
@@ -1329,7 +1221,7 @@ function lbUpdateInputButtons() {
 
     // Update
     //if (project.panes[id].width != w || project.panes[id].height != h) {
-    if(project.frameWidth != w || project.frameHeight != h) {
+    if (entry.frameWidth != w || entry.frameHeight != h) {
         // Change to green
         $("#btnFrameDimensionsUpdate").removeClass("btn-danger");
         $("#btnFrameDimensionsUpdate").removeClass("btn-default");
@@ -1355,7 +1247,7 @@ function lbUpdateInputButtons() {
 
     // Product/Ug button update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
     var ug = parseFloat($("#paneUg").val().replace(",", "."));
-    
+
     // Default to gray
     toGray = true;
 
@@ -1365,9 +1257,7 @@ function lbUpdateInputButtons() {
     // *** *** Not sure about this change, needs testing
 
     //if (project.panes[id].ug != ug || $("#productList").val() != -1 || project.panes[id].productId != -1) {
-    if (project.panes[id].ug != ug) {
-
-        // Above if statement is incomplete, causing the buttons to show green when not suppose to
+    if (entry.panes[id].ug != ug || $("#productList").val() != entry.panes[id].productId) {
 
         // Change to green
         $("#btnProductUpdate").removeClass("btn-danger");
@@ -1410,12 +1300,14 @@ function lbUpdateInputButtons() {
 
 // Update Uv update button
 // Doesn't account for all changes, perhaps an easy fix is to set project.uv to -1 again when other changes are made
-function lbUpdateTotalUValueButton() {
+function lbUpdateTotalUvButton() {
+
+    if (entry == undefined || selector == undefined) return;
 
     var state = "normal";
 
-    for (var i = 0; i < project.nrOfPanes; i++) {
-        if (project.panes[i].productId == -1) {
+    for (var i = 0; i < entry.nrOfPanes; i++) {
+        if (entry.panes[i].productId == -1) {
             state = "incomplete";
             break;
         }
@@ -1423,7 +1315,7 @@ function lbUpdateTotalUValueButton() {
 
     if (state == "normal") {
 
-        if($("#totalUValue").text() == Math.round(project.uv * 1000.0) / 1000.0 + "") {
+        if ($("#totalUValue").text() == Math.round(entry.uv * 1000.0) / 1000.0 + "") {
             // Make gray
             $("#btnUpdateUValue").removeClass("btn-success");
             $("#btnUpdateUValue").removeClass("btn-danger");
@@ -1443,21 +1335,23 @@ function lbUpdateTotalUValueButton() {
 }
 
 
-// This is currently called through lbProjectUpdateAndRender(action)
+// This is currently called through lbUpdateAndRender(action)
 // but it should only be run when initiation or when selecting a new pane, fix this later
 function lbUpdateFrameAndPostTables() {
 
+    if (entry == undefined || selector == undefined) return;
+
     var paneId = selector.selectedPane;
-    var productId = project.panes[paneId].productId;
+    var productId = entry.panes[paneId].productId;
     var pIndex = lbGetProductId(productId);
-    var pane = project.panes[paneId];
+    var pane = entry.panes[paneId];
 
     // Update table data
     if (productId == -1) {
         $(".FrameTf").text("-"); $(".FrameUf").text("-"); $(".FrameYf").text("-");
         $(".PostTp").text("-"); $(".PostUp").text("-"); $(".PostYp").text("-");
-    //} else if(  ) {
-    //}
+        //} else if(  ) {
+        //}
     } else {
 
         // ERROR: When the last product item in the list is selected through update/updateall, an error shows
@@ -1475,7 +1369,7 @@ function lbUpdateFrameAndPostTables() {
             //alert("PID: " + productId + ", PaneID " + paneId + ", products " + products.length);
             //lbGetProductId(productId);
         }
-        
+
     }
 
 
@@ -1489,7 +1383,7 @@ function lbUpdateFrameAndPostTables() {
         frameTop = false;
     }
 
-    if (pane.yIndex + pane.rowSpan <= project.rows - 1) {           // Bottom part
+    if (pane.yIndex + pane.rowSpan <= entry.rows - 1) {           // Bottom part
         frameBottom = false;
     }
 
@@ -1497,7 +1391,7 @@ function lbUpdateFrameAndPostTables() {
         frameLeft = false;
     }
 
-    if (pane.xIndex + pane.colSpan <= project.columns - 1) {        // Right part
+    if (pane.xIndex + pane.colSpan <= entry.columns - 1) {        // Right part
         frameRight = false;
     }
 
@@ -1536,17 +1430,20 @@ function lbUpdateFrameAndPostTables() {
 }
 
 
-function lbProjectUpdateAndRender(action) {
+function lbUpdateAndRender(action) {
 
-    
-    lbProjectUpdate(action);
-    lbProjectRender();
+
+    lbSelectorUpdate(action);
+    lbEntryRender();
 
     // If a dimension value has been entered but not updated the update button changes to green appearance
     // and if there is nothing to udpate the button is gray
     lbUpdateInputButtons();
     lbUpdatePaneDimensionInput();
-    lbUpdateTotalUValueButton();
+    lbUpdateTotalUvButton();
+
+    // implement if(entry != undefined)
+    // here, else clear entry editor parts
 
     //lbUpdateFrameAndPostTables();
 

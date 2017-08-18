@@ -277,29 +277,34 @@
 
     $(function () {
 
-        $.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
+        // This getJSON thing initiates project/entry ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+        // But it should be handled in another manner
+        //$.getJSON("/Project/GetTemplate?id=" + @ViewBag.TemplateId, function (data) {
 
-            selector = new lbPaneSelector(data);        // Init pane selector object
+            //selector = new lbPaneSelector(data);        // Init pane selector object
 
-            project = new lbProject(data);              // Init project object
+            //entry = new lbProjectEntry(data);              // Init project object
+            //entry = new lbProjectEntry(data);              // Init project object
 
             //lbUpdatePaneDimensions();                   // Update project pane dimensions
 
-            $("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
-            $("#paneHeight").val(lbGetSelectedPaneHeight());
+            //$("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
+            //$("#paneHeight").val(lbGetSelectedPaneHeight());
 
-            $("#frameWidth").val(lbGetFrameWidth());
-            $("#frameHeight").val(lbGetFrameHeight());
+            //$("#frameWidth").val(lbGetFrameWidth());
+            //$("#frameHeight").val(lbGetFrameHeight());
 
-            $("#paneUg").val(lbGetSelectedUg());
-        });
+            //$("#paneUg").val(lbGetSelectedUg());
+        //});
+        
 
         // Update project title
-        if(@ViewBag.ProjectType == 1) {
-            $("#titleProject").text("Fönster");
-        } else {
-            $("#titleProject").text("Dörr");
-        }
+        
+        //if(@ViewBag.ProjectType == 1) {
+        //    $("#titleProject").text("Fönster");
+        //} else {
+        //    $("#titleProject").text("Dörr");
+        //}
 
         // Populate product select list
         $.getJSON("/Project/GetProducts/?window=" + @ViewBag.ProjectType, function (data) {

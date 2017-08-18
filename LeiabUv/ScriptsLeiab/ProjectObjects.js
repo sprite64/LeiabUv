@@ -33,14 +33,6 @@ function lbPaneData(xIndex, yIndex, colSpan, rowSpan, width, height) {
 }
 
 
-function lbPaneAreaParts() {
-    this.totalArea = 0.0;
-    this.frameArea = 0.0;
-    this.postArea = 0.0;
-    this.paneArea = 0.0;
-}
-
-
 function lbPaneParts() {
 
     this.totalArea = 0.0;           // Total pane area
@@ -62,37 +54,9 @@ function lbPaneParts() {
 }
 
 
-function lbPaneDataGfx() {
-
-    this.x = 0;
-    this.y = 0;
-
-    this.width = 0;
-    this.height = 0;
-
-}
-
-
-// All sizes and positions are in pixels
-function lbFrameDataGfx() {
-
-    this.xOffset;       // Frame canvas offset
-    this.yOffset;
-
-    this.width;         // Outer frame size
-    this.height;
-
-    this.topSize;       // Sizes of frame "width"
-    this.bottomSize;
-
-    this.leftSize;
-    this.rightSize;
-}
-
-
 // To be renamed ProjectEntry
 // New Project object is to contain a projectEntries[] array of entries
-function lbProject(data) {
+function lbProjectEntry(data) {
 
     this.name = "Entryname";
     this.description = "Entry description";
@@ -255,7 +219,8 @@ function lbPaneSelector(data) {
 
 }
 
-var project = undefined;                // Project data
+var project = undefined;
+var entry = undefined;                // Project data
 var selector = undefined;               // Pane selector data
 var products = undefined;               // List of product data
 

@@ -31,7 +31,7 @@ $(function () {
 
     // Mouse button up event
     function handleMouseUp(e) {
-        lbProjectUpdateAndRender("mouseUp");      // Handle mouse-clicks
+        lbUpdateAndRender("mouseUp");      // Handle mouse-clicks
     }
 
 
@@ -43,7 +43,7 @@ $(function () {
     function handleMouseMove(e) {
 
         lbUpdateMousePosition(e);
-        lbProjectUpdateAndRender("mouseMove");
+        lbUpdateAndRender("mouseMove");
     }
 
 
@@ -56,10 +56,10 @@ $(function () {
     // Redirect to template gallery to select a template
     $("#btnSelectTemplate").click(function () { window.location.replace("/Template/Show"); });
 
-    $("#btnPaneDimensionsUpdate").click(function () { lbProjectUpdatePaneDimensions(); });
-    $("#btnFrameDimensionsUpdate").click(function () { lbProjectUpdateFrameDimensions(); });
-    $("#btnProductUpdate").click(function () { lbProjectUpdateProductData(); });
-    $("#btnProductUpdateAll").click(function () { lbProjectUpdateAllProductData(); });
+    $("#btnPaneDimensionsUpdate").click(function () { lbUpdatePaneDimensions(); });
+    $("#btnFrameDimensionsUpdate").click(function () { lbUpdateFrameDimensions(); });
+    $("#btnProductUpdate").click(function () { lbUpdateProductData(); });
+    $("#btnProductUpdateAll").click(function () { lbUpdateAllProductData(); });
 
     $("#btnUpdateUValue").click(function () { lbFinalizeUv(); });
 
@@ -74,11 +74,11 @@ $(function () {
     //$("#paneWidth").change(function () { lbProjectInputChange(); });
     $("#productList").change(function () {
         //var id = document.getElementById("productList").value;
-        lbProjectChangeProduct();
+        lbChangeProduct();
         //var id = $("#productList").val();
         //alert("Product change! " + id);
     });
 });
 
-setInterval(function () { lbProjectUpdateAndRender(""); }, 300);
+setInterval(function () { lbUpdateAndRender(""); }, 300);
 

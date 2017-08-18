@@ -29,7 +29,7 @@ function lbGetPaneSelectCanvasContext() {
 
 function lbRenderSelectorFrame() {
 
-    if (selector == undefined) return;        // Escape if paneSelectData isn't available
+    if (entry == undefined || selector == undefined) return;
 
     var ctx = lbGetPaneSelectCanvasContext();
 
@@ -50,7 +50,7 @@ function lbRenderSelectorFrame() {
     // Render seperate horizontal frame border lines
     ctx.strokeStyle = "#000";
     //ctx.lineWidth = 1;
-    
+
     ctx.moveTo(outerRect.x, outerRect.y + innerRect.y + 1 + 0.5);
     ctx.lineTo(outerRect.x + outerRect.width, outerRect.y + innerRect.y + 1 + 0.5);
     ctx.stroke();
@@ -94,13 +94,13 @@ function lbRenderSelectorDebug() {
     ctx.textBaseline = "top"
 
     ctx.fillStyle = "#333";
-    
+
     // Render frame dimensions
     ctx.textAlign = "left";
 
-    ctx.fillText("Karm: " + Math.round(project.frameWidth) + "x" + Math.round(project.frameHeight), 15, 350);
+    ctx.fillText("Karm: " + Math.round(entry.frameWidth) + "x" + Math.round(entry.frameHeight), 15, 350);
     //ctx.fillText("Karm: " + (Math.round(project.frameWidth * 1000.0) / 1000.0).toFixed(3) + "x" +
-        //(Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 350);
+    //(Math.round(project.frameHeight * 1000.0) / 1000.0).toFixed(3), 15, 350);
 
     ctx.textAlign = "right";
     ctx.fillText("(mm)", 335, 350);
@@ -126,12 +126,12 @@ function lbRenderSelectorDebug() {
         // Render width / height *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
 
         // Format dimensions
-        wText = (Math.round(project.panes[i].width * 10.0) / 10.0).toFixed(1);      // Round to one decimal
-        hText = (Math.round(project.panes[i].height * 10.0) / 10.0).toFixed(1);
+        wText = (Math.round(entry.panes[i].width * 10.0) / 10.0).toFixed(1);      // Round to one decimal
+        hText = (Math.round(entry.panes[i].height * 10.0) / 10.0).toFixed(1);
 
         //wText = (Math.round(project.panes[i].width * 1000.0) / 1000.0).toFixed(3);
         //hText = (Math.round(project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
-        uText = (Math.round(project.panes[i].ug * 1000.0) / 1000.0).toFixed(3);
+        uText = (Math.round(entry.panes[i].ug * 1000.0) / 1000.0).toFixed(3);
 
         //hText = Math.round((project.panes[i].height * 1000.0) / 1000.0).toFixed(3);
 
@@ -159,7 +159,7 @@ function lbRenderSelectorDebug() {
         } else {
             tw = ctx.measureText(hText).width;
         }
-        
+
         ctx.fillStyle = "#ddd";
         ctx.fillRect(x - tw + 3 - 7, y - 2, tw + 7, 32);
         //ctx.fillRect(x - tw + 3, y - 2, tw, 32);
@@ -215,7 +215,7 @@ function lbRenderSelectorDebug() {
     }
 
     // Render width/height ages
-    
+
     /*
     ctx.textAlign = "left";
     //ctx.fillText("Ålder", 15, 40);
@@ -308,9 +308,9 @@ function lbRenderSelectorPosts() {
 }
 
 
-function lbProjectRender() {
+function lbEntryRender() {
 
-    if (selector == undefined) return;
+    if (entry == undefined || selector == undefined) return;
 
     var ctx = lbGetPaneSelectCanvasContext();
 
@@ -322,7 +322,5 @@ function lbProjectRender() {
     lbRenderSelectorPosts();
 
     lbRenderSelectorDebug()
-
 }
-
 
