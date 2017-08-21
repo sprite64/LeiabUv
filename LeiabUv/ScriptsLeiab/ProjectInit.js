@@ -63,6 +63,9 @@ $(function () {
 
     $("#btnUpdateUValue").click(function () { lbFinalizeUv(); });
 
+
+    $("#btnNewWindow").click(function () { lbReloadTemplates(); });
+
     //$("#btnTestAreaParts").click(function () {
         //lbGetPaneAreaPartsExt(selector.selectedPane);         // Might not be needed here
     //    lbFinalizeUv();

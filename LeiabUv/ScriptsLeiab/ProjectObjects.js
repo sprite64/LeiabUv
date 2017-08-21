@@ -110,7 +110,7 @@ function lbProjectEntry(data) {
 }
 
 
-function lbProject2() {
+function lbProject() {
 
     this.name = "Project name";     // Project name & descrition
     this.description = "";          // 
@@ -121,6 +121,12 @@ function lbProject2() {
     //this.entries = 0;
 }
 
+
+function lbEditor() {
+
+    this.state = "new"; // new, createWindow, createDoor, editEntry
+
+}
 
 // Pane Selector constructor
 function lbPaneSelector(data) {
@@ -224,3 +230,6 @@ var entry = undefined;                // Project data
 var selector = undefined;               // Pane selector data
 var products = undefined;               // List of product data
 
+// Template selection objects
+
+templates = undefined;
