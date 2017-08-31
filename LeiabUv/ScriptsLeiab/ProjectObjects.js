@@ -117,14 +117,21 @@ function lbProject() {
 
     this.orderNr = -1;              // Unique
 
-    this.numEntries                 // Nr of project entries
+    this.windowEntries;             // Entries
+    this.doorEntries;
+
+    this.numWindowEntries = new Array();            // Nr of project entries
+    
+    this.windowEntryCounter = 1;    // Counters for creating new entries
+    this.doorEntryCounter = 1;
+
     //this.entries = 0;
 }
 
 
 function lbEditor() {
 
-    this.state = "new"; // new, createWindow, createDoor, editEntry
+    this.state = "neutral"; // new, createWindow, createDoor, editEntry
 
 }
 
@@ -225,11 +232,13 @@ function lbPaneSelector(data) {
 
 }
 
-var project = undefined;
-var entry = undefined;                // Project data
+var project = undefined;                // Project data
+var entry = undefined;
+var editor = undefined;
+
 var selector = undefined;               // Pane selector data
 var products = undefined;               // List of product data
 
 // Template selection objects
 
-templates = undefined;
+var templates = undefined;

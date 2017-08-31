@@ -86,6 +86,8 @@ function lbRenderSelectorPanes() {
 
 function lbRenderSelectorDebug() {
 
+
+
     var ctx = lbGetPaneSelectCanvasContext();
 
     var rect = new lbCreateRect(0, 0, 0, 0);

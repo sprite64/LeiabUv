@@ -1430,13 +1430,244 @@ function lbUpdateFrameAndPostTables() {
 }
 
 
+function lbRenderTemplateIcons() {
+
+    if (templates == undefined) return;
+
+    if (templates.selected >= 0) {
+        for (var i = 0; i < templates.length; i++) {
+            if (templates.selected == i) {
+                $("#IconPanel" + i).css("background-color", "#8f8");        // Selected
+            } else {
+                $("#IconPanel" + i).css("background-color", "#ccc");        // Unselected
+            }
+        }
+    }
+
+    for (var i = 0; i < templates.length; i++) {
+        lbRenderTemplateIcon(i);
+    }
+
+}
 
 
+function lbUpdateTemplateSelection(event) {
 
-function lbReloadTemplates() {
+    //alert("Event.data: " + event.data.id);
+
+    templates.selected = event.data.id;
+
+    lbRenderTemplateIcons();
+}
+
+
+function lbGenerateTemplates() {
+
+    if (templates == undefined) return;             // Validate templates
+
+    // Generate template elements
+    for (var i = 0; i < templates.length; i++) {         // ### this needs to be moved into the getJSON success function section
+
+        var output = '';
+        output += '	<a href="javascript:void(0);">'
+        output += '<div id="IconPanel' + i + '" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #ccc; display: inline-block;">';
+        
+        output += '		<canvas id="IconCanvas' + i + '" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>'
+        output += '		<p style="margin-left: 10px;">' + templates[i].Name + '</p>'
+        output += '</div>'
+        output += '	</a>'
+        
+
+        $("#TemplateIcons").append(output);         // Create elements
+
+        $("#IconPanel" + i).click({                 // Attach click event
+            id: i
+        }, lbUpdateTemplateSelection);
+    }
+}
+
+
+// Function works great but should be rewritten to include a black centerline on posts
+// The frame & post width as well as pane size should also be calculated to scale to the html canvas's size
+function lbRenderTemplateIcon(i) {
+
+    // Init
+    if(templates == undefined) return;
+    var template = templates[i];
+
+    // Init graphics context
+    var canvas = document.getElementById("IconCanvas" + i);
+    var ctx = canvas.getContext("2d");
+
+    // Clear background color
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, 140, 140);
+
+    // Unit settings
+    var fw = 12;            // Frame width
+    var pw = 6;             // Post width
+    var ps = 40;            // Pane size (width & height)
+
+    var x = 5;              // Origin
+    var y = 5;
+
+    var w = 0;              // Temporary width and height
+    var h = 0;
+    
+
+    // Render frame
+    w = template.columns * ps;
+    h = template.rows * ps;
+
+    ctx.fillStyle = "#000";                                     // Entire frame area
+    ctx.fillRect(x, y, w, h);
+
+    ctx.fillStyle = "#ccc";                                     // Top frame
+    ctx.fillRect(x + 1, y + 1, w - 2, fw - 2)
+    ctx.fillRect(x + 1, y + h + 1 - fw, w - 2, fw - 2)          // Bottom frame
+
+    ctx.fillRect(x + 1, y + fw, fw - 2, h - fw * 2)             // Left frame
+    ctx.fillRect(x + w - fw + 1, y + fw, fw - 2, h - fw * 2)    // Right frame
+
+    ctx.fillStyle = "#fff";                                     // Pane area color
+    ctx.fillRect(x + fw, y + fw, w - fw * 2, h - fw * 2);
+
+
+    // Render panes/posts
+    //alert("panes: " + template.panes.length);
+    for (var i = 0; i < template.panes.length; i++) {
+
+        // Init
+        var pane = template.panes[i];
+        //alert("");
+        x = 5 + pane.xIndex * ps;
+        y = 5 + pane.yIndex * ps;
+        w = pane.colSpan * ps; h = pane.rowSpan * ps;
+
+        // Update frame settings
+        var frameTop = true; var frameBottom = true; var frameLeft = true; var frameRight = true;
+
+        // Frame/post correction
+        if (pane.xIndex > 0) { frameLeft = false; }
+        if (pane.yIndex > 0) { frameTop = false; }
+
+        if (pane.xIndex + pane.colSpan < template.columns) { frameRight = false; }
+        if (pane.yIndex + pane.rowSpan < template.rows) { frameBottom = false; }
+
+        
+
+        // Render top post
+        if (frameTop == false) {
+            
+            var x2 = x;
+            var w2 = w;
+
+            if (frameLeft) { x2 += fw; w2 -= fw; } else { x2 += pw; w2 -= pw; }
+            if (frameRight) { w2 -= fw; } else { w2 -= pw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x2, y, w2, pw);
+            ctx.fillStyle = "#f00"; ctx.fillRect(x2, y, w2, pw - 1);
+        }
+
+        // Render bottom post
+        if (frameBottom == false) {
+
+            var x2 = x;
+            var w2 = w;
+
+            if (frameLeft) { x2 += fw; w2 -= fw; } else { x2 += pw; w2 -= pw; }
+            if (frameRight) { w2 -= fw; } else { w2 -= pw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x2, y + ps - pw, w2, pw);
+            ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + ps - pw + 1, w2, pw - 1);
+        }
+
+        // Render left post
+        if (frameLeft == false) {
+
+            var y2 = y;
+            var h2 = h;
+
+            if (frameTop) { y2 += fw; h2 -= fw; }
+            if (frameBottom) { h2 -= fw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x, y2, pw, h2);
+            ctx.fillStyle = "#0f0"; ctx.fillRect(x, y2, pw - 1, h2);
+        }
+
+        // Render right post    ### This goes wrong somehere when colspans are involved
+        if (frameRight == false) {
+
+            var y2 = y;
+            var h2 = h;
+
+            if (frameTop) { y2 += fw; h2 -= fw; }
+            if (frameBottom) { h2 -= fw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x + (ps * pane.colSpan) - pw, y2, pw, h2);         // The pane.colspan part should solve everything, note to comment above ###
+            ctx.fillStyle = "#af0"; ctx.fillRect(x + (ps * pane.colSpan) - pw + 1, y2, pw - 1, h2);
+        }
+
+    }
+}
+
+
+// Function needs to account for state when no entries exist
+function lbUpdateEditor() {
+
+    if (editor == undefined) return;
+    //new, createWindow, createDoor, editEntry
+    switch (editor.state) {
+        case "neutral":
+            //alert("Neutral");
+
+            if (project.numEntries == 0) {
+                document.getElementById("ProductColumn").style.display = "inline-block";
+                document.getElementById("PaneColumn").style.display = "inline-block";
+                document.getElementById("TemplateSelect").style.display = "none";
+
+                document.getElementById("SelectorColumn").style.display = "none";
+                document.getElementById("SelectorColumnSpacer").style.display = "inline-block";
+                
+            } else {
+                document.getElementById("ProductColumn").style.display = "inline-block";
+                document.getElementById("PaneColumn").style.display = "inline-block";
+                document.getElementById("TemplateSelect").style.display = "none";
+
+                document.getElementById("SelectorColumn").style.display = "inline-block";
+                document.getElementById("SelectorColumnSpacer").style.display = "none";
+
+                //document.getElementById("PaneSelectCanvas").style.display = "inline-block";
+            }
+
+            break;
+        case "newEntry":
+            //alert("New entry");
+
+            document.getElementById("ProductColumn").style.display = "none";
+            document.getElementById("PaneColumn").style.display = "none";
+            document.getElementById("TemplateSelect").style.display = "inline-block";
+
+            break;
+        case "editEntry":
+            //alert("Edit entry");
+
+            document.getElementById("ProductColumn").style.display = "none";
+            document.getElementById("PaneColumn").style.display = "none";
+            document.getElementById("TemplateSelect").style.display = "none";
+            
+            break;
+    }
+
+
+}
+
+
+function lbReloadTemplates(entryType) {
 
     // Clear template data, elements and icons
-
+    templates = undefined;
+    $("#TemplateIcons").empty();
 
     // Load templates
     $(function () {
@@ -1448,11 +1679,12 @@ function lbReloadTemplates() {
             // release previous template data if possible here
 
             templates = data;           // Raw template data
+            templates.selected = 0;
 
+            lbGenerateTemplates();      // Generate template icons
+            lbRenderTemplateIcons();      // Render template icons
 
-
-            //lbGenerateIcons(data);
-            //lbRenderIcon(data);
+            templates.entryType = entryType;    // Update new entry type
 
             //lbTemplateUpdateAndRender("");
         });
@@ -1460,7 +1692,17 @@ function lbReloadTemplates() {
     });
 
 
-    // Generate template elements
+    if (entryType == "window") {
+        $("#TemplateEntryName").val("Fönster" + project.windowEntryCounter);
+        project.windowEntryCounter++;                                           // Increasement should only be done after the "done"/"klar" button is pushed
+    } else {
+        $("#TemplateEntryName").val("Dörr" + project.doorEntryCounter);
+        project.doorEntryCounter++;
+    }
+    
+
+    editor.state = "newEntry";
+    lbUpdateEditor();
 
     /*
     for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
@@ -1486,6 +1728,91 @@ function lbReloadTemplates() {
 
 
 
+}
+
+
+// This function needs to clear ALL data from previous selected entry to function properly
+function lbUpdateSelectedEntry(event) {
+
+    alert("Update selected entry: " + event.data.id);
+    
+
+    selector = new lbPaneSelector(templates[templates.selected]);
+
+    entry = project.windowEntries[event.data.id];
+
+    lbUpdatePaneDimensions();
+
+    $("#paneWidth").val(lbGetSelectedPaneWidth());     // Update pane dimensions
+    $("#paneHeight").val(lbGetSelectedPaneHeight());
+
+    $("#frameWidth").val(lbGetFrameWidth());
+    $("#frameHeight").val(lbGetFrameHeight());
+
+    $("#paneUg").val(lbGetSelectedUg());
+
+    // Initiate edit of selected entry
+    lbEntryRender();        // Update or Init selector
+}
+
+
+function lbUpdateEntries() {
+
+    // Clear entries
+    $("#pnlWindowEntries").empty();
+    $("#pnlDoorEntries").empty();
+
+    if (project.numEntries == 0) return;        // Validate entries
+
+    // Emit window entries
+    //$("#pnlWindowEntries").append(output);
+
+
+    //$("#pnlWindowEntries").append("<p>test</p>");
+
+    for (var i = 0; i < project.numWindowEntries; i++) {
+
+        var output = '<a id="WindowEntry' + i + '" href="javascript:void(0);" style="margin-left: 10px; display: block;">' + project.windowEntries[i].name + '</a>';
+        
+        $("#pnlWindowEntries").append(output);      // Create element
+
+        $("#WindowEntry" + i).click({               // Attach click selection event
+            id: i
+        }, lbUpdateSelectedEntry);
+    }
+
+}
+
+
+function lbAddEntry() {
+    
+    var e = new lbProjectEntry(templates[templates.selected]);       // Needs a reference to a template obejct
+    e.name = $("#TemplateEntryName").val();
+    //alert("Name: " + e.name);
+
+    if (templates.entryType == "window") {          // Add window entry
+
+        if (project.numWindowEntries == 0) {
+            project.windowEntries = new Array(e);
+            //alert("e: " + e);
+            project.numWindowEntries++;
+        } else {
+            project.windowEntries[project.numWindowEntries] = e;
+            //alert("num " + project.numWindowEntries);
+            project.numWindowEntries++;
+        }
+
+        //project.windowEntries[project.numWindowEntries] = e;
+
+    } else {                                        // Add door entry
+
+
+
+    }
+
+    //lbUpdatePaneDimensions();
+    lbUpdateEntries();
+    lbEntryRender();        // Update or Init selector
 }
 
 

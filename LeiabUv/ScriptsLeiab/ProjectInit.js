@@ -64,7 +64,11 @@ $(function () {
     $("#btnUpdateUValue").click(function () { lbFinalizeUv(); });
 
 
-    $("#btnNewWindow").click(function () { lbReloadTemplates(); });
+    $("#btnNewWindow").click(function () { lbReloadTemplates("window"); });
+    $("#btnNewDoor").click(function () { lbReloadTemplates("door"); });
+
+    $("#btnNewEntryCancel").click(function () { editor.state = "neutral"; lbUpdateEditor(); });
+    $("#btnNewEntryDone").click(function () { editor.state = "neutral"; lbAddEntry(); lbUpdateEditor(); });
 
     //$("#btnTestAreaParts").click(function () {
         //lbGetPaneAreaPartsExt(selector.selectedPane);         // Might not be needed here
@@ -83,5 +87,5 @@ $(function () {
     });
 });
 
-setInterval(function () { lbUpdateAndRender(""); }, 300);
+setInterval(function () { lbUpdateAndRender(""); }, 100);
 
