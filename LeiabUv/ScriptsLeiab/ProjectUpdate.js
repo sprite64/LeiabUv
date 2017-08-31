@@ -1501,6 +1501,7 @@ function lbUpdateAndRender(action) {
     lbUpdatePaneDimensionInput();
     lbUpdateTotalUvButton();
 
+    // Edit revert
     // implement if(entry != undefined)
     // here, else clear entry editor parts
 
