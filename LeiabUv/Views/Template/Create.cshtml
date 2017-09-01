@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Mall";
+    ViewBag.Title = "Modell";
 }
 
 
@@ -28,57 +28,36 @@
 
 <!-- Init elements  -->
 
-<div class="container">
+<div class="container" style="background-color: #333;">
+
     <div class="row">
 
         <!-- Menu -->
-        <div class="col-md-2" style="height: 100%;">
+        <div class="col-md-2">
 
-            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px; background-color: #333;">
+            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px;">
 
                 <h4 style="color: #ccc">Meny</h4>
 
                 <button id="btnOpenEditor" class="btn btn-success active" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Ny</button>
                 <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Avbryt</button>
 
-                <!-- Reset/New button -->
-                <!-- button id="btnNewTemplateQuery" class="btn btn-success active" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Ny</!--button -->
-                
-                <!-- Modal save button -->
-                <!-- button type="button" class="btn btn-info" data-toggle="modal" data-target="#mdlSaveTemplate" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Spara</!--button -->
-                <!-- button id="btnSaveTemplateQuery" class="btn btn-info" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Sparabutton -->
-
-                <!-- Perhaps a useless cancle button, could redirect to template gallery -->
-                <!-- button id="btnCancelTemplateQuery" class="btn btn-warning" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Avbryt</!--button -->
-
-                <!--
-
-                <button id="btnOpenEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Open</button>
-                <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Close</button>
-                <button id="btnResetEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Reset</button>
-
-                -->
-
-                <!-- button id="btnSaveTest" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Save</button -->
-
             </div>
         </div>
 
-
-
-        <!-- HTML5 Canvas -->
-        <div class="col-md-6" style="min-height: 500px; min-width: 584px;">
+        <!-- Template canvas -->
+        <div class="col-md-4">
 
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
                 
-                <canvas id="TemplateCanvas" width="534" height="400" style="visibility: hidden;">
+                <canvas id="TemplateCanvas" width="320" height="320" style="visibility: hidden;">
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
                 <div id="TemplateSaveControl" class="form-group" style="margin-right: 10px; margin-top: 20px; visibility: hidden;">
                     
-                    <input type="text" maxlength="32" class="form-control" id="inTemplateName" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="display: inline;">
-                    <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
+                    <input id="inTemplateName" type="text" maxlength="32" class="form-control" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="width: 243px; display: inline;">
+                    <button id="btnSaveTemplate" type="button" class="btn btn-success" style="margin: 0px; margin-left: 10px;">Spara</button>
                     
                     <span id="saveLoadingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 20px; visibility: hidden;"></span>
 
@@ -98,8 +77,8 @@
         </div>
 
 
-        <!-- Controls -->
-        <div class="col-md-2" style="height: 100%;">
+        <!-- Template controlls -->
+        <div class="col-md-2">
 
             <!-- Frame/Karm control -->
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 180px; background-color: #333;">
@@ -211,6 +190,10 @@
 
             </div>
         </div>
+
+        <!--div-- class="col-md-4" style="background-color: #fff;">
+            asd
+        </!--div-->
     </div>
 </div>
 

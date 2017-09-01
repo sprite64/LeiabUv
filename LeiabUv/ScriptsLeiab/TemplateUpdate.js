@@ -644,7 +644,10 @@ function lbRestoreTemplateEditor() {
 
 function lbUpdateTemplateEditorFromDB(templateData) {
 
-    if (templateData == undefined) return;  // Validate templateData
+    if (template == undefined) {
+        alert("DENIED!");
+        return;  // Validate templateData
+    }
 
     template.Id = templateData.Id;
 
@@ -657,17 +660,17 @@ function lbUpdateTemplateEditorFromDB(templateData) {
             template.grid[x][y].parentCellY = -1;
         }
     }
+    
+    for (var i = 0; i < templateData.Panes.length; i++) {
 
-    for (var i = 0; i < templateData.panes.length; i++) {
+        var tx = templateData.Panes[i].XIndex;
+        var ty = templateData.Panes[i].YIndex;
 
-        var tx = templateData.panes[i].xIndex;
-        var ty = templateData.panes[i].yIndex;
+        template.grid[tx][ty].colSpan = templateData.Panes[i].ColSpan;
+        template.grid[tx][ty].rowSpan = templateData.Panes[i].RowSpan;
 
-        template.grid[tx][ty].colSpan = templateData.panes[i].colSpan;
-        template.grid[tx][ty].rowSpan = templateData.panes[i].rowSpan;
-
-        for (var y = 0; y < templateData.panes[i].rowSpan; y++) {       // Copy parent panes and initialize child panes
-            for (var x = 0; x < templateData.panes[i].colSpan; x++) {
+        for (var y = 0; y < templateData.Panes[i].rowSpan; y++) {       // Copy parent panes and initialize child panes
+            for (var x = 0; x < templateData.Panes[i].colSpan; x++) {
                 if (x + y != 0) {
                     template.grid[tx + x][ty + y].parentCellX = tx;
                     template.grid[tx + x][ty + y].parentCellY = ty;
@@ -726,8 +729,9 @@ function lbUpdateTemplateSelection(event) {
 
 function lbUpdateSelectedTemplateData(index) {
 
+    alert("templateIconData #" + templateIconData + "#");
     if (templateIconData == undefined) { alert("No template data"); return; }
-    data = templateIconData;
+    var data = templateIconData;
 
     var i = index;
 
@@ -770,7 +774,8 @@ function lbUpdateSelectedTemplateData(index) {
 
 function lbGenerateIcons(data) {
 
-    for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
+    for (var i = 0; i < data.length; i++) {     // Generate newest icons first
+    //for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
 
         // The href attribute is necessary to change the cursor to a hand, the value; javascripty:void(0) is needed to avoid reloading of the page
         var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
@@ -784,9 +789,10 @@ function lbGenerateIcons(data) {
             id: data[i].Id
         }, lbUpdateTemplateSelection);
     }
-
-    lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
-    lbUpdateSelectedTemplateData(data.length - 1);              // Update selected template data
+    //alert("data " + data.length);
+    lbUpdateTemplateEditorFromDB(data[0]);        // Select the last created template
+    //lbUpdateTemplateEditorFromDB(data[data.length - 1]);        // Select the last created template
+    //lbUpdateSelectedTemplateData(data.length - 1);              // Update selected template data
 }
 
 
@@ -1013,80 +1019,4 @@ function lbSaveTemplate() {
 
     //return template;
 }
-
-
-/*** PROBABLUY UNUSED BULLSHIT TO BE REMOVED!!! */
-
-
-/* Handle template editor main events *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-function lbHandleNewTemplateQuery() {
-
-    //alert("Handle new!");                         
-                                                                // The logic here is flawed, not sure how or why but it's an error of my own.
-    //alert("State: " + template.state);
-
-    //alert("lbHandleNewTempalteQuery!");
-
-    var canvas = lbGetTemplateCanvas();
-
-    if (template.state == LB_TemplateStateActive) {             // Open Throw or Save modal
-        //alert("lbHandleNewTemplateQuery: active");
-
-        $("#mdlThrowOrSaveTemplate").modal("show");
-
-        return template;                                                 // Return to cut off template state toggles
-    }
-
-    if (template.state == LB_TemplateStateInactive) {           // Initiate new template
-        //alert("lbHandleNewTemplateQuery: inactive");
-        canvas.style.visibility = "visible";                    // Make canvas visible
-
-        template.state = LB_TemplateStateActive;                // Update state
-
-        return template;
-    }
-
-    alert("HandleNewTemplateQuery: not handled at all!");
-}
-
-
-function lbHandleThrowTemplateConfirm() {
-
-    template = lbCreateTemplate(1, 1);
-    template.state = LB_TemplateStateActive;
-
-    return template;
-}
-
-
-function lbHandleSaveTemplateQuery() {
-
-    if (template.state == LB_TemplateStateActive) {             // Open Save modal
-
-
-    }
-
-}
-
-
-function lbHandleCancelTemplateQuery() {                        // Fires off the cancel modal
-
-    if (template.state == LB_TemplateStateActive) {
-        $("#mdlCancelTemplate").modal();
-    }
-}
-
-
-function lbHandleCancelTemplateConfirm() {
-
-    var canvas = lbGetTemplateCanvas();
-    
-    if (template.state == LB_TemplateStateActive) {             // Open Cancel template modal
-
-        template.state = LB_TemplateStateInactive;
-        canvas.style.visibility = "hidden";
-    }
-}
-
-
 

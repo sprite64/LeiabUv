@@ -11,11 +11,12 @@
 
 
 
-<!-- 
+<!--
 <script src="~/Scripts/jquery-3.1.0.min.js"></script>
     -->
 
-<div class="container">
+<div class="container" style="background-color: #333;">
+
     <div class="row">
 
         <!-- Menu -->
@@ -23,31 +24,31 @@
 
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
 
-                <h3 style="color: #ccc;">Välj Modell</h3>
+                <h4 style="color: #ccc;">Modeller</h4>
 
                 <canvas id="TemplateCanvas" width="534" height="400">
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
-                <div id="TemplateSaveControl" class="form-group" style="margin-right: 10px; margin-top: 20px; visibility: hidden;">
+                <div id="TemplateSaveControl" class="form-group" style="margin-right: 10px; margin-top: 20px;">
 
                     <!--
-            <input type="text" maxlength="32" class="form-control" id="inTemplateName" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="display: inline;">
-            <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
-                -->
+                    <input type="text" maxlength="32" class="form-control" id="inTemplateName" aria-describedby="btnSaveTemplate" placeholder="Beteckning" style="display: inline;">
+                    <button type="button" class="btn btn-success" id="btnSaveTemplate" style="margin: 0px; margin-left: 10px; float: right;">Spara</button>
+                        -->
                 </div>
 
-                <button id="btnCreateWindowProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa fönster</button>
-                <button id="btnCreateDoorProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa dörr</button>
+                <!-- button id="btnCreateWindowProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa fönster</!--button>
+                <button id="btnCreateDoorProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa dörr</button -->
 
                 <div style="color: #ccc;">
-                    <p id="TemplateName" style="font-weight: bold;"></p>
-                    <p id="TemplateCreated" style="color: #ccc;"></p>
-                    <p id="TemplateModified"></p>
+                    <p id="TemplateName" style="font-weight: bold;">Namn</p>
+                    <p id="TemplateCreated" style="color: #ccc;">Skapad</p>
+                    <!--p id="TemplateModified"></p -->
                 </div>
 
                 <button id="btnDeleteTemplate" class="btn btn-danger" style="width: 120px; margin-bottom: 10px; margin-right: 10px;">Radera Modell</button>
-                
+
             </div>
         </div>
 
@@ -62,9 +63,9 @@
 
                     <!-- To be used as partial views for the template icons -->
                     <!-- <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
-                <canvas id="test" width="120" height="80" style=""></canvas>
-                <p>ARV2</p>
-            </div>-->
+                        <canvas id="test" width="120" height="80" style=""></canvas>
+                        <p>ARV2</p>
+                    </div>-->
                     <!-- <p id="output"></p>-->
 
                 </div>

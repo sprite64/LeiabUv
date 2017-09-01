@@ -16,8 +16,8 @@
 var LB_TemplateCanvasId = "TemplateCanvas";
 var LB_IconCanvasId = "IconCanvas";
 
-LB_TemplateMaxColumns = 4;
-LB_TemplateMaxRows = 4;
+LB_TemplateMaxColumns = 5;
+LB_TemplateMaxRows = 5;
 
 LB_TemplateStateInactive = 4;       // Arbrutrarily numbers
 LB_TemplateStateActive = 1;
