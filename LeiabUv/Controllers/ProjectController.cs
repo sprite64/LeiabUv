@@ -60,20 +60,17 @@ namespace LeiabUv.Controllers
             var template = ctx.Templates.Select(d => new TemplateViewModel
             {
                 Id = d.Id,
-                columns = d.columns,
-                rows = d.rows,
+                Columns = d.Columns,
+                Rows = d.Rows,
                 Name = d.Name,
                 Created = d.Created,
-                CreatedBy = d.CreatedBy,
-                Modified = d.Modified,
-                ModifiedBy = d.ModifiedBy,
-                panes = d.panes.Select(f => new TemplatePaneViewModel
+                Panes = d.Panes.Select(f => new TemplatePaneViewModel
                 {
                     Id = f.Id,
-                    colSpan = f.colSpan,
-                    rowSpan = f.rowSpan,
-                    xIndex = f.xIndex,
-                    yIndex = f.yIndex
+                    ColSpan = f.ColSpan,
+                    RowSpan = f.RowSpan,
+                    XIndex = f.XIndex,
+                    YIndex = f.YIndex
                 }).ToList<TemplatePaneViewModel>()
 
             }).FirstOrDefault(d => d.Id == id);
@@ -88,7 +85,7 @@ namespace LeiabUv.Controllers
             
             if(window == 1)
             {
-                var products = ctx.Products.Where(m => m.door == false).Select(d => new ProductViewModel
+                var products = ctx.Products.Where(m => m.Window == true).Select(d => new ProductViewModel
                 {
                     Id = d.Id,
                     Name = d.Name,
@@ -104,13 +101,14 @@ namespace LeiabUv.Controllers
                     Ug = d.Ug,
 
                     Glass = d.Glass,
-                    door = d.door,
-                    //info = d.info
+                    Window = d.Window,
+                    Deprecated = d.Deprecated,
+                    Info = d.Info
                 }).ToList<ProductViewModel>();
 
                 return Json(products, JsonRequestBehavior.AllowGet);
             } else {
-                var products = ctx.Products.Where(m => m.door == true).Select(d => new ProductViewModel
+                var products = ctx.Products.Where(m => m.Window == false).Select(d => new ProductViewModel
                 {
                     Id = d.Id,
                     Name = d.Name,
@@ -126,7 +124,7 @@ namespace LeiabUv.Controllers
                     Ug = d.Ug,
 
                     Glass = d.Glass,
-                    door = d.door,
+                    Window = d.Window
                     //info = d.info
                 }).ToList<ProductViewModel>();
 

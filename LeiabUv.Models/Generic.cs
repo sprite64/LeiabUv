@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LeiabUv.Models
 {
-    public class UserEntryLog
+    public class UserEntryLogDEP
     {
         public string CreatedBy { get; set; }
 

@@ -48,9 +48,6 @@ namespace LeiabUv.Controllers
             }
 
             t.Created = System.DateTime.Now;        // Set entry log
-            t.CreatedBy = "Admin";
-            t.Modified = System.DateTime.Now;
-            t.ModifiedBy = "Admin";
             
             ctx.Templates.Add(t);                   // Add and save databas additions/changes
             ctx.SaveChanges();
@@ -59,15 +56,15 @@ namespace LeiabUv.Controllers
         }
 
 
+        /*
         public ActionResult DeleteTemplate(int templateId)
         {
             Context ctx = new Context();
-
-
-
+            
             return Json("deleted", JsonRequestBehavior.AllowGet); ;
-        }
+        }*/
         
+        /*
         public ActionResult Show3()
         {
             Context ctx = new Context();
@@ -75,16 +72,16 @@ namespace LeiabUv.Controllers
             var data = new List<Template>();
 
             data = ctx.Templates.Select(d => new Template {
-                Name = d.Name, columns = d.columns, rows = d.rows,
-                panes = d.panes.Select(f => new TemplatePane {
-                    xIndex = f.xIndex, yIndex = f.yIndex,  colSpan = f.colSpan, rowSpan = f.rowSpan
+                Name = d.Name,
+                Columns = d.Columns,
+                Rows = d.Rows,
+                Panes = d.Panes.Select(f => new TemplatePane {
+                    XIndex = f.XIndex, YIndex = f.YIndex, ColSpan = f.ColSpan, RowSpan = f.RowSpan
                 }).ToList<TemplatePane>()}).ToList<Template>();
-
-
-
+            
             ViewBag.templateList = data;
             return View();
-        }
+        }*/
 
         public ActionResult Show(int? deleteTemplateId)
         {
@@ -117,19 +114,16 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
             var template = ctx.Templates.Select(d=>new TemplateViewModel {
                 Id=d.Id,
-                columns=d.columns,
-                rows=d.rows,
+                Columns=d.Columns,
+                Rows=d.Rows,
                 Name=d.Name,
                 Created = d.Created,
-                CreatedBy = d.CreatedBy,
-                Modified = d.Modified,
-                ModifiedBy = d.ModifiedBy,
-                panes=d.panes.Select(f=>new TemplatePaneViewModel {
+                Panes=d.Panes.Select(f=>new TemplatePaneViewModel {
                     Id=f.Id,
-                    colSpan=f.colSpan,
-                    rowSpan=f.rowSpan,
-                    xIndex=f.xIndex,
-                    yIndex=f.yIndex
+                    ColSpan=f.ColSpan,
+                    RowSpan=f.RowSpan,
+                    XIndex=f.XIndex,
+                    YIndex=f.YIndex
                 }).ToList<TemplatePaneViewModel>()
 
             }).FirstOrDefault(d => d.Id == id);
@@ -144,19 +138,16 @@ namespace LeiabUv.Controllers
             var templates = ctx.Templates.Select(d => new TemplateViewModel
             {
                 Id = d.Id,
-                columns = d.columns,
-                rows = d.rows,
+                Columns = d.Columns,
+                Rows = d.Rows,
                 Name = d.Name,
                 Created = d.Created,
-                CreatedBy = d.CreatedBy,
-                Modified = d.Modified,
-                ModifiedBy = d.ModifiedBy,
-                panes = d.panes.Select(f => new TemplatePaneViewModel {
+                Panes = d.Panes.Select(f => new TemplatePaneViewModel {
                     Id = f.Id,
-                    colSpan = f.colSpan,
-                    rowSpan = f.rowSpan,
-                    xIndex = f.xIndex,
-                    yIndex = f.yIndex,
+                    ColSpan = f.ColSpan,
+                    RowSpan = f.RowSpan,
+                    XIndex = f.XIndex,
+                    YIndex = f.YIndex,
                 }).ToList<TemplatePaneViewModel>()
             }).ToList<TemplateViewModel>();
             Response.CacheControl = "no-cache";

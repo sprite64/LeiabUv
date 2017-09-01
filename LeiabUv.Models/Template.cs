@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,13 +11,13 @@ namespace LeiabUv.Models
     {
         public int Id { get; set; }
         [Required]
-        public int xIndex { get; set; }
+        public int XIndex { get; set; }
         [Required]
-        public int yIndex { get; set; }
+        public int YIndex { get; set; }
         [Required]
-        public int colSpan { get; set; }
+        public int ColSpan { get; set; }
         [Required]  
-        public int rowSpan { get; set; }
+        public int RowSpan { get; set; }
 
         public int TemplateId { get; set; }
 
@@ -25,17 +26,20 @@ namespace LeiabUv.Models
     }
 
 
-    public class Template : UserEntryLog
+    public class Template
     {
         public int Id { get; set; }
-        
+
+        [DataType(DataType.DateTime)]
+        public DateTime Created { get; set; }
+
         [MinLength(1), MaxLength(32), Required]
         public string Name { get; set; }
         [Required]
-        public int columns { get; set; }
+        public int Columns { get; set; }
         [Required]
-        public int rows { get; set; }
-        public virtual List<TemplatePane> panes { get; set; }
+        public int Rows { get; set; }
+        public virtual List<TemplatePane> Panes { get; set; }
 
 
         /*

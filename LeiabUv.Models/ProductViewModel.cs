@@ -10,9 +10,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LeiabUv.Models
 {
-    public class ProductViewModel : UserEntryLog
+    public class ProductViewModel
     {
         public int Id { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime Modified { get; set; }
 
         [MinLength(1), MaxLength(256), Required]
         public string Name { get; set; }                // Key 
@@ -31,9 +34,12 @@ namespace LeiabUv.Models
         [MinLength(1), MaxLength(256)]
         public string Glass { get; set; }               // Paired key with profile Name
 
-        public bool door { get; set; }
+        public bool Window { get; set; }
+        public bool Deprecated { get; set; }
 
         [MaxLength(256)]
-        public string info { get; set; }                // Additional information
+        public string Info { get; set; }                // Additional information
     }
 }
+
+

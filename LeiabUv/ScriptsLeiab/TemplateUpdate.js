@@ -644,6 +644,8 @@ function lbRestoreTemplateEditor() {
 
 function lbUpdateTemplateEditorFromDB(templateData) {
 
+    if (templateData == undefined) return;  // Validate templateData
+
     template.Id = templateData.Id;
 
     // Reset pane grid

@@ -60,7 +60,7 @@ namespace LeiabUv.Models
     }
 
     
-    public class Project : UserEntryLog
+    public class Project
     {
         public int Id { get; set; }
         

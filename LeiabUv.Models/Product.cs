@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace LeiabUv.Models
 {
-    public class Product : UserEntryLog
+    public class Product
     {
         public int Id { get; set; }
+
+        [DataType(DataType.DateTime)]
+        public DateTime Modified { get; set; }
 
         [MinLength(1), MaxLength(256), Required]
         public string Name { get; set; }                // Key 
@@ -28,10 +33,11 @@ namespace LeiabUv.Models
         //public double dim1230x1480 { get; set; }        // Window dimensions
         //public double dim985x2085 { get; set; }         // Door dimensions
 
-        public bool door { get; set; }
+        public bool Window { get; set; }
+        public bool Deprecated { get; set; }
 
         [MaxLength(256)]
-        public string info { get; set; }                // Additional information
+        public string Info { get; set; }                // Additional information
         //public int nrOfUsedInProjects { get; set; }     // 
     }
 }

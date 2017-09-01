@@ -37,12 +37,7 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
 
-            p.door = false;
-
-            p.CreatedBy = "Admin";
-            p.Created = System.DateTime.Now;
-
-            p.ModifiedBy = "Admin";
+            p.Window = true;
             p.Modified = System.DateTime.Now;
 
             if (ModelState.IsValid)
@@ -60,7 +55,7 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
 
             // Select window products
-            var model = ctx.Products.ToList().Where(m => m.door == false);//.OrderBy(m => m.door);
+            var model = ctx.Products.ToList().Where(m => m.Window == true);//.OrderBy(m => m.door);
 
             return View(model);
         }
@@ -76,12 +71,7 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
 
-            p.door = true;
-
-            p.CreatedBy = "Admin";
-            p.Created = System.DateTime.Now;
-
-            p.ModifiedBy = "Admin";
+            p.Window = false;
             p.Modified = System.DateTime.Now;
 
             if (ModelState.IsValid)
@@ -98,7 +88,7 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
 
             // Select window products
-            var model = ctx.Products.ToList().Where(m => m.door == true);
+            var model = ctx.Products.ToList().Where(m => m.Window == false);
 
             return View(model);
         }
@@ -108,7 +98,7 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
             
-            var model = ctx.Products.ToList().OrderBy(m => m.door);
+            var model = ctx.Products.ToList().OrderBy(m => m.Window);
             
             return View(model);
         }
