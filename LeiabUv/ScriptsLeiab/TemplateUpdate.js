@@ -777,19 +777,13 @@ function lbGenerateIcons(data) {
     for (var i = 0; i < data.length; i++) {     // Generate newest icons first
     //for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
 
-        var output = '<a href="javascript:void(0);">';
+        var output = '<a href="javascript:void(0);" style="color: #ccc;">';
         output += '<div id="IconPanel' + data[i].id + '" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #333; display: inline-block;">';
         output += '<canvas id="IconCanvas' + data[i].id + '" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>';
         output += '<p style="margin-left: 10px;">' + data[i].name + '</p>';
         output += '</div>';
         output += '</a>';
         
-        // The href attribute is necessary to change the cursor to a hand, the value; javascripty:void(0) is needed to avoid reloading of the page
-        /*var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
-        output += '<p>' + data[i].Name + '</p>';
-        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
-        output += '</a>';*/
-
         $("#TemplateIcons").append(output);
 
         $("#IconCanvas" + data[i].id).click({
@@ -812,7 +806,7 @@ function lbRenderTemplateIcon(i) {
     var template = templates[i];
 
     //alert("Panes template: " + template.Id + ", panes templates[i] " + templates[i].Id);
-    alert(template.panes.length);
+    //alert(template.panes.length);
 
     // Init graphics context
     var canvas = document.getElementById("IconCanvas" + templates[i].id);
@@ -832,6 +826,21 @@ function lbRenderTemplateIcon(i) {
 
     var w = 0;              // Temporary width and height
     var h = 0;
+
+    // Automagic unit settings
+    // Canvas dimensions are 140x140 pixels
+    var max = template.columns;
+    if (max < template.rows) { max == template.rows; }
+
+    // ### Scale is currently not properly calculated
+    //ps = Math.round((140 - x * 2) / max);
+    var scale = Math.round((140 - x * 2) / max) / 140;
+    //var scale = 0.9;
+    alert("Scale: " + scale);
+    fw = Math.round(fw * scale);
+    pw = Math.round(pw * scale);
+    ps = Math.round(ps * scale);
+    //ps = Math.round((140 - x * 2) / max);
 
 
     // Render frame
@@ -862,7 +871,8 @@ function lbRenderTemplateIcon(i) {
         //alert("");
         x = 5 + pane.xIndex * ps;
         y = 5 + pane.yIndex * ps;
-        w = pane.colSpan * ps; h = pane.rowSpan * ps;
+        w = pane.colSpan * ps;
+        h = pane.rowSpan * ps;
 
         // Update frame settings
         var frameTop = true; var frameBottom = true; var frameLeft = true; var frameRight = true;
@@ -898,8 +908,8 @@ function lbRenderTemplateIcon(i) {
             if (frameLeft) { x2 += fw; w2 -= fw; } else { x2 += pw; w2 -= pw; }
             if (frameRight) { w2 -= fw; } else { w2 -= pw; }
 
-            ctx.fillStyle = "#000"; ctx.fillRect(x2, y + ps - pw, w2, pw);
-            ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + ps - pw + 1, w2, pw - 1);
+            ctx.fillStyle = "#000"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw, w2, pw);
+            ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw + 1, w2, pw - 1);
         }
 
         // Render left post
