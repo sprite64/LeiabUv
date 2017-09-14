@@ -19,14 +19,39 @@
 
     <div class="row">
 
+        <div class="col-md-2">
+
+            <h4 style="color: #ccc;">Modeller</h4>
+
+            <div style="color: #ccc;">
+                <p id="TemplateName" style="font-weight: bold;">Namn</p>
+                <p id="TemplateCreated" style="color: #ccc;">Skapad</p>
+                <!--p id="TemplateModified"></p -->
+            </div>
+
+            <button id="btnDeleteTemplate" class="btn btn-danger" style="width: 120px; margin-top: 377px; margin-bottom: 10px; margin-right: 10px;">Radera Modell</button>
+
+        </div>
+
         <!-- Menu -->
-        <div class="col-md-6" style="height: 100%;">
+        <div class="col-md-8" style="height: 100%;">
 
             <div style="margin-top: 20px; padding-left: 10px; padding-top: 10px; padding-bottom: 5px; width: 554px; height: auto; background-color: #333;">
 
-                <h4 style="color: #ccc;">Modeller</h4>
+                <div id="TemplateIcons" class="panel" style="width: 520px; height: 480px; background-color: #111; overflow-y: scroll;">
 
-                <canvas id="TemplateCanvas" width="534" height="400">
+                    <!--
+                    <a href="javascript:void(0);">
+                        <div id="IconPanel0" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #333; display: inline-block;">
+                            <canvas id="IconCanvas0" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>
+                            <p style="margin-left: 10px;">LEAN</p>
+                        </div>
+                    </a>
+                    -->
+
+                </div>
+
+                <canvas id="TemplateCanvas" width="534" height="400" style="display: none;">
                     Your browser doesn't support HTML5 canvas tag.
                 </canvas>
 
@@ -41,37 +66,23 @@
                 <!-- button id="btnCreateWindowProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa fönster</!--button>
                 <button id="btnCreateDoorProject" class="btn btn-success active" style="width: 120px; margin-bottom: 10px; margin-right: 10px; float: right;">Skapa dörr</button -->
 
-                <div style="color: #ccc;">
-                    <p id="TemplateName" style="font-weight: bold;">Namn</p>
-                    <p id="TemplateCreated" style="color: #ccc;">Skapad</p>
-                    <!--p id="TemplateModified"></p -->
-                </div>
-
-                <button id="btnDeleteTemplate" class="btn btn-danger" style="width: 120px; margin-bottom: 10px; margin-right: 10px;">Radera Modell</button>
-
+                
             </div>
         </div>
-
 
 
         <!-- HTML5 Canvas -->
-        <div class="col-md-2" style="min-height: 500px; min-width: 584px;">
-            <div style="">
-                <div id="TemplateIcons" style="width: 180px; height: 500px; overflow-y: scroll;">
+        <div class="col-md-2">
+                <div id="TemplateIcons2" style="width: 180px; height: 500px; overflow-y: scroll; display: none;">
 
-
-
-                    <!-- To be used as partial views for the template icons -->
-                    <!-- <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
-                        <canvas id="test" width="120" height="80" style=""></canvas>
-                        <p>ARV2</p>
-                    </div>-->
-                    <!-- <p id="output"></p>-->
-
-                </div>
+                <!-- To be used as partial views for the template icons -->
+                <!-- <div style="width: 120px; height: 80px; display: inline-block; margin-right: 10px;">
+                    <canvas id="test" width="120" height="80" style=""></canvas>
+                    <p>ARV2</p>
+                </div>-->
+                <!-- <p id="output"></p>-->
             </div>
         </div>
-
 
     </div>
 </div>
@@ -85,12 +96,22 @@
         $.getJSON("/Template/GetTemplates/", function (data) {
 
             //alert(data.length);
+            
             templateIconData = data;
+            templates = data;
 
             lbGenerateIcons(data);
-            lbRenderIcon(data);
+            //lbRenderIcon(data);
+
 
             lbTemplateUpdateAndRender("");
+
+            // Update initial template selection
+            selectedTemplateId = 0;
+            lbUpdateSelectedTemplateData(0);
+            
+            //lbRenderTemplateIcon(0);
+            //lbRenderTemplateIcon(0);
         });
 
     });

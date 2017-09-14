@@ -729,11 +729,19 @@ function lbUpdateTemplateSelection(event) {
 
 function lbUpdateSelectedTemplateData(index) {
 
-    alert("templateIconData #" + templateIconData + "#");
+    //alert("templateIconData #" + templateIconData + "#");
     if (templateIconData == undefined) { alert("No template data"); return; }
     var data = templateIconData;
 
     var i = index;
+
+    for (var n = 0; n < templates.length; n++) {
+        if (templates[n].Id == templates[i].Id) {
+            $("#IconPanel" + templates[n].Id).css("background-color", "#3a3");
+        } else {
+            $("#IconPanel" + templates[n].Id).css("background-color", "#333");
+        }
+    }
 
     //$("#TemplateName").text("Name: " + data[i].CreatedBy);
 
@@ -746,17 +754,9 @@ function lbUpdateSelectedTemplateData(index) {
     var date = new Date(parseInt(data[i].Created.substr(6)));       // Convert JSON date to Javascript date object
     date = date.toISOString().slice(0, 10);                         // Format date to yyyy-mm-dd
     
-    var output = "Skapad " + date + " av " + data[i].CreatedBy;
+    var output = "Skapad " + date;
 
     $("#TemplateCreated").text(output);
-
-    // Uppdatera modifierad info
-    date = new Date(parseInt(data[i].Modified.substr(6)));
-    date = date.toISOString().slice(0, 10);
-
-    var output = "Modifierad " + date + " av " + data[i].ModifiedBy;
-
-    $("#TemplateModified").text(output);
 
     selectedTemplateId = data[i].Id;
     //alert("SelectedTempalte: " + selectedTemplateId);
@@ -777,11 +777,18 @@ function lbGenerateIcons(data) {
     for (var i = 0; i < data.length; i++) {     // Generate newest icons first
     //for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
 
+        var output = '<a href="javascript:void(0);">';
+        output += '<div id="IconPanel' + data[i].Id + '" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #333; display: inline-block;">';
+        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>';
+        output += '<p style="margin-left: 10px;">' + data[i].Name + '</p>';
+        output += '</div>';
+        output += '</a>';
+        
         // The href attribute is necessary to change the cursor to a hand, the value; javascripty:void(0) is needed to avoid reloading of the page
-        var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
+        /*var output = '<a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">';
         output += '<p>' + data[i].Name + '</p>';
         output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
-        output += '</a>';
+        output += '</a>';*/
 
         $("#TemplateIcons").append(output);
 
@@ -796,6 +803,129 @@ function lbGenerateIcons(data) {
 }
 
 
+// Function works great but should be rewritten to include a black centerline on posts
+// The frame & post width as well as pane size should also be calculated to scale to the html canvas's size
+function lbRenderTemplateIcon(i) {
+
+    // Init
+    if (templates == undefined) return;
+    var template = templates[i];
+
+    // Init graphics context
+    var canvas = document.getElementById("IconCanvas" + i);
+    var ctx = canvas.getContext("2d");
+
+    // Clear background color
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, 140, 140);
+
+    // Unit settings
+    var fw = 12;            // Frame width
+    var pw = 6;             // Post width
+    var ps = 40;            // Pane size (width & height)
+
+    var x = 5;              // Origin
+    var y = 5;
+
+    var w = 0;              // Temporary width and height
+    var h = 0;
+
+
+    // Render frame
+    w = template.columns * ps;
+    h = template.rows * ps;
+
+    ctx.fillStyle = "#000";                                     // Entire frame area
+    ctx.fillRect(x, y, w, h);
+
+    ctx.fillStyle = "#ccc";                                     // Top frame
+    ctx.fillRect(x + 1, y + 1, w - 2, fw - 2)
+    ctx.fillRect(x + 1, y + h + 1 - fw, w - 2, fw - 2)          // Bottom frame
+
+    ctx.fillRect(x + 1, y + fw, fw - 2, h - fw * 2)             // Left frame
+    ctx.fillRect(x + w - fw + 1, y + fw, fw - 2, h - fw * 2)    // Right frame
+
+    ctx.fillStyle = "#fff";                                     // Pane area color
+    ctx.fillRect(x + fw, y + fw, w - fw * 2, h - fw * 2);
+
+
+    // Render panes/posts
+    //alert("panes: " + template.panes.length);
+    for (var i = 0; i < template.panes.length; i++) {
+
+        // Init
+        var pane = template.panes[i];
+        //alert("");
+        x = 5 + pane.xIndex * ps;
+        y = 5 + pane.yIndex * ps;
+        w = pane.colSpan * ps; h = pane.rowSpan * ps;
+
+        // Update frame settings
+        var frameTop = true; var frameBottom = true; var frameLeft = true; var frameRight = true;
+
+        // Frame/post correction
+        if (pane.xIndex > 0) { frameLeft = false; }
+        if (pane.yIndex > 0) { frameTop = false; }
+
+        if (pane.xIndex + pane.colSpan < template.columns) { frameRight = false; }
+        if (pane.yIndex + pane.rowSpan < template.rows) { frameBottom = false; }
+
+
+
+        // Render top post
+        if (frameTop == false) {
+
+            var x2 = x;
+            var w2 = w;
+
+            if (frameLeft) { x2 += fw; w2 -= fw; } else { x2 += pw; w2 -= pw; }
+            if (frameRight) { w2 -= fw; } else { w2 -= pw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x2, y, w2, pw);
+            ctx.fillStyle = "#f00"; ctx.fillRect(x2, y, w2, pw - 1);
+        }
+
+        // Render bottom post
+        if (frameBottom == false) {
+
+            var x2 = x;
+            var w2 = w;
+
+            if (frameLeft) { x2 += fw; w2 -= fw; } else { x2 += pw; w2 -= pw; }
+            if (frameRight) { w2 -= fw; } else { w2 -= pw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x2, y + ps - pw, w2, pw);
+            ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + ps - pw + 1, w2, pw - 1);
+        }
+
+        // Render left post
+        if (frameLeft == false) {
+
+            var y2 = y;
+            var h2 = h;
+
+            if (frameTop) { y2 += fw; h2 -= fw; }
+            if (frameBottom) { h2 -= fw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x, y2, pw, h2);
+            ctx.fillStyle = "#0f0"; ctx.fillRect(x, y2, pw - 1, h2);
+        }
+
+        // Render right post    ### This goes wrong somehere when colspans are involved
+        if (frameRight == false) {
+
+            var y2 = y;
+            var h2 = h;
+
+            if (frameTop) { y2 += fw; h2 -= fw; }
+            if (frameBottom) { h2 -= fw; }
+
+            ctx.fillStyle = "#000"; ctx.fillRect(x + (ps * pane.colSpan) - pw, y2, pw, h2);         // The pane.colspan part should solve everything, note to comment above ###
+            ctx.fillStyle = "#af0"; ctx.fillRect(x + (ps * pane.colSpan) - pw + 1, y2, pw - 1, h2);
+        }
+
+    }
+}
 
 
 // Main update *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
