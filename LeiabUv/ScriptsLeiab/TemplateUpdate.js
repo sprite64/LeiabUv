@@ -649,7 +649,7 @@ function lbUpdateTemplateEditorFromDB(templateData) {
         return;  // Validate templateData
     }
 
-    template.Id = templateData.Id;
+    template.id = templateData.id;
 
     // Reset pane grid
     for (var y = 0; y < template.maxRows; y++) {
@@ -661,16 +661,16 @@ function lbUpdateTemplateEditorFromDB(templateData) {
         }
     }
     
-    for (var i = 0; i < templateData.Panes.length; i++) {
+    for (var i = 0; i < templateData.panes.length; i++) {
 
-        var tx = templateData.Panes[i].XIndex;
-        var ty = templateData.Panes[i].YIndex;
+        var tx = templateData.panes[i].xIndex;
+        var ty = templateData.panes[i].yIndex;
 
-        template.grid[tx][ty].colSpan = templateData.Panes[i].ColSpan;
-        template.grid[tx][ty].rowSpan = templateData.Panes[i].RowSpan;
+        template.grid[tx][ty].colSpan = templateData.panes[i].colSpan;
+        template.grid[tx][ty].rowSpan = templateData.panes[i].rowSpan;
 
-        for (var y = 0; y < templateData.Panes[i].rowSpan; y++) {       // Copy parent panes and initialize child panes
-            for (var x = 0; x < templateData.Panes[i].colSpan; x++) {
+        for (var y = 0; y < templateData.panes[i].rowSpan; y++) {       // Copy parent panes and initialize child panes
+            for (var x = 0; x < templateData.panes[i].colSpan; x++) {
                 if (x + y != 0) {
                     template.grid[tx + x][ty + y].parentCellX = tx;
                     template.grid[tx + x][ty + y].parentCellY = ty;
@@ -712,7 +712,7 @@ function lbUpdateTemplateSelection(event) {
     var index = -1;
 
     for (var i = 0; i < data.length; i++) {
-        if (data[i].Id == event.data.id) {
+        if (data[i].id == event.data.id) {
             index = i;
             id = event.data.id;
             break;
@@ -736,10 +736,10 @@ function lbUpdateSelectedTemplateData(index) {
     var i = index;
 
     for (var n = 0; n < templates.length; n++) {
-        if (templates[n].Id == templates[i].Id) {
-            $("#IconPanel" + templates[n].Id).css("background-color", "#3a3");
+        if (templates[n].id == templates[i].id) {
+            $("#IconPanel" + templates[n].id).css("background-color", "#3a3");
         } else {
-            $("#IconPanel" + templates[n].Id).css("background-color", "#333");
+            $("#IconPanel" + templates[n].id).css("background-color", "#333");
         }
     }
 
@@ -748,17 +748,17 @@ function lbUpdateSelectedTemplateData(index) {
     //var date = new Date(Date.parse(data[i].Created));
 
     // Updatera beteckning
-    $("#TemplateName").text("Beteckning: " + data[i].Name);
+    $("#TemplateName").text("Beteckning: " + data[i].name);
 
     // Uppdatera skapad info
-    var date = new Date(parseInt(data[i].Created.substr(6)));       // Convert JSON date to Javascript date object
+    var date = new Date(parseInt(data[i].created.substr(6)));       // Convert JSON date to Javascript date object
     date = date.toISOString().slice(0, 10);                         // Format date to yyyy-mm-dd
     
     var output = "Skapad " + date;
 
     $("#TemplateCreated").text(output);
 
-    selectedTemplateId = data[i].Id;
+    selectedTemplateId = data[i].id;
     //alert("SelectedTempalte: " + selectedTemplateId);
 
     //$("#TemplateCreatedBy").text(data[i].CreatedBy);
@@ -778,9 +778,9 @@ function lbGenerateIcons(data) {
     //for (var i = data.length - 1; i >= 0; i--) {     // Generate newest icons first
 
         var output = '<a href="javascript:void(0);">';
-        output += '<div id="IconPanel' + data[i].Id + '" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #333; display: inline-block;">';
-        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>';
-        output += '<p style="margin-left: 10px;">' + data[i].Name + '</p>';
+        output += '<div id="IconPanel' + data[i].id + '" class="panel" style="border: 1px solid #000; width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #333; display: inline-block;">';
+        output += '<canvas id="IconCanvas' + data[i].id + '" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>';
+        output += '<p style="margin-left: 10px;">' + data[i].name + '</p>';
         output += '</div>';
         output += '</a>';
         
@@ -792,8 +792,8 @@ function lbGenerateIcons(data) {
 
         $("#TemplateIcons").append(output);
 
-        $("#IconCanvas" + data[i].Id).click({
-            id: data[i].Id
+        $("#IconCanvas" + data[i].id).click({
+            id: data[i].id
         }, lbUpdateTemplateSelection);
     }
     //alert("data " + data.length);
@@ -811,8 +811,11 @@ function lbRenderTemplateIcon(i) {
     if (templates == undefined) return;
     var template = templates[i];
 
+    //alert("Panes template: " + template.Id + ", panes templates[i] " + templates[i].Id);
+    alert(template.panes.length);
+
     // Init graphics context
-    var canvas = document.getElementById("IconCanvas" + i);
+    var canvas = document.getElementById("IconCanvas" + templates[i].id);
     var ctx = canvas.getContext("2d");
 
     // Clear background color
@@ -855,6 +858,7 @@ function lbRenderTemplateIcon(i) {
 
         // Init
         var pane = template.panes[i];
+
         //alert("");
         x = 5 + pane.xIndex * ps;
         y = 5 + pane.yIndex * ps;

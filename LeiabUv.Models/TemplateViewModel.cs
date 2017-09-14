@@ -10,32 +10,32 @@ namespace LeiabUv.Models
 
     public class TemplatePaneViewModel
     {
-        public int Id { get; set; }
+        public int id { get; set; }
         [Required]
-        public int XIndex { get; set; }
+        public int xIndex { get; set; }
         [Required]
-        public int YIndex { get; set; }
+        public int yIndex { get; set; }
         [Required]
-        public int ColSpan { get; set; }
+        public int colSpan { get; set; }
         [Required]
-        public int RowSpan { get; set; }
+        public int rowSpan { get; set; }
     }
 
 
     public class TemplateViewModel
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime Created { get; set; }
+        public DateTime created { get; set; }
 
         [MinLength(1), MaxLength(32), Required]
-        public string Name { get; set; }
+        public string name { get; set; }
         [Required]
-        public int Columns { get; set; }
+        public int columns { get; set; }
         [Required]
-        public int Rows { get; set; }
-        public  List<TemplatePaneViewModel> Panes { get; set; }
+        public int rows { get; set; }
+        public  List<TemplatePaneViewModel> panes { get; set; }
     }
     
 }

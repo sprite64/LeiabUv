@@ -110,7 +110,11 @@
             selectedTemplateId = 0;
             lbUpdateSelectedTemplateData(0);
             
-            //lbRenderTemplateIcon(0);
+            for (var i = 0; i < templates.length; i++) {
+                //lbRenderTemplateIcon(0);
+                lbRenderTemplateIcon(i);
+            }
+            
             //lbRenderTemplateIcon(0);
         });
 

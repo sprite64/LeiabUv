@@ -34,7 +34,7 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();            // Create datbase context and deserialize json string
             Template t = JsonConvert.DeserializeObject<Template>(json);
 
-            if (t.Name == "")                       // Can't store empty string or "NULL", exit saving
+            if (t.name == "")                       // Can't store empty string or "NULL", exit saving
             {
                 return Json("Fyll i beteckning!", JsonRequestBehavior.AllowGet);
             }
@@ -42,12 +42,12 @@ namespace LeiabUv.Controllers
             // A exception of type 'System.Data.SqlClient.SqlException' occurred in 
             //      EntityFramework.dll but was not handled in user code
             // Additional information: Login failed for user 'Sprite-PC\Sprite'.
-            if (ctx.Templates.Any(d => d.Name == t.Name))
+            if (ctx.Templates.Any(d => d.name == t.name))
             {
                 return Json("Beteckningen används redan, välj en unik beteckning.", JsonRequestBehavior.AllowGet);
             }
 
-            t.Created = System.DateTime.Now;        // Set entry log
+            t.created = System.DateTime.Now;        // Set entry log
             
             ctx.Templates.Add(t);                   // Add and save databas additions/changes
             ctx.SaveChanges();
@@ -102,7 +102,7 @@ namespace LeiabUv.Controllers
             }
 
             var data = new List<SelectListItem>();      // Get templates
-            data = ctx.Templates.Select(d => new SelectListItem { Text = d.Name, Value = d.Id.ToString() }).ToList<SelectListItem>();
+            data = ctx.Templates.Select(d => new SelectListItem { Text = d.name, Value = d.id.ToString() }).ToList<SelectListItem>();
             ViewBag.templateList = data;
             return View();
         }
@@ -113,20 +113,20 @@ namespace LeiabUv.Controllers
         {
             Context ctx = new Context();
             var template = ctx.Templates.Select(d=>new TemplateViewModel {
-                Id=d.Id,
-                Columns=d.Columns,
-                Rows=d.Rows,
-                Name=d.Name,
-                Created = d.Created,
-                Panes=d.Panes.Select(f=>new TemplatePaneViewModel {
-                    Id=f.Id,
-                    ColSpan=f.ColSpan,
-                    RowSpan=f.RowSpan,
-                    XIndex=f.XIndex,
-                    YIndex=f.YIndex
+                id=d.id,
+                columns=d.columns,
+                rows=d.rows,
+                name=d.name,
+                created = d.created,
+                panes=d.panes.Select(f=>new TemplatePaneViewModel {
+                    id=f.id,
+                    colSpan=f.colSpan,
+                    rowSpan=f.rowSpan,
+                    xIndex=f.xIndex,
+                    yIndex=f.yIndex
                 }).ToList<TemplatePaneViewModel>()
 
-            }).FirstOrDefault(d => d.Id == id);
+            }).FirstOrDefault(d => d.id == id);
             return Json(template,JsonRequestBehavior.AllowGet);
         }
 
@@ -137,17 +137,17 @@ namespace LeiabUv.Controllers
 
             var templates = ctx.Templates.Select(d => new TemplateViewModel
             {
-                Id = d.Id,
-                Columns = d.Columns,
-                Rows = d.Rows,
-                Name = d.Name,
-                Created = d.Created,
-                Panes = d.Panes.Select(f => new TemplatePaneViewModel {
-                    Id = f.Id,
-                    ColSpan = f.ColSpan,
-                    RowSpan = f.RowSpan,
-                    XIndex = f.XIndex,
-                    YIndex = f.YIndex,
+                id = d.id,
+                columns = d.columns,
+                rows = d.rows,
+                name = d.name,
+                created = d.created,
+                panes = d.panes.Select(f => new TemplatePaneViewModel {
+                    id = f.id,
+                    colSpan = f.colSpan,
+                    rowSpan = f.rowSpan,
+                    xIndex = f.xIndex,
+                    yIndex = f.yIndex,
                 }).ToList<TemplatePaneViewModel>()
             }).ToList<TemplateViewModel>();
             Response.CacheControl = "no-cache";

@@ -59,21 +59,21 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
             var template = ctx.Templates.Select(d => new TemplateViewModel
             {
-                Id = d.Id,
-                Columns = d.Columns,
-                Rows = d.Rows,
-                Name = d.Name,
-                Created = d.Created,
-                Panes = d.Panes.Select(f => new TemplatePaneViewModel
+                id = d.id,
+                columns = d.columns,
+                rows = d.rows,
+                name = d.name,
+                created = d.created,
+                panes = d.panes.Select(f => new TemplatePaneViewModel
                 {
-                    Id = f.Id,
-                    ColSpan = f.ColSpan,
-                    RowSpan = f.RowSpan,
-                    XIndex = f.XIndex,
-                    YIndex = f.YIndex
+                    id = f.id,
+                    colSpan = f.colSpan,
+                    rowSpan = f.rowSpan,
+                    xIndex = f.xIndex,
+                    yIndex = f.yIndex
                 }).ToList<TemplatePaneViewModel>()
 
-            }).FirstOrDefault(d => d.Id == id);
+            }).FirstOrDefault(d => d.id == id);
             return Json(template, JsonRequestBehavior.AllowGet);
         }
 
