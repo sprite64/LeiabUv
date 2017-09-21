@@ -834,9 +834,10 @@ function lbRenderTemplateIcon(i) {
 
     // ### Scale is currently not properly calculated
     //ps = Math.round((140 - x * 2) / max);
-    var scale = Math.round((140 - x * 2) / max) / 140;
+    //var scale = Math.round((140 - x * 2) / max) / 140;
     //var scale = 0.9;
-    alert("Scale: " + scale);
+    var scale = ((140 - x * 2) / max) / (140 - x * 2);
+    alert("Scale: " + scale + " Max: " + max);
     fw = Math.round(fw * scale);
     pw = Math.round(pw * scale);
     ps = Math.round(ps * scale);

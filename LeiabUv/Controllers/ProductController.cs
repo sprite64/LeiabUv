@@ -27,6 +27,13 @@ namespace LeiabUv.Controllers
         }
 
         // Create window product
+        public ActionResult CreateWindowProduct()
+        {
+
+            return View();
+        }
+
+        // Create window product
         public ActionResult CreateWindow()
         {
             return View();
