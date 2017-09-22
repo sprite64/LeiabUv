@@ -24,44 +24,44 @@
             <h4 style="color: #ccc;">Skapa fönsterprodukt</h4>
             
             <label style="width: 50px; margin-top: 20px; color: #ccc;">Namn</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Namn" style="width: 258px; display: inline;"/>
+            <input id="productVal0" type="text" maxlength="32" class="form-control" placeholder="Namn" style="width: 258px; display: inline;"/>
 
             <br />
 
             <label style="width: 30px; margin-top: 20px; color: #ccc;">Tf</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Tf" style="width: 120px; display: inline;" />
+            <input id="productVal1" type="text" maxlength="32" class="form-control" placeholder="Tf" style="width: 120px; display: inline;" />
             
             <label style="width: 30px; color: #ccc;">Uf</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Uf" style="width: 120px; display: inline;" />
+            <input id="productVal2" type="text" maxlength="32" class="form-control" placeholder="Uf" style="width: 120px; display: inline;" />
 
             <label style="width: 30px; color: #ccc;">Ψf</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Ψf" style="width: 120px; display: inline;" />
+            <input id="productVal3" type="text" maxlength="32" class="form-control" placeholder="Ψf" style="width: 120px; display: inline;" />
 
             <br />
 
             <label style="width: 30px; margin-top: 20px; color: #ccc;">Tp</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Tp" style="width: 120px; display: inline;" />
+            <input id="productVal4" type="text" maxlength="32" class="form-control" placeholder="Tp" style="width: 120px; display: inline;" />
 
             <label style="width: 30px; color: #ccc;">Up</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Up" style="width: 120px; display: inline;" />
+            <input id="productVal5" type="text" maxlength="32" class="form-control" placeholder="Up" style="width: 120px; display: inline;" />
 
             <label style="width: 30px; color: #ccc;">Ψp</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Ψp" style="width: 120px; display: inline;" />
+            <input id="productVal6" type="text" maxlength="32" class="form-control" placeholder="Ψp" style="width: 120px; display: inline;" />
 
             <br />
             
             <label style="width: 30px; margin-top: 20px; color: #ccc;">Ug</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Ug" style="width: 120px; display: inline;" />
+            <input id="productVal7" type="text" maxlength="32" class="form-control" placeholder="Ug" style="width: 120px; display: inline;" />
 
             <label style="width: 30px; margin-top: 20px; color: #ccc;">Glas</label>
-            <input id="" type="text" maxlength="32" class="form-control" placeholder="Glas" style="width: 277px; display: inline;" />
+            <input id="productVal8" type="text" maxlength="32" class="form-control" placeholder="Glas" style="width: 277px; display: inline;" />
 
             <br />
 
             <label style="width: 30px; margin-top: 20px; color: #ccc; vertical-align: top;">Info</label>
-            <textarea style="width: 277px; margin-top: 20px; display: inline;" class="form-control" rows="3" id="comment"></textarea>
+            <textarea id="productVal9" style="width: 277px; margin-top: 20px; display: inline;" class="form-control" rows="3" id="comment"></textarea>
 
-            <button id="" type="button" class="btn btn-success" style="width: 120px; margin-left: 34px; margin-top: 60px; vertical-align: top;">Spara</button>
+            <button id="btnSaveProduct" type="button" class="btn btn-success" style="width: 120px; margin-left: 34px; margin-top: 60px; vertical-align: top;">Spara</button>
 
             <!-->div id="alertSuccessMessage" class="alert alert-success" style="margin-top: 10px; padding: 5px; visibility: hidden; display: none;"-->
             <div id="alertSuccessMessage" class="alert alert-success" style="width: 469px; margin-top: 10px; padding: 5px;">
@@ -84,3 +84,8 @@
 
     </div>
 </div>
+
+
+        <!-- Scripts -->
+        <script src="~/ScriptsLeiab/ProductInit.js"></script>
+        <script src="~/ScriptsLeiab/ProductUpdate.js"></script>

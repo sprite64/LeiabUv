@@ -154,6 +154,8 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="ScriptsLeiab\GenericObjects.js" />
+    <Content Include="ScriptsLeiab\ProductInit.js" />
+    <Content Include="ScriptsLeiab\ProductUpdate.js" />
     <Content Include="ScriptsLeiab\ProfileInit.js" />
     <Content Include="ScriptsLeiab\ProjectConstants.js" />
     <Content Include="ScriptsLeiab\ProjectGraphics.js" />
