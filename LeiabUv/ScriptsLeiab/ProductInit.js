@@ -11,11 +11,15 @@ $(function () {
     //$("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
     //$("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
 
+    $("#btnSaveProduct").click(function () { lbSaveProduct(); });
+
+    $("#btnFromExcel").click(function () { lbUpdateTabInput(); });
+
     //$("#productVal0").change(function () { alert("Change! "); });
 
 
 });
 
 
-setInterval(function () { lbUpdateTabInput(); }, 500);
+setInterval(function () { lbUpdateInput(); }, 300);
 

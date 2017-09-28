@@ -155,6 +155,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="ScriptsLeiab\GenericObjects.js" />
     <Content Include="ScriptsLeiab\ProductInit.js" />
+    <Content Include="ScriptsLeiab\ProductObjects.js" />
     <Content Include="ScriptsLeiab\ProductUpdate.js" />
     <Content Include="ScriptsLeiab\ProfileInit.js" />
     <Content Include="ScriptsLeiab\ProjectConstants.js" />
@@ -207,11 +208,12 @@
     <Content Include="Views\Project\Show.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
     <Content Include="Views\Product\CreateDoor.cshtml" />
-    <Content Include="Views\Product\CreateWindow.cshtml" />
+    <Content Include="Views\Product\CreateWindow2.cshtml" />
     <Content Include="Views\Product\Show.cshtml" />
     <Content Include="Views\Product\ShowDoor.cshtml" />
     <Content Include="Views\Product\ShowWindow.cshtml" />
-    <Content Include="Views\Product\CreateWindowProduct.cshtml" />
+    <Content Include="Views\Product\CreateWindow.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

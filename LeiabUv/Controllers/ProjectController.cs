@@ -85,46 +85,46 @@ namespace LeiabUv.Controllers
             
             if(window == 1)
             {
-                var products = ctx.Products.Where(m => m.Window == true).Select(d => new ProductViewModel
+                var products = ctx.Products.Where(m => m.window == true).Select(d => new ProductViewModel
                 {
-                    Id = d.Id,
-                    Name = d.Name,
+                    Id = d.id,
+                    Name = d.name,
 
-                    Tf = d.Tf,
-                    Uf = d.Uf,
-                    Yf = d.Yf,
+                    Tf = d.tf,
+                    Uf = d.uf,
+                    Yf = d.yf,
 
-                    Tp = d.Tp,
-                    Up = d.Up,
-                    Yp = d.Yp,
+                    Tp = d.tp,
+                    Up = d.up,
+                    Yp = d.yp,
                     
-                    Ug = d.Ug,
+                    Ug = d.ug,
 
-                    Glass = d.Glass,
-                    Window = d.Window,
-                    Deprecated = d.Deprecated,
-                    Info = d.Info
+                    Glass = d.glass,
+                    Window = d.window,
+                    Deprecated = d.deprecated,
+                    Info = d.info
                 }).ToList<ProductViewModel>();
 
                 return Json(products, JsonRequestBehavior.AllowGet);
             } else {
-                var products = ctx.Products.Where(m => m.Window == false).Select(d => new ProductViewModel
+                var products = ctx.Products.Where(m => m.window == false).Select(d => new ProductViewModel
                 {
-                    Id = d.Id,
-                    Name = d.Name,
+                    Id = d.id,
+                    Name = d.name,
 
-                    Tf = d.Tf,
-                    Uf = d.Uf,
-                    Yf = d.Yf,
+                    Tf = d.tf,
+                    Uf = d.uf,
+                    Yf = d.yf,
 
-                    Tp = d.Tp,
-                    Up = d.Up,
-                    Yp = d.Yp,
+                    Tp = d.tp,
+                    Up = d.up,
+                    Yp = d.yp,
                     
-                    Ug = d.Ug,
+                    Ug = d.ug,
 
-                    Glass = d.Glass,
-                    Window = d.Window
+                    Glass = d.glass,
+                    Window = d.window
                     //info = d.info
                 }).ToList<ProductViewModel>();
 
