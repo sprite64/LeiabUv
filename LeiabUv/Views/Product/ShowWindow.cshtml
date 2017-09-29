@@ -60,7 +60,8 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr @if (item.deprecated) { @Html.Raw(" style =\"background-color: #f33\")") }>
+
                         <td>
                             @Html.DisplayFor(modelItem => item.name)
                         </td>
@@ -93,6 +94,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.info)
                         </td>
+                        
                         <td>
                             @Html.ActionLink("Redigera", "Edit", new { id = item.id })
                         </td>

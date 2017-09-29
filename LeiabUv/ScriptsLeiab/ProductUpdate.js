@@ -96,15 +96,24 @@ function lbSaveProduct() {
 
     prod.name = $("#productVal0").val();
 
-    prod.tf = $("#productVal1").val();
-    prod.uf = $("#productVal2").val();
-    prod.yf = $("#productVal3").val();
+    prod.tf = parseFloat($("#productVal1").val().replace(",", "."));
+    prod.uf = parseFloat($("#productVal2").val().replace(",", "."));
+    prod.yf = parseFloat($("#productVal3").val().replace(",", "."));
 
-    prod.tp = $("#productVal4").val();
-    prod.up = $("#productVal5").val();
-    prod.yp = $("#productVal6").val();
+    //prod.tf = ;
+    //prod.uf = $("#productVal2").val();
+    //prod.yf = $("#productVal3").val();
 
-    prod.ug = $("#productVal7").val();
+    prod.tp = parseFloat($("#productVal4").val().replace(",", "."));
+    prod.up = parseFloat($("#productVal5").val().replace(",", "."));
+    prod.yp = parseFloat($("#productVal6").val().replace(",", "."));
+
+    //prod.tp = $("#productVal4").val();
+    //prod.up = $("#productVal5").val();
+    //prod.yp = $("#productVal6").val();
+
+    prod.ug = parseFloat($("#productVal7").val().replace(",", "."));
+    //prod.ug = $("#productVal7").val();
     prod.glass = $("#productVal8").val();
 
     prod.info = $("#productVal9").val();
