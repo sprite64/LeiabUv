@@ -44,8 +44,8 @@ function lbCreateGraphicsSettings(type) {
 
         self.paneGridColor = "#ddd";
 
-        self.hoveredPaneColor = "#aaf";
-        self.selectedPaneColor = "#ffa";
+        self.hoveredPaneColor = "#77f";
+        self.selectedPaneColor = "#ff7";
 
         self.mainBorderSize = 8;
         self.cellBorderSize = 6;

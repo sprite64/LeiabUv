@@ -1,0 +1,201 @@
+﻿@model LeiabUv.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Glyphicon animation css -->
+
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @@-webkit-keyframes spin2 {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
+</style>
+
+
+<!-- Table style -->
+<style>
+
+    table{
+        color: #ccc;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+        
+    }
+
+    td {
+        border-right: 1px solid #ccc;
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+        padding-top: 10px;
+        padding-bottom: 4px;
+    }
+
+</style>
+
+
+<!-- Init elements  -->
+<div class="container" style="background-color: #333;">
+
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-2">
+
+        </div>
+
+        <!-- Input form -->
+        <div class="col-md-8">
+
+            <h4 style="color: #ccc;">Redigera fönsterprodukt</h4>
+            
+            <table style="display: inline-block;">
+                <tr style="border: 1px solid #ccc;">
+                    <td style="width: 50px;">Namn</td>
+                    <td style="width: 160px;" colspan="5">@Html.Raw(@Model.name)</td>
+                </tr>
+                <tr>
+                    <td style="width:  50px;">Tf</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.tf)</td>
+                    <td style="width:  50px;">Uf</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.uf)</td>
+                    <td style="width:  50px;"> &#x3A8;f</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.yf)</td>
+                </tr>
+                <tr>
+                    <td style="width:  50px;">Tp</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.tp)</td>
+                    <td style="width:  50px;">Up</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.up)</td>
+                    <td style="width:  50px;">&#x3A8;p</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.yp)</td>
+                </tr>
+                <tr>
+                    <td style="width:  50px;">Ug</td>
+                    <td style="width: 100px; text-align: right;">@Html.Raw(@Model.ug)</td>
+                        
+                    <td style="width:  50px;">Glas</td>
+                    <td style="width: 100px; text-align: left;" colspan="3">@Html.Raw(@Model.glass)</td>
+                </tr>
+                <tr>
+                    <td style="width:  50px;">Info</td>
+                    <td style="width: 100px; text-align: left; padding: 0px;" colspan="3">
+                        <input id="txtInfo" type="text" maxlength="256" class="form-control" placeholder="Info" style="width: 229px; margin-top: 1px; margin-left: 10px; display: inline;" value="@Html.Raw(@Model.info)">
+                    </td>
+                    <td style="width: 100px; text-align: left;" colspan="2">
+
+                        <div class="checkbox">
+                            <label style="color: #ccc;"><input id="chkDeprecated" type="checkbox" value="" @if (@Model.deprecated) { @Html.Raw("checked"); }>Avfasad</label>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+
+            <!-- This is not yet implemented -->
+            <span id="productId" style="color: #ccc; display: none;">@Html.Raw(@Model.id)</span>
+            <span id="updatingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 312px; margin-top: 18px; visibility: hidden;"></span>
+            <button id="btnSaveProductChanges" type="button" class="btn btn-success" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top;">Spara</button>
+            
+            <div id="alertSuccessMessage" class="alert alert-success" style="margin-top: 10px; padding: 5px; width: 459px; visibility: hidden; display: none;">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span>Produkten har uppdaterats!</span>
+                <a href="/Product/ShowWindow" style="float: right;"><span>Visa fönsterprodukter</span></a>
+            </div>
+
+            <div id="alertErrorMessage" class="alert alert-danger" role="alert" style="margin-top: 10px; padding: 5px; width: 459px; visibility: hidden;">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                <span id="alertErrorMessageParagraph">Uppdateringen misslyckades!</span>
+            </div>
+
+            <br />
+            <br />
+            <br />
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Javascript Init -->
+<script type="text/javascript">
+
+    function lbProductUpdate() {
+        this.id = -1;
+        this.deprecated = false;
+        this.info = "none";
+    }
+
+    function lbSaveProductChanges() {
+
+        // create product update object
+        var id = parseInt($("#productId").text());
+        var prod = new lbProductUpdate();
+        prod.id = id;
+        prod.deprecated = $("#chkDeprecated").is(":checked");
+        prod.info = $("#txtInfo").val();
+        //alert("Info: " + $("#txtInfo").val());
+        //alert("ID: " + prod.id + ", Dep: " + prod.deprecated + ", Info: " + prod.info);
+
+        // request entry update
+        var j = JSON.stringify(prod);
+        document.getElementById("updatingGlyphicon").style.visibility = "visible";
+        
+        $.getJSON("/Product/Update?json=" + j, function (data) {
+            document.getElementById("updatingGlyphicon").style.visibility = "hidden";
+            if (data == "ok") {
+
+                document.getElementById("alertSuccessMessage").style.display = "block";
+                document.getElementById("alertSuccessMessage").style.visibility = "visible";
+                
+                document.getElementById("alertErrorMessage").style.display = "none";
+                document.getElementById("alertErrorMessage").style.visibility = "hidden";
+
+                //alert("DONE!");
+            } else {
+
+                document.getElementById("alertSuccessMessage").style.display = "none";
+                document.getElementById("alertSuccessMessage").style.visibility = "hidden";
+
+                document.getElementById("alertErrorMessage").style.display = "block";
+                document.getElementById("alertErrorMessage").style.visibility = "visible";
+
+                //alert("FAIL!");
+            }
+        });
+
+    }
+
+    $("#btnSaveProductChanges").click(function () { lbSaveProductChanges(); });
+
+</script>
+

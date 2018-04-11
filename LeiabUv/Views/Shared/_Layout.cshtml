@@ -8,7 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body style="background-color: #000;">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -41,10 +41,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("Skapa fönsterprodukt", "CreateWindow", "Product")</li>
-                            <li>@Html.ActionLink("Skapa dörrprodukt", "CreateDoor", "Product")</li>
                             <li>@Html.ActionLink("Visa fönsterprodukter", "ShowWindow", "Product")</li>
+                            <li>@Html.ActionLink("Skapa dörrprodukt", "CreateDoor", "Product")</li>
                             <li>@Html.ActionLink("Visa dörrprodukter", "ShowDoor", "Product")</li>
+                            <!--
                             <li>@Html.ActionLink("Visa produkter", "Show", "Product")</li>
+                                -->
                         </ul>
                     </li>
 

@@ -10,13 +10,17 @@ $(function () {
 
     //$("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
     //$("#btnSaveTemplate").click(function () { lbSaveTemplate(); });
-
+    //$("#btnSaveProductChanges").click(function () { lbSaveProductChanges(); });
     $("#btnSaveProduct").click(function () { lbSaveProduct(); });
 
     $("#btnFromExcel").click(function () { lbUpdateTabInput(); });
 
-    //$("#productVal0").change(function () { alert("Change! "); });
+    $("#btnClearInput").click(function () { lbClearInput(); });
 
+
+    //$("#productVal0").change(function () { alert("Change! "); });
+    //alert("Door or not: " + $("#nonDoorInput").length);
+    //alert("!!!");
 
 });
 

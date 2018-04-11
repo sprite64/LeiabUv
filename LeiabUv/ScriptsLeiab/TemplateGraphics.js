@@ -365,7 +365,6 @@ function lbTemplateRender() {
     lbRenderPaneGrid();
     */
     //lbRenderDebug();
-
     template.activeGfxSettings = "editor";
 
     

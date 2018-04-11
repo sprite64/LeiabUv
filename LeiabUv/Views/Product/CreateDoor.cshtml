@@ -5,80 +5,130 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Dörrprodukt</h2>
+<!-- Glyphicon animation css -->
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Yp">Namn</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @@-webkit-keyframes spin2 {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
+</style>
+
+
+<!-- Init elements  -->
+<div class="container" style="background-color: #333;">
+
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-2">
+
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Tf, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Tf, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Tf, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <!-- Input form -->
+        <div class="col-md-8">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Uf, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Uf, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Uf, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <h4 style="color: #ccc;">Skapa dörrprodukt</h4>
 
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Yf">&#x3A8;f</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Yf, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Yf, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <label style="width: 50px; margin-top: 20px; color: #ccc;">Namn</label>
+            <input id="productVal0" type="text" maxlength="32" class="form-control" placeholder="Namn" style="width: 258px; display: inline;" />
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Ug, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Ug, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Ug, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <br />
 
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Yp">Glas</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Glass, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Glass, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <label style="width: 30px; margin-top: 20px; color: #ccc;">Tf</label>
+            <input id="productVal1" type="text" maxlength="32" class="form-control" placeholder="Tf" style="width: 120px; display: inline;" />
 
-        <div class="form-group">
-            <label class="control-label col-md-2" for="Yf">Info</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.info, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.info, "", new { @class = "text-danger" })
+            <label style="width: 30px; color: #ccc;">Uf</label>
+            <input id="productVal2" type="text" maxlength="32" class="form-control" placeholder="Uf" style="width: 120px; display: inline;" />
+
+            <label style="width: 30px; color: #ccc;">Ψf</label>
+            <input id="productVal3" type="text" maxlength="32" class="form-control" placeholder="Ψf" style="width: 120px; display: inline;" />
+
+            <br />
+
+            <!-- Skip productVal 4 to 6 -->
+            
+            <div id="nonDoorInput" style="display: none; margin: 0px; padding: 0px;">
+                <label style="width: 30px; margin-top: 20px; color: #ccc;">Tp</label>
+                <input id="productVal4" type="text" maxlength="32" class="form-control" placeholder="Tp" style="width: 120px; display: inline;" />
+
+                <label style="width: 30px; color: #ccc;">Up</label>
+                <input id="productVal5" type="text" maxlength="32" class="form-control" placeholder="Up" style="width: 120px; display: inline;" />
+
+                <label style="width: 30px; color: #ccc;">Ψp</label>
+                <input id="productVal6" type="text" maxlength="32" class="form-control" placeholder="Ψp" style="width: 120px; display: inline;" />
             </div>
-        </div>
+                
+
+            <label style="width: 30px; margin-top: 20px; color: #ccc;">Ug</label>
+            <input id="productVal7" type="text" maxlength="32" class="form-control" placeholder="Ug" style="width: 120px; display: inline;" />
+
+            <label style="width: 30px; margin-top: 20px; color: #ccc;">Glas</label>
+            <input id="productVal8" type="text" maxlength="32" class="form-control" placeholder="Glas" style="width: 277px; display: inline;" />
+
+            <br />
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc; vertical-align: top;">Info</label>
+            <textarea id="productVal9" style="width: 277px; margin-top: 20px; display: inline;" class="form-control" rows="3"></textarea>
+
+            <button id="btnSaveProduct" type="button" class="btn btn-danger" style="width: 120px; margin-left: 14px; margin-top: 60px; vertical-align: top;">Spara</button>
+
+            <br />
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc; vertical-align: top;">Från Excel</label>
+            <textarea id="txtFromExcel" style="width: 277px; margin-top: 20px; display: inline;" class="form-control" rows="3"></textarea>
+            <button id="btnFromExcel" type="button" class="btn btn-primary" style="width: 120px; margin-left: 14px; margin-top: 60px; vertical-align: top;">Beräkna</button>
+            <br />
+            <button id="btnClearInput" type="button" class="btn btn-warning" style="width: 120px; margin-left: 348px; margin-top: 10px; vertical-align: top;">Rensa</button>
+
+            <br />
+
+            <span id="saveLoadingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; vertical-align: top; margin-top: 10px; margin-left: 20px; visibility: hidden;"></span>
+
+            
+            <div id="alertSuccessMessage" class="alert alert-success" style="width: 469px; margin-top: 10px; padding: 5px; visibility: hidden;">
+
+                <a href="/Product/ShowDoor" style="float: right;"><span>Visa dörrprodukter</span></a>
+                <br />
+            </div>
 
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+
+            <br />
+            <br />
+            <br />
+
+
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="~/ScriptsLeiab/ProductObjects.js"></script>
+    <script src="~/ScriptsLeiab/ProductInit.js"></script>
+    <script src="~/ScriptsLeiab/ProductUpdate.js"></script>

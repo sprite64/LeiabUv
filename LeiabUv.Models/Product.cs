@@ -40,4 +40,16 @@ namespace LeiabUv.Models
         public string info { get; set; }                // Additional information
         //public int nrOfUsedInProjects { get; set; }     // 
     }
+
+    // Only used for updating a product in the DB
+    public class ProductUpdate
+    {
+        public int id { get; set; }
+        
+        public bool deprecated { get; set; }
+
+        [MaxLength(256)]
+        public string info { get; set; }                // Additional information
+        //public int nrOfUsedInProjects { get; set; }     // 
+    }
 }

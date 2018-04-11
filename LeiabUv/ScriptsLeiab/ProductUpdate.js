@@ -3,6 +3,7 @@
 function lbUpdateTabInput() {
 
     var txt = $("#txtFromExcel").val() + LB_TAB;
+    var door = $("#nonDoorInput").length; // 1 for door product, 0 for window
 
     $("#txtFromExcel").val("");
 
@@ -30,6 +31,10 @@ function lbUpdateTabInput() {
                 dest++;
                 output = "";
                 
+                if (door) {     // Skip if doorproduct
+                    if (dest == 4) { dest += 3 };
+                }
+                
             }
 
         }
@@ -51,6 +56,7 @@ function lbUpdateInput() {
     // Init
     var valid = true;
     var tmp = 0.0;
+    var door = $("#nonDoorInput").length; // 1 for door product, 0 for window
 
     // Validate name
     if ($("#productVal0").val().length < 1) { valid = false; }
@@ -59,9 +65,11 @@ function lbUpdateInput() {
     tmp = $("#productVal2").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
     tmp = $("#productVal3").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
 
-    tmp = $("#productVal4").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
-    tmp = $("#productVal5").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
-    tmp = $("#productVal6").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
+    if (!door) {
+        tmp = $("#productVal4").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
+        tmp = $("#productVal5").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
+        tmp = $("#productVal6").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
+    }
 
     tmp = $("#productVal7").val(); if (isNaN(parseFloat(tmp.replace(",", "."))) || parseFloat(tmp.replace(",", ".")) < 0.0) { valid = false; }
 
@@ -80,6 +88,30 @@ function lbUpdateInput() {
 
         return false;
     }
+
+
+
+}
+
+
+function lbClearInput() {
+
+    $("#productVal0").val("");
+
+    $("#productVal1").val("");
+    $("#productVal2").val("");
+    $("#productVal3").val("");
+
+    $("#productVal4").val("");
+    $("#productVal5").val("");
+    $("#productVal6").val("");
+
+    $("#productVal7").val("");
+    $("#productVal8").val("");
+
+    $("#productVal9").val("");
+
+    $("#txtFromExcel").val("");
 }
 
 
@@ -91,8 +123,10 @@ function lbSaveProduct() {
         return;
     }
 
+
     // Create product object
     var prod = new lbProduct();
+    var door = $("#nonDoorInput").length; // 1 for door product, 0 for window
 
     prod.name = $("#productVal0").val();
 
@@ -104,9 +138,16 @@ function lbSaveProduct() {
     //prod.uf = $("#productVal2").val();
     //prod.yf = $("#productVal3").val();
 
-    prod.tp = parseFloat($("#productVal4").val().replace(",", "."));
-    prod.up = parseFloat($("#productVal5").val().replace(",", "."));
-    prod.yp = parseFloat($("#productVal6").val().replace(",", "."));
+    if (!door) {
+        prod.tp = parseFloat($("#productVal4").val().replace(",", "."));
+        prod.up = parseFloat($("#productVal5").val().replace(",", "."));
+        prod.yp = parseFloat($("#productVal6").val().replace(",", "."));
+    } else {
+        prod.tp = 0.0;
+        prod.up = 0.0;
+        prod.yp = 0.0;
+    }
+    
 
     //prod.tp = $("#productVal4").val();
     //prod.up = $("#productVal5").val();
@@ -118,7 +159,11 @@ function lbSaveProduct() {
 
     prod.info = $("#productVal9").val();
 
-    prod.window = true;
+    if (!door) {
+        prod.window = true;
+    } else {
+        prod.window = false;
+    }
     prod.deprecated = false;
 
 
@@ -145,20 +190,7 @@ function lbSaveProduct() {
             $("#alertSuccessMessage").prepend(output);
 
             // Clear input fields
-            $("#productVal0").val("");
-
-            $("#productVal1").val("");
-            $("#productVal2").val("");
-            $("#productVal3").val("");
-
-            $("#productVal4").val("");
-            $("#productVal5").val("");
-            $("#productVal6").val("");
-
-            $("#productVal7").val("");
-            $("#productVal8").val("");
-
-            $("#productVal9").val("");
+            lbClearInput();
 
         } else {
             if (data == "name.already.in.use") {
@@ -193,4 +225,6 @@ function lbSaveProduct() {
     this.info = "";
     */
 }
+
+
 

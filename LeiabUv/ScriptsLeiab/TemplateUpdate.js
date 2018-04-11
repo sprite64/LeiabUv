@@ -821,8 +821,8 @@ function lbRenderTemplateIcon(i) {
     var pw = 6;             // Post width
     var ps = 40;            // Pane size (width & height)
 
-    var x = 5;              // Origin
-    var y = 5;
+    var x = 10;              // Origin
+    var y = 10;
 
     var w = 0;              // Temporary width and height
     var h = 0;
@@ -830,17 +830,36 @@ function lbRenderTemplateIcon(i) {
     // Automagic unit settings
     // Canvas dimensions are 140x140 pixels
     var max = template.columns;
-    if (max < template.rows) { max == template.rows; }
+    if (max < template.rows) { max = template.rows; }
 
     // ### Scale is currently not properly calculated
     //ps = Math.round((140 - x * 2) / max);
     //var scale = Math.round((140 - x * 2) / max) / 140;
     //var scale = 0.9;
+
+    var scale = ((140.0 - 20.0) / max); // 20.0 is the margin
+    //alert("SCale: " + scale);
+    
+    ps = scale;
+    pw = scale * 0.1;
+    fw = scale * 0.2;
+    //pw = 6;
+    //fw = 12;
+
+    //alert("PS: " + ps + ", PW: " + pw + ", FW: " + fw);
+
+    //fw = Math.round(fw * scale);
+    //pw = Math.round(pw * scale);
+    //ps = Math.round(ps * scale);
+
+    /*
     var scale = ((140 - x * 2) / max) / (140 - x * 2);
     alert("Scale: " + scale + " Max: " + max);
     fw = Math.round(fw * scale);
     pw = Math.round(pw * scale);
     ps = Math.round(ps * scale);
+    */
+
     //ps = Math.round((140 - x * 2) / max);
 
 
@@ -870,8 +889,8 @@ function lbRenderTemplateIcon(i) {
         var pane = template.panes[i];
 
         //alert("");
-        x = 5 + pane.xIndex * ps;
-        y = 5 + pane.yIndex * ps;
+        x = 10 + pane.xIndex * ps;
+        y = 10 + pane.yIndex * ps;
         w = pane.colSpan * ps;
         h = pane.rowSpan * ps;
 
@@ -897,7 +916,8 @@ function lbRenderTemplateIcon(i) {
             if (frameRight) { w2 -= fw; } else { w2 -= pw; }
 
             ctx.fillStyle = "#000"; ctx.fillRect(x2, y, w2, pw);
-            ctx.fillStyle = "#f00"; ctx.fillRect(x2, y, w2, pw - 1);
+            //ctx.fillStyle = "#f00"; ctx.fillRect(x2, y, w2, pw - 1);
+            ctx.fillStyle = "#ccc"; ctx.fillRect(x2, y, w2, pw - 1);
         }
 
         // Render bottom post
@@ -910,7 +930,8 @@ function lbRenderTemplateIcon(i) {
             if (frameRight) { w2 -= fw; } else { w2 -= pw; }
 
             ctx.fillStyle = "#000"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw, w2, pw);
-            ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw + 1, w2, pw - 1);
+            //ctx.fillStyle = "#f70"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw + 1, w2, pw - 1);
+            ctx.fillStyle = "#ccc"; ctx.fillRect(x2, y + (ps * pane.rowSpan) - pw + 1, w2, pw - 1);
         }
 
         // Render left post
@@ -923,7 +944,8 @@ function lbRenderTemplateIcon(i) {
             if (frameBottom) { h2 -= fw; }
 
             ctx.fillStyle = "#000"; ctx.fillRect(x, y2, pw, h2);
-            ctx.fillStyle = "#0f0"; ctx.fillRect(x, y2, pw - 1, h2);
+            //ctx.fillStyle = "#0f0"; ctx.fillRect(x, y2, pw - 1, h2);
+            ctx.fillStyle = "#ccc"; ctx.fillRect(x, y2, pw - 1, h2);
         }
 
         // Render right post    ### This goes wrong somehere when colspans are involved
@@ -936,7 +958,8 @@ function lbRenderTemplateIcon(i) {
             if (frameBottom) { h2 -= fw; }
 
             ctx.fillStyle = "#000"; ctx.fillRect(x + (ps * pane.colSpan) - pw, y2, pw, h2);         // The pane.colspan part should solve everything, note to comment above ###
-            ctx.fillStyle = "#af0"; ctx.fillRect(x + (ps * pane.colSpan) - pw + 1, y2, pw - 1, h2);
+            //ctx.fillStyle = "#af0"; ctx.fillRect(x + (ps * pane.colSpan) - pw + 1, y2, pw - 1, h2);
+            ctx.fillStyle = "#ccc"; ctx.fillRect(x + (ps * pane.colSpan) - pw + 1, y2, pw - 1, h2);
         }
 
     }

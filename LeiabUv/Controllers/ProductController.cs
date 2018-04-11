@@ -132,7 +132,7 @@ namespace LeiabUv.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult EditWindow(int id)
         {
             Context ctx = new Context();
             Product p = ctx.Products.First(m => m.id == id);
@@ -140,6 +140,45 @@ namespace LeiabUv.Controllers
             return View(p);
         }
 
+        public ActionResult EditDoor(int id)
+        {
+            Context ctx = new Context();
+            Product p = ctx.Products.First(m => m.id == id);
+
+            return View(p);
+        }
+
+        public ActionResult Update(string json)
+        {
+            Context ctx = new Context();
+            ProductUpdate pu = JsonConvert.DeserializeObject<ProductUpdate>(json);
+
+            Product p = ctx.Products.First(m => m.id == pu.id);
+            p.deprecated = pu.deprecated;
+            p.info = pu.info;
+
+            //ctx.Products.
+            ctx.SaveChanges();
+
+            //var model = ctx.Products.ToList().Where(m => m.window == true);//.OrderBy(m => m.door);
+
+
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
+        /*
+        Product p)
+        {
+            Context ctx = new Context();
+
+        p.window = false;
+            p.created = System.DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                ctx.Products.Add(p);
+                ctx.SaveChanges();
+                */
     }
 }
 

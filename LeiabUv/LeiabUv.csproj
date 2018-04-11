@@ -213,7 +213,8 @@
     <Content Include="Views\Product\ShowDoor.cshtml" />
     <Content Include="Views\Product\ShowWindow.cshtml" />
     <Content Include="Views\Product\CreateWindow.cshtml" />
-    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\EditWindow.cshtml" />
+    <Content Include="Views\Product\EditDoor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
