@@ -57,7 +57,7 @@ namespace LeiabUv.Controllers
         }
 
 
-        public ActionResult ShowWindow()
+        public ActionResult ListWindow()
         {
             Context ctx = new Context();
 
@@ -90,7 +90,7 @@ namespace LeiabUv.Controllers
             return View();
         }
 
-        public ActionResult ShowDoor()
+        public ActionResult ListDoor()
         {
             Context ctx = new Context();
 
@@ -100,7 +100,7 @@ namespace LeiabUv.Controllers
             return View(model);
         }
 
-
+        /*
         public ActionResult Show()
         {
             Context ctx = new Context();
@@ -109,7 +109,7 @@ namespace LeiabUv.Controllers
             
             return View(model);
         }
-
+        */
 
         // Save product
         [HttpGet]
@@ -165,20 +165,6 @@ namespace LeiabUv.Controllers
 
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
-
-        /*
-        Product p)
-        {
-            Context ctx = new Context();
-
-        p.window = false;
-            p.created = System.DateTime.Now;
-
-            if (ModelState.IsValid)
-            {
-                ctx.Products.Add(p);
-                ctx.SaveChanges();
-                */
     }
 }
 

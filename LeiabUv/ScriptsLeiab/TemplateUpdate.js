@@ -752,10 +752,12 @@ function lbUpdateSelectedTemplateData(index) {
 
     // Uppdatera skapad info
     var date = new Date(parseInt(data[i].created.substr(6)));       // Convert JSON date to Javascript date object
-    date = date.toISOString().slice(0, 10);                         // Format date to yyyy-mm-dd
+    date = date.toISOString().slice(0, 19).replace("T", " ");       // Format date to yyyy-mm-dd H:M:S
+    //date = date.toISOString().slice(0, 14);                       // Format date to yyyy-mm-dd
     
-    var output = "Skapad " + date;
-
+    var output = date;
+    //var output = "Skapad: " + date;
+    //var LB_ENDL = String.fromCharCode(10);
     $("#TemplateCreated").text(output);
 
     selectedTemplateId = data[i].id;

@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<LeiabUv.Models.Product>
 
 @{
-    ViewBag.Title = "Dörrprodukter";
+    ViewBag.Title = "Fönsterprodukter";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+
 <!-- Init elements  -->
-<div class="container" style="background-color: #333;">
+<div class="container" style="background-color: #333; min-height: 600px;">
 
     <div class="row">
 
@@ -19,7 +20,7 @@
         <!-- Input form -->
         <div class="col-md-10">
 
-            <h4 style="color: #ccc;">Dörrprodukter</h4>
+            <h4 style="color: #ccc;">Fönsterprodukter</h4>
 
             <table class="table" style="color: #ccc;">
                 <tr style="background-color: #444;">
@@ -35,7 +36,6 @@
                     <th>
                         &#x3A8;f
                     </th>
-                    <!--
                     <th>
                         Tp
                     </th>
@@ -45,7 +45,7 @@
                     <th>
                         &#x3A8;p
                     </th>
-                        -->
+
                     <th>
                         Ug
                     </th>
@@ -60,7 +60,7 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr @if (item.deprecated) { @Html.Raw(" style =\"background-color: #f33\")")  }>
+                    <tr @if (item.deprecated) { @Html.Raw(" style =\"background-color: #f33\")") }>
 
                         <td>
                             @Html.DisplayFor(modelItem => item.name)
@@ -74,18 +74,16 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.yf)
                         </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tp)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.up)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.yp)
+                        </td>
 
-                        <!--
-                            <td>
-                                @Html.DisplayFor(modelItem => item.tp)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.up)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.yp)
-                            </td>
-                            -->
                         <td>
                             @Html.DisplayFor(modelItem => item.ug)
                         </td>
@@ -96,9 +94,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.info)
                         </td>
-
+                        
                         <td>
-                            @Html.ActionLink("Redigera", "EditDoor", new { id = item.id })
+                            @Html.ActionLink("Redigera", "EditWindow", new { id = item.id })
                         </td>
                     </tr>
                 }
@@ -112,3 +110,4 @@
     </div>
 </div>
 
+            

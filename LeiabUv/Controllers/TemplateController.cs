@@ -83,7 +83,7 @@ namespace LeiabUv.Controllers
             return View();
         }*/
 
-        public ActionResult Show(int? deleteTemplateId)
+        public ActionResult Display(int? deleteTemplateId)
         {
             Context ctx = new Context();
 

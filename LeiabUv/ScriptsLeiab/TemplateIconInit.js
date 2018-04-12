@@ -27,7 +27,7 @@ $(function () {
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
     $("#btnDeleteTemplate").click(function () {
         if (confirm("Vill du radera mallen?")) { 
-            window.location.replace("/Template/Show?deleteTemplateId=" + selectedTemplateId);
+            window.location.replace("/Template/Display?deleteTemplateId=" + selectedTemplateId);
         }
     });
 
