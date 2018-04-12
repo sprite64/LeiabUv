@@ -1,0 +1,144 @@
+﻿@model LeiabUv.Models.Order
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Glyphicon animation css -->
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @@-webkit-keyframes spin2 {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
+</style>
+
+
+<!-- Init elements  -->
+<div class="container" style="background-color: #333; min-height: 600px;">
+
+    <div class="row">
+
+        <!-- Menu -->
+        <!-->div class="col-md-2">
+
+        </!--div-->
+
+        <!-- Input form -->
+        <div class="col-md-8">
+
+            <h4 style="color: #ccc; margin-bottom: 0px;">Skapa Order</h4>
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc;">Namn</label>
+            <input id="txtName" type="text" maxlength="32" class="form-control" placeholder="Namn" style="width: 258px; display: inline;" />
+            
+            <br />
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc; vertical-align: top;">Info</label>
+            <!--<input id="txtInfo" type="text" maxlength="32" class="form-control" placeholder="Info" style="width: 258px; display: inline;" />-->
+            <textarea id="txtInfo" style="width: 258px; margin-top: 20px; display: inline;" class="form-control" rows="3"></textarea>
+            <br />
+
+            <span id="updatingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 164px; margin-top: 18px; visibility: hidden;"></span>
+
+            <button id="btnSaveOrder" type="button" class="btn btn-success" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top;">Spara</button>
+
+            <div id="alertSuccessMessage" class="alert alert-success" style="width: 258px; margin-left: 53px; margin-top: 10px; padding: 5px; visibility: hidden;">
+                <span id="alertSuccessMessageParagraph">Ordern har skapats!</span>
+                <a id="lnkOpenOrder" href="/Order/Edit"><span>Öppna Order</span></a>
+            </div>
+
+            <div id="alertErrorMessage" class="alert alert-danger" role="alert" style="margin-top: 10px; padding: 5px; width: 258px; margin-left: 53px; visibility: hidden;">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                <span id="alertErrorMessageParagraph">Ordern kunde inte skapas!</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Javascript Init -->
+<script type="text/javascript">
+
+
+    function lbOrder() {
+        this.name = "";
+        this.info = "";
+    }
+
+    function saveOrder() {
+        var o = new lbOrder();
+        o.name = $("#txtName").val();
+        o.info = $("#txtInfo").val();
+
+        if (o.name.length == 0) {
+            alert("Fyll i ett namn!");
+            return;
+        }
+        
+        var j = JSON.stringify(o);
+        document.getElementById("updatingGlyphicon").style.visibility = "visible";
+
+        $.getJSON("/Order/Save?json=" + j, function (data) {
+
+            document.getElementById("updatingGlyphicon").style.visibility = "hidden";
+
+            // Success
+            
+            var id = parseInt(data.substring(2, data.length));
+            //alert("Data: " + data + ":: " + id);
+            //alert("dl:" + data.substring(2, data.length) + ":");
+
+            if (data.substring(0, 2) == "ok") {
+                $("#alertSuccessMessageParagraph").text("Ordern \"" + o.name + "\" har skapats!");
+                $("#lnkOpenOrder").attr("href", "/Order/Edit/" + id);
+
+                document.getElementById("alertSuccessMessage").style.display = "block";
+                document.getElementById("alertSuccessMessage").style.visibility = "visible";
+
+                document.getElementById("alertErrorMessage").style.display = "none";
+                document.getElementById("alertErrorMessage").style.visibility = "hidden";
+
+                // Clear data
+                $("#txtName").val("");
+                $("#txtInfo").val("");
+
+            // Fail
+            } else {
+                document.getElementById("alertSuccessMessage").style.display = "none";
+                document.getElementById("alertSuccessMessage").style.visibility = "hidden";
+
+                document.getElementById("alertErrorMessage").style.display = "block";
+                document.getElementById("alertErrorMessage").style.visibility = "visible";
+            }
+        });
+
+        //alert("Name: " + o.name + ", Info: " + o.info);
+    }
+
+    $("#btnSaveOrder").click(function () { saveOrder(); });
+
+
+</script>

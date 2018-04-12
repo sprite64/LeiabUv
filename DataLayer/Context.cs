@@ -15,6 +15,8 @@ namespace LeiabUv.DataLayer
         public DbSet<TemplatePane> TemplatePanes { get; set; }
         //public DbSet<Profile> Profiles { get; set; }
         public DbSet<Product> Products { get; set; }
+
+        public System.Data.Entity.DbSet<LeiabUv.Models.Order> Orders { get; set; }
     }
 }
 
