@@ -1,0 +1,91 @@
+﻿@model IEnumerable<LeiabUv.Models.Order>
+
+@{
+    ViewBag.Title = "ListOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container" style="background-color: #333; min-height: 600px;">
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <h4 style="color: #ccc;">Order</h4>
+
+            <table class="table" style="color: #ccc">
+                <tr>
+
+                    <th>
+                        Namn
+                    </th>
+                    <th>
+                        Info
+                    </th>
+
+                    <th>
+                        Fönster
+                    </th>
+                    <th>
+                        Dörrar
+                    </th>
+
+                    <th>
+                        Skapad
+                    </th>
+                    <th>
+                        Modifierad
+                    </th>
+
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.info)
+                        </td>
+
+                        <td>
+                            <!-- Fönster -->
+                        </td>
+                        <td>
+                            <!-- Dörrar -->
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.created)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.modified)
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Redigera", "Edit", new { id = item.id })
+
+                            <!-- |
+                          @Html.ActionLink("Details", "Details", new { id=item.id }) |
+                          @Html.ActionLink("Delete", "Delete", new { id=item.id })
+                        -->
+                        </td>
+                    </tr>
+                }
+
+            </table>
+
+            <br />
+            <br />
+
+        </div>
+    </div>
+</div>
+
+ 
+
+

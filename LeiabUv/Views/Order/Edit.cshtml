@@ -1,0 +1,195 @@
+﻿@model LeiabUv.Models.Order
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Glyphicon animation css -->
+<style>
+    .glyphicon-refresh-animate {
+        -animation: spin .7s infinite linear;
+        -webkit-animation: spin2 .7s infinite linear;
+    }
+
+    @@-webkit-keyframes spin2 {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: scale(1) rotate(0deg);
+        }
+
+        to {
+            transform: scale(1) rotate(360deg);
+        }
+    }
+</style>
+
+
+<!-- Init elements  -->
+<div class="container" style="color: #ccc; background-color: #333; min-height: 600px;">
+
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-4">
+
+            <h4 style="color: #ccc; margin-bottom: 0px;">Redigera Order</h4>
+
+            <span id="mdlName" style="display: none;">@Model.name</span>
+            <span id="mdlInfo" style="display: none;">@Model.info</span>
+
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc;">Namn</label>
+            <input id="txtName" type="text" maxlength="32" class="form-control" placeholder="Namn" style="width: 258px; display: inline;" value="@Model.name" />
+
+            <br />
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc; vertical-align: top;">Info</label>
+            <!--<input id="txtInfo" type="text" maxlength="32" class="form-control" placeholder="Info" style="width: 258px; display: inline;" />-->
+            <textarea id="txtInfo" style="width: 258px; margin-top: 20px; display: inline;" class="form-control" rows="3">@Model.info</textarea>
+            <br />
+
+            <!-- Order information -->
+            <label style="color: #ccc; margin-left: 50px; margin-top: 16px; width: 60px;">Fönster:</label><span>@ViewBag.nrOfWindows</span><br />
+            <label style="color: #ccc; margin-left: 50px; width: 60px;">Dörrar:</label><span >@ViewBag.nrOfDoors</span><br />
+            <label style="margin-left: 50px; width: 80px;">Skapad: </label><span>@Model.created</span><br />
+            <label style="margin-left: 50px; width: 80px;">Modifierad: </label><span id="lblModified">@Model.modified</span><br />
+
+
+            <br />
+
+            <span id="updatingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 124px; margin-top: 18px; visibility: hidden;"></span>
+
+            <button id="btnUpdateOrder" type="button" class="btn btn-default" style="width: 160px; margin-left: 10px; margin-top: 10px; vertical-align: top;">Uppdatera Order</button>
+
+            <div id="alertSuccessMessage" class="alert alert-success" style="width: 258px; margin-left: 53px; margin-top: 10px; padding: 5px; visibility: hidden; display: block;">
+                <span id="alertSuccessMessageParagraph">Ordern har uppdaterats!</span>
+                <a id="lnkOpenOrder" href="/Order/Edit"><span></span></a>
+            </div>
+
+            <div id="alertErrorMessage" class="alert alert-danger" style="margin-top: 10px; padding: 5px; width: 258px; margin-left: 53px; visibility: hidden; display: none;">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                <span id="alertErrorMessageParagraph">Ordern kunde inte uppdateras!</span>
+            </div>
+            
+            <button id="" type="button" class="btn btn-success" style="width: 120px; margin-left: 50px; margin-top: 10px;">Nytt Fönster</button>
+            <button id="" type="button" class="btn btn-success" style="width: 120px; margin-left: 18px; margin-top: 10px; ">Ny Dörr</button>
+
+        </div>
+
+        <div class="col-md-8">
+            <label style="color: #ccc; width: 50px;">Fönsterlista</label>
+            
+            <br />
+
+            <label style="color: #ccc; width: 50px;">Dörrlista</label>
+            
+            <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Javascript Init -->
+<script type="text/javascript">
+
+    function lbValidateInput() {
+
+        //alert("Name: " + $("#txtName").val() + ", Info " + $("#txtInfo").val());
+        var n = $("#mdlName").text();
+        var i = $("#mdlInfo").text();
+
+        var change = false;
+
+        if($("#txtName").val() != n) { change = true; }
+        if($("#txtInfo").val() != i) { change = true; }
+
+        if(change) {        // Input change has occured
+
+            //$("#btnPaneDimensionsUpdate").removeClass("btn-danger");
+            $("#btnUpdateOrder").removeClass("btn-danger");
+            $("#btnUpdateOrder").removeClass("btn-default");
+            $("#btnUpdateOrder").addClass("btn-success");
+
+        } else {            // No change occured
+            $("#btnUpdateOrder").removeClass("btn-danger");
+            $("#btnUpdateOrder").removeClass("btn-success");
+            $("#btnUpdateOrder").addClass("btn-default");
+        }
+
+        if($("#txtName").val().length == 0) {
+            $("#btnUpdateOrder").removeClass("btn-default");
+            $("#btnUpdateOrder").removeClass("btn-success");
+            $("#btnUpdateOrder").addClass("btn-danger");
+        }
+    }
+
+    function lbOrder() {
+        this.id = -1;
+        this.name = "";
+        this.info = "";
+    }
+
+    function saveOrder() {
+        var o = new lbOrder();
+
+        o.id = @Model.id;
+        o.name = $("#txtName").val();
+        o.info = $("#txtInfo").val();
+
+        if (o.name.length == 0) {
+            alert("Fyll i ett namn!");
+            return;
+        }
+
+        var j = JSON.stringify(o);
+        document.getElementById("updatingGlyphicon").style.visibility = "visible";
+        lbValidateInput();
+        $.getJSON("/Order/Update?json=" + j, function (data) {
+            document.getElementById("updatingGlyphicon").style.visibility = "hidden";
+
+            if (data == "ok") {
+                //alert("Sicces!");
+                document.getElementById("alertSuccessMessage").style.display = "block";
+                document.getElementById("alertSuccessMessage").style.visibility = "visible";
+
+                document.getElementById("alertErrorMessage").style.display = "none";
+                document.getElementById("alertErrorMessage").style.visibility = "hidden";
+
+                // Update model update state, otherwise the update button will always be green after click action
+                var n = $("#mdlName").text($("#txtName").val());
+                var i = $("#mdlInfo").text($("#txtInfo").val());
+
+                // Update modified date
+                $.getJSON("/Order/GetModifiedDate/@Model.id", function (mdate) {
+                    var date = new Date(parseInt(mdate.substr(6)));
+                    date = date.toISOString().slice(0, 19).replace("T", " ");
+                    $("#lblModified").text(date);
+                });
+            } else {
+                document.getElementById("alertSuccessMessage").style.display = "none";
+                document.getElementById("alertSuccessMessage").style.visibility = "hidden";
+
+                document.getElementById("alertErrorMessage").style.display = "block";
+                document.getElementById("alertErrorMessage").style.visibility = "visible";
+            }
+        });
+    }
+
+
+    $("#btnUpdateOrder").click(function () { saveOrder(); });
+
+    setInterval(function () { lbValidateInput(); }, 100);
+
+</script>
+

@@ -32,7 +32,7 @@ namespace LeiabUv.Models
         public Project Project { get; set; }
     }
     
-    public class PaneWidthArray
+    public class PaneWidthArray2
     {
         public int Id { get; set; }
         [Required]
@@ -45,7 +45,7 @@ namespace LeiabUv.Models
         public Project Project { get; set; }
     }
 
-    public class PaneHeightArray
+    public class PaneHeightArray2
     {
         public int Id { get; set; }
 

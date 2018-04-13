@@ -215,6 +215,8 @@
     <Content Include="Views\Product\EditWindow.cshtml" />
     <Content Include="Views\Product\EditDoor.cshtml" />
     <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Order\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
