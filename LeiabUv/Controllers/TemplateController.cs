@@ -83,23 +83,9 @@ namespace LeiabUv.Controllers
             return View();
         }*/
 
-        public ActionResult Display(int? deleteTemplateId)
+        public ActionResult Display()
         {
             Context ctx = new Context();
-
-            if (deleteTemplateId != null)               // Delete template
-            {
-                try
-                {
-                    ctx.Templates.Remove(ctx.Templates.Find(deleteTemplateId));
-                    ctx.SaveChanges();
-                } catch
-                {
-
-                }
-                
-                // SQL call
-            }
 
             var data = new List<SelectListItem>();      // Get templates
             data = ctx.Templates.Select(d => new SelectListItem { Text = d.name, Value = d.id.ToString() }).ToList<SelectListItem>();
@@ -107,6 +93,18 @@ namespace LeiabUv.Controllers
             return View();
         }
 
+        [HttpGet]
+        public JsonResult Delete(string json)
+        {
+            Context ctx = new Context();
+            Template t = JsonConvert.DeserializeObject<Template>(json);
+
+            ctx.Templates.Remove(ctx.Templates.Find(t.id));
+            ctx.SaveChanges();
+
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+        
 
         [HttpGet]
         public ActionResult GetTemplate(int id)

@@ -32,10 +32,10 @@ namespace LeiabUv.Models
     {
         public int Id { get; set; }
 
-        [MinLength(1), MaxLength(32), Required]
-        public string Name { get; set; }
+        //[MinLength(1), MaxLength(32), Required]       // Name of the Order should be enough
+        //public string Name { get; set; }
         [MaxLength(320)]
-        public string Description { get; set; }
+        public string Info { get; set; }
         [Required]
         public int columns { get; set; }
         [Required]

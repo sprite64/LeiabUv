@@ -58,7 +58,7 @@ namespace LeiabUv.Controllers
             
             ctx.SaveChanges();
 
-            return Json("ok", JsonRequestBehavior.AllowGet);
+            return Json("ok" + uo.modified, JsonRequestBehavior.AllowGet);
         }
 
         /*
@@ -80,14 +80,16 @@ namespace LeiabUv.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
             */
 
+            /*
         [HttpGet]
         public JsonResult GetModifiedDate(int id)
         {
             Context ctx = new Context();
             Order o = ctx.Orders.First(m => m.id == id);
-            
-            return Json(o.modified, JsonRequestBehavior.AllowGet);
-        }
+
+            //return Json(o.modified, JsonRequestBehavior.AllowGet);
+            return Json(o, JsonRequestBehavior.AllowGet);
+        }*/
 
         public ActionResult Edit(int id)
         {
@@ -105,9 +107,74 @@ namespace LeiabUv.Controllers
             Context ctx = new Context();
 
             var model = ctx.Orders.ToList();
+
+            /*
+            int id = 0;
+            foreach(var m in model)
+            {
+                ViewBag[id].windows = 0;
+                id++;
+                //m.windows = 0;
+                //m.doors = 0;
+            }*/
             
             return View(model);
         }
-    }
+
+        [HttpGet]
+        public JsonResult Delete(string json)      // Do this through json instead
+        {
+            Context ctx = new Context();
+            Order o = JsonConvert.DeserializeObject<Order>(json);
+            
+            ctx.Orders.Remove(ctx.Orders.Find(o.id));
+            ctx.SaveChanges();
+            
+            //var model = ctx.Orders.ToList();
+            //return View("List", model);
+            return Json("ok", JsonRequestBehavior.AllowGet);
+        }
+
+        /*
+        [HttpGet]
+        public JsonResult Update(string json)
+        {
+            Context ctx = new Context();
+            Order o = JsonConvert.DeserializeObject<Order>(json);
+
+            Order uo = ctx.Orders.First(m => m.id == o.id);
+
+            uo.name = o.name;
+            uo.info = o.info;
+            uo.modified = System.DateTime.Now;
+
+            ctx.SaveChanges();
+            */
+
+
+            //return Json("ok", JsonRequestBehavior.AllowGet);
+            /*
+            Context ctx = new Context();
+
+                if (deleteTemplateId != null)               // Delete template
+                {
+                    try
+                    {
+                        ctx.Templates.Remove(ctx.Templates.Find(deleteTemplateId));
+                        ctx.SaveChanges();
+                    } catch
+                    {
+
+                    }
+
+                    // SQL call
+                }
+
+                var data = new List<SelectListItem>();      // Get templates
+    data = ctx.Templates.Select(d => new SelectListItem { Text = d.name, Value = d.id.ToString() }).ToList<SelectListItem>();
+                ViewBag.templateList = data;
+                return View();
+                */
+        }
 }
 

@@ -15,6 +15,8 @@
 // JQuery Ready/Initiation
 $(function () {
 
+
+
     /* Button events and control */
     //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create/" + selectedTemplateId); });
     $("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create/" + selectedTemplateId + "?window=1"); });
@@ -24,12 +26,22 @@ $(function () {
     //$("#btnCreateWindowProject").click(function () { window.location.replace("/Project/Create?id=" + selectedTemplateId); });
     //$("#btnCreateDoorProject").click(function () { window.location.replace("/Project/CreateDoor/" + selectedTemplateId + "?door=1"); });
 
+    /*
+    function deleteTemplate() {
+        var id = @Model.id;
+
+
+    }
+
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
     $("#btnDeleteTemplate").click(function () {
         if (confirm("Vill du radera mallen?")) { 
-            window.location.replace("/Template/Display?deleteTemplateId=" + selectedTemplateId);
+            //window.location.replace("/Template/Display?deleteTemplateId=" + selectedTemplateId);
+            deleteTemplate();
         }
     });
+    */
+
 
     /*
     function foo(id) {

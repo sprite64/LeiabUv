@@ -157,8 +157,7 @@
         lbValidateInput();
         $.getJSON("/Order/Update?json=" + j, function (data) {
             document.getElementById("updatingGlyphicon").style.visibility = "hidden";
-
-            if (data == "ok") {
+            if (data.substr(0, 2) == "ok") {        // data after ok is new modified date string
                 //alert("Sicces!");
                 document.getElementById("alertSuccessMessage").style.display = "block";
                 document.getElementById("alertSuccessMessage").style.visibility = "visible";
@@ -170,12 +169,8 @@
                 var n = $("#mdlName").text($("#txtName").val());
                 var i = $("#mdlInfo").text($("#txtInfo").val());
 
-                // Update modified date
-                $.getJSON("/Order/GetModifiedDate/@Model.id", function (mdate) {
-                    var date = new Date(parseInt(mdate.substr(6)));
-                    date = date.toISOString().slice(0, 19).replace("T", " ");
-                    $("#lblModified").text(date);
-                });
+                $("#lblModified").text(data.substr(2, data.length - 2));        // Update modified info
+
             } else {
                 document.getElementById("alertSuccessMessage").style.display = "none";
                 document.getElementById("alertSuccessMessage").style.visibility = "hidden";
@@ -186,8 +181,26 @@
         });
     }
 
+    function deleteOrder() {
+
+        var o = new lbOrder();
+        o.id = @Model.id;
+        o.name = "";
+        o.info = "";
+
+        if(confirm("Ta bort Order?")) {
+            var j = JSON.stringify(o);
+            $.getJSON("/Order/Delete/?json=" + j, function (data) {
+                if (data == "ok") {
+                    alert("deleted!");
+                }
+                window.location.replace("/Order/List");
+            });
+        }
+    }
 
     $("#btnUpdateOrder").click(function () { saveOrder(); });
+    $("#btnDeleteOrder").click(function () { deleteOrder(); });
 
     setInterval(function () { lbValidateInput(); }, 100);
 

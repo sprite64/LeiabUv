@@ -99,6 +99,35 @@
 
 <script>
 
+    function basicTemplate() {
+        this.id = -1;
+    }
+
+    function deleteTemplate() {
+        
+        var b = new basicTemplate();
+        b.id = selectedTemplateId;
+
+        if(confirm("Ta bort Modell?")) {
+            var j = JSON.stringify(b);
+            $.getJSON("/Template/Delete/?json=" + j, function (data) {
+                if (data == "ok") {
+                    //alert("deletwed!");
+                }
+                window.location.replace("/Template/Display");
+            });
+        }
+    }
+
+    //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });
+    $("#btnDeleteTemplate").click(function () {
+        //if (confirm("Vill du radera mallen?")) { 
+            //window.location.replace("/Template/Display?deleteTemplateId=" + selectedTemplateId);
+            deleteTemplate();
+        //}
+    });
+
+
     $(function () {
 
         $.getJSON("/Template/GetTemplates/", function (data) {

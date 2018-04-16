@@ -63,7 +63,14 @@
                             @Html.DisplayFor(modelItem => item.created)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.modified)
+                            @if (item.created == item.modified)
+                            {
+                                @Html.Raw("-");
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.modified)
+                            }
                         </td>
 
                         <td>
