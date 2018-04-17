@@ -63,8 +63,9 @@ namespace LeiabUv.Controllers
 
 
         [HttpGet]
-        public JsonResult Delete(int id)
+        public JsonResult Delete(int? id)
         {
+            if (id == null) { return Json("id.is.null", JsonRequestBehavior.AllowGet); }      // ID error
             Context ctx = new Context();
 
             ctx.Templates.Remove(ctx.Templates.Find(id));

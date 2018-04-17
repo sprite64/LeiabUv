@@ -92,28 +92,26 @@ namespace LeiabUv.Controllers
         }
         
         
-        public ActionResult EditWindow(int id)
+        public ActionResult EditWindow(int? id)
         {
+            if (id == null) { return Redirect("/Product/ListWindow"); }     // Redirect to list
+
             Context ctx = new Context();
             Product p = ctx.Products.FirstOrDefault(m => m.id == id);
 
-            if(p == null)       // Redirect if product doesn't exist
-            {
-                return Redirect("/Product/ListWindow");
-            }
+            if(p == null) { return Redirect("/Product/ListWindow"); }       // Redirect to list
 
             return View(p);
         }
 
-        public ActionResult EditDoor(int id)
+        public ActionResult EditDoor(int? id)
         {
+            if (id == null) { return Redirect("/Product/ListDoor"); }       // Redirect to list
+
             Context ctx = new Context();
             Product p = ctx.Products.FirstOrDefault(m => m.id == id);
 
-            if(p == null)       // Redirect if product doesn't exist
-            {
-                return Redirect("/Product/ListDoor");
-            }
+            if(p == null) { return Redirect("/Product/ListDoor"); }         // Redirect to list
 
             return View(p);
         }

@@ -62,12 +62,14 @@ namespace LeiabUv.Controllers
         }
 
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
+            if(id == null) { return Redirect("/Order/List"); }         // Redirect to list
+
             Context ctx = new Context();
             Order o = ctx.Orders.FirstOrDefault(m => m.id == id);
 
-            if(o == null) { return Redirect("/Order/List"); }
+            if(o == null) { return Redirect("/Order/List"); }   // Redirect to list
 
             return View(o);
         }
