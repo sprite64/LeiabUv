@@ -18,24 +18,23 @@ namespace LeiabUv.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: Product
         public ActionResult Index()
         {
             return View();
         }
 
-        // Create window product
-        public ActionResult CreateWindowProduct()
-        {
-
-            return View();
-        }
-
-        // Create window product
+        
         public ActionResult CreateWindow()
         {
             return View();
         }
+
+
+        public ActionResult CreateDoor()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult CreateWindow(Product p)
@@ -55,22 +54,6 @@ namespace LeiabUv.Controllers
         }
 
 
-        public ActionResult ListWindow()
-        {
-            Context ctx = new Context();
-
-            // Select window products
-            var model = ctx.Products.ToList().Where(m => m.window == true);//.OrderBy(m => m.door);
-
-            return View(model);
-        }
-
-
-        public ActionResult CreateDoor()
-        {
-            return View();
-        }
-
         [HttpPost]
         public ActionResult CreateDoor(Product p)
         {
@@ -88,28 +71,54 @@ namespace LeiabUv.Controllers
             return View();
         }
 
+
+        public ActionResult ListWindow()
+        {
+            Context ctx = new Context();
+            
+            var model = ctx.Products.ToList().Where(m => m.window == true);
+
+            return View(model);
+        }
+        
+
         public ActionResult ListDoor()
         {
             Context ctx = new Context();
-
-            // Select window products
+            
             var model = ctx.Products.ToList().Where(m => m.window == false);
 
             return View(model);
         }
-
-        /*
-        public ActionResult Show()
+        
+        
+        public ActionResult EditWindow(int id)
         {
             Context ctx = new Context();
-            
-            var model = ctx.Products.ToList().OrderBy(m => m.window);
-            
-            return View(model);
-        }
-        */
+            Product p = ctx.Products.FirstOrDefault(m => m.id == id);
 
-        // Save product
+            if(p == null)       // Redirect if product doesn't exist
+            {
+                return Redirect("/Product/ListWindow");
+            }
+
+            return View(p);
+        }
+
+        public ActionResult EditDoor(int id)
+        {
+            Context ctx = new Context();
+            Product p = ctx.Products.FirstOrDefault(m => m.id == id);
+
+            if(p == null)       // Redirect if product doesn't exist
+            {
+                return Redirect("/Product/ListDoor");
+            }
+
+            return View(p);
+        }
+
+
         [HttpGet]
         public JsonResult Save(string json)
         {
@@ -121,7 +130,7 @@ namespace LeiabUv.Controllers
             {
                 return Json("name.already.in.use", JsonRequestBehavior.AllowGet);
             }*/
-            
+
             p.created = System.DateTime.Now;
 
             ctx.Products.Add(p);
@@ -130,21 +139,6 @@ namespace LeiabUv.Controllers
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult EditWindow(int id)
-        {
-            Context ctx = new Context();
-            Product p = ctx.Products.First(m => m.id == id);
-
-            return View(p);
-        }
-
-        public ActionResult EditDoor(int id)
-        {
-            Context ctx = new Context();
-            Product p = ctx.Products.First(m => m.id == id);
-
-            return View(p);
-        }
 
         public ActionResult Update(string json)
         {
@@ -154,13 +148,9 @@ namespace LeiabUv.Controllers
             Product p = ctx.Products.First(m => m.id == pu.id);
             p.deprecated = pu.deprecated;
             p.info = pu.info;
-
-            //ctx.Products.
+            
             ctx.SaveChanges();
-
-            //var model = ctx.Products.ToList().Where(m => m.window == true);//.OrderBy(m => m.door);
-
-
+            
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
     }

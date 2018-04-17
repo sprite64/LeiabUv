@@ -1,7 +1,7 @@
 ﻿@model LeiabUv.Models.Order
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Redigera Order";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -180,23 +180,18 @@
             }
         });
     }
-
+    
     function deleteOrder() {
 
-        var o = new lbOrder();
-        o.id = @Model.id;
-        o.name = "";
-        o.info = "";
-
         if(confirm("Ta bort Order?")) {
-            var j = JSON.stringify(o);
-            $.getJSON("/Order/Delete/?json=" + j, function (data) {
-                if (data == "ok") {
-                    alert("deleted!");
+            $.getJSON("/Order/Delete/" + @Model.id, function (data) {
+                if(data == "ok") {
+                    //alert("deleted!");
                 }
                 window.location.replace("/Order/List");
             });
         }
+
     }
 
     $("#btnUpdateOrder").click(function () { saveOrder(); });

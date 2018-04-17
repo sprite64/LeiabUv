@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Modell";
+    ViewBag.Title = "Skapa Modell";
 }
 
 
@@ -35,9 +35,10 @@
         <!-- Menu -->
         <div class="col-md-2">
 
-            <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px;">
+            <div style="width: 140px; height: 170px;">
+            <!-- <div style="float: right; margin-top: 20px; padding-left: 10px; padding-top: 10px; width: 140px; height: 320px;"> -->
 
-                <h4 style="color: #ccc">Meny</h4>
+                <h4 style="color: #ccc">Skapa Modell</h4>
 
                 <button id="btnOpenEditor" class="btn btn-success active" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Ny</button>
                 <button id="btnCloseEditor" class="btn" style="width: 80px; margin-bottom: 10px; margin-left: 10px;">Avbryt</button>
@@ -190,27 +191,17 @@
 
             </div>
         </div>
-
-        <!--div-- class="col-md-4" style="background-color: #fff;">
-            asd
-        </!--div-->
     </div>
 </div>
 
 
+<script src="~/ScriptsLeiab/TemplateConstants.js"></script>     <!-- Template constants -->
 
-    <!-- Scripts -->
-<!--
-    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
-    -->
+<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic object constructors -->
+<script src="~/ScriptsLeiab/TemplateObjects.js"></script> 		<!-- Template object constructors -->
 
-    <script src="~/ScriptsLeiab/TemplateConstants.js"></script>     <!-- Template constants -->
+<script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
+<script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
 
-    <script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic object constructors -->
-    <script src="~/ScriptsLeiab/TemplateObjects.js"></script> 		<!-- Template object constructors -->
-
-    <script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
-    <script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
-
-    <script src="~/ScriptsLeiab/TemplateInit.js"></script>          <!-- Template initiation -->
+<script src="~/ScriptsLeiab/TemplateInit.js"></script>          <!-- Template initiation -->
 

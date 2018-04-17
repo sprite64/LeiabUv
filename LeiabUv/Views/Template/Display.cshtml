@@ -2,7 +2,7 @@
 @model LeiabUv.Models.TemplateViewModel
 
 @{
-    ViewBag.Title = "ShowTemplates";
+    ViewBag.Title = "Visa Modeller";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -104,19 +104,16 @@
     }
 
     function deleteTemplate() {
-        
-        var b = new basicTemplate();
-        b.id = selectedTemplateId;
 
-        if(confirm("Ta bort Modell?")) {
-            var j = JSON.stringify(b);
-            $.getJSON("/Template/Delete/?json=" + j, function (data) {
+        if (confirm("Ta bort Modell?")) {
+            $.getJSON("/Template/Delete/" + selectedTemplateId, function (data) {
                 if (data == "ok") {
-                    //alert("deletwed!");
+                    alert("Deleted!");
                 }
                 window.location.replace("/Template/Display");
             });
         }
+
     }
 
     //$("#btnDeleteTemplate").click(function () { lbDeleteTemplate(selectedTemplateId); });

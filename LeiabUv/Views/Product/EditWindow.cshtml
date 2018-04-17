@@ -62,14 +62,9 @@
 
 
 <!-- Init elements  -->
-<div class="container" style="background-color: #333;">
+<div class="container" style="background-color: #333; color: #ccc; min-height: 600px;">
 
     <div class="row">
-
-        <!-- Menu -->
-        <div class="col-md-2">
-
-        </div>
 
         <!-- Input form -->
         <div class="col-md-8">
@@ -121,9 +116,9 @@
 
             <br />
 
-            <!-- This is not yet implemented -->
             <span id="productId" style="color: #ccc; display: none;">@Html.Raw(@Model.id)</span>
-            <span id="updatingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 312px; margin-top: 18px; visibility: hidden;"></span>
+            <label style="margin-left: 0px; width: 80px;">Skapad: </label><span style="width: 150px;">@Model.created</span>
+            <span id="updatingGlyphicon" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" style="color: #ccc; margin-left: 98px; margin-top: 18px; visibility: hidden;"></span>
             <button id="btnSaveProductChanges" type="button" class="btn btn-success" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top;">Spara</button>
             
             <div id="alertSuccessMessage" class="alert alert-success" style="margin-top: 10px; padding: 5px; width: 459px; visibility: hidden; display: none;">

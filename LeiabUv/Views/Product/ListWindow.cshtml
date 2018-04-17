@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<LeiabUv.Models.Product>
 
 @{
-    ViewBag.Title = "Fönsterprodukter";
+    ViewBag.Title = "Lista Fönsterprodukter";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,13 +12,8 @@
 
     <div class="row">
 
-        <!-- Menu -->
-        <div class="col-md-1">
-
-        </div>
-
         <!-- Input form -->
-        <div class="col-md-10">
+        <div class="col-md-12">
 
             <h4 style="color: #ccc;">Fönsterprodukter</h4>
 
@@ -54,6 +49,9 @@
                     </th>
                     <th>
                         Info
+                    </th>
+                    <th>
+                        Skapad
                     </th>
                     <th></th>
                 </tr>
@@ -95,6 +93,9 @@
                             @Html.DisplayFor(modelItem => item.info)
                         </td>
                         
+                        <td>
+                            @Html.DisplayFor(modelItem => item.created)
+                        </td>
                         <td>
                             @Html.ActionLink("Redigera", "EditWindow", new { id = item.id })
                         </td>

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using System.Linq;
-
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Data.Common;
@@ -31,75 +29,45 @@ namespace LeiabUv.Controllers
         [HttpGet]
         public JsonResult Save(string json)
         {
-            Context ctx = new Context();            // Create datbase context and deserialize json string
+            Context ctx = new Context();
             Template t = JsonConvert.DeserializeObject<Template>(json);
 
-            if (t.name == "")                       // Can't store empty string or "NULL", exit saving
-            {
-                return Json("Fyll i beteckning!", JsonRequestBehavior.AllowGet);
-            }
+            // Check empty name
+            if (t.name == "") { return Json("Fyll i beteckning!", JsonRequestBehavior.AllowGet); }
 
-            // A exception of type 'System.Data.SqlClient.SqlException' occurred in 
-            //      EntityFramework.dll but was not handled in user code
-            // Additional information: Login failed for user 'Sprite-PC\Sprite'.
+            // Check duplicate name
             if (ctx.Templates.Any(d => d.name == t.name))
             {
                 return Json("Beteckningen används redan, välj en unik beteckning.", JsonRequestBehavior.AllowGet);
             }
 
-            t.created = System.DateTime.Now;        // Set entry log
+            t.created = System.DateTime.Now;
             
-            ctx.Templates.Add(t);                   // Add and save databas additions/changes
+            ctx.Templates.Add(t);
             ctx.SaveChanges();
             
             return Json("ok", JsonRequestBehavior.AllowGet);
         }
 
 
-        /*
-        public ActionResult DeleteTemplate(int templateId)
-        {
-            Context ctx = new Context();
-            
-            return Json("deleted", JsonRequestBehavior.AllowGet); ;
-        }*/
-        
-        /*
-        public ActionResult Show3()
+        public ActionResult Display()   // Display all templates
         {
             Context ctx = new Context();
 
-            var data = new List<Template>();
-
-            data = ctx.Templates.Select(d => new Template {
-                Name = d.Name,
-                Columns = d.Columns,
-                Rows = d.Rows,
-                Panes = d.Panes.Select(f => new TemplatePane {
-                    XIndex = f.XIndex, YIndex = f.YIndex, ColSpan = f.ColSpan, RowSpan = f.RowSpan
-                }).ToList<TemplatePane>()}).ToList<Template>();
-            
-            ViewBag.templateList = data;
-            return View();
-        }*/
-
-        public ActionResult Display()
-        {
-            Context ctx = new Context();
-
-            var data = new List<SelectListItem>();      // Get templates
+            var data = new List<SelectListItem>();
             data = ctx.Templates.Select(d => new SelectListItem { Text = d.name, Value = d.id.ToString() }).ToList<SelectListItem>();
             ViewBag.templateList = data;
+
             return View();
         }
 
+
         [HttpGet]
-        public JsonResult Delete(string json)
+        public JsonResult Delete(int id)
         {
             Context ctx = new Context();
-            Template t = JsonConvert.DeserializeObject<Template>(json);
 
-            ctx.Templates.Remove(ctx.Templates.Find(t.id));
+            ctx.Templates.Remove(ctx.Templates.Find(id));
             ctx.SaveChanges();
 
             return Json("ok", JsonRequestBehavior.AllowGet);
@@ -110,6 +78,7 @@ namespace LeiabUv.Controllers
         public ActionResult GetTemplate(int id)
         {
             Context ctx = new Context();
+
             var template = ctx.Templates.Select(d=>new TemplateViewModel {
                 id=d.id,
                 columns=d.columns,
@@ -125,8 +94,10 @@ namespace LeiabUv.Controllers
                 }).ToList<TemplatePaneViewModel>()
 
             }).FirstOrDefault(d => d.id == id);
+
             return Json(template,JsonRequestBehavior.AllowGet);
         }
+
 
         [HttpGet]
         public ActionResult GetTemplates()
@@ -148,10 +119,11 @@ namespace LeiabUv.Controllers
                     yIndex = f.yIndex,
                 }).ToList<TemplatePaneViewModel>()
             }).ToList<TemplateViewModel>();
+
             Response.CacheControl = "no-cache";
+
             return Json(templates, JsonRequestBehavior.AllowGet);
         }
-
     }
 }
 
