@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LeiabUv.Models
 {
-    public class Order
+    public class OrderViewModel
     {
         public int id { get; set; }
 
@@ -28,7 +28,7 @@ namespace LeiabUv.Models
    } 
 
 
-    public class OrderEntry
+    public class OrderEntryViewModel
     {
         public int id { get; set; }
         public bool window { get; set; }
@@ -44,16 +44,12 @@ namespace LeiabUv.Models
         public double mmFrameWidth { get; set; }
         [Required]
         public double mmFrameHeight { get; set; }
-        public virtual List<EntryPane> panes { get; set; }
-        public virtual List<PaneWidthArray> paneWidthArray { get; set; }
-        public virtual List<PaneHeightArray> paneHeightArray { get; set; }
         public int orderId { get; set; }
-        [ForeignKey("orderId")]
-        public Order order { get; set; }
+        
     }
 
 
-    public class NewWindow      // Only used with JSON to serialize NewWindow object
+    public class NewWindowViewModel      // Only used with JSON to serialize NewWindow object
     {
         public int orderId { get; set; }
         public int width { get; set; }
@@ -62,7 +58,7 @@ namespace LeiabUv.Models
         public int modelId { get; set; }
     }
 
-    public class EntryPane
+    public class EntryPaneViewModel
     {
         public int Id { get; set; }
         [Required]
@@ -82,7 +78,7 @@ namespace LeiabUv.Models
         public OrderEntry orderEntry { get; set; }
     }
 
-    public class PaneWidthArray
+    public class PaneWidthArrayViewModel
     {
         public int Id { get; set; }
         [Required]
@@ -95,7 +91,7 @@ namespace LeiabUv.Models
         public OrderEntry orderEntry { get; set; }
     }
 
-    public class PaneHeightArray
+    public class PaneHeightArrayViewModel
     {
         public int Id { get; set; }
 

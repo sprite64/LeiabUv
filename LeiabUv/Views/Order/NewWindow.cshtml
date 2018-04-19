@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "Nytt Fönster";
+}
+
+
+<!-- Init elements  -->
+<div class="container" style="color: #ccc; background-color: #333; min-height: 600px;">
+
+    <div class="row">
+
+        <!-- Menu -->
+        <div class="col-md-8">
+
+            <h4 style="color: #ccc; margin-bottom: 0px;">Nytt Fönster till @Model.name</h4>
+
+            <label style="width: 50px; margin-top: 20px;">Bredd</label>
+            <input id="txtWidth" type="text" maxlength="32" class="form-control" placeholder="Bredd" style="width: 258px; display: inline;" /> <br />
+            <label style="width: 50px; margin-top: 20px;">Höjd</label>
+            <input id="txtHeight" type="text" maxlength="32" class="form-control" placeholder="Höjd" style="width: 258px; display: inline;" /> <br /> <br />
+
+            <label style="width: 50px; margin-top: 20px; color: #ccc;">Info</label>
+            <input id="txtInfo" type="text" maxlength="32" class="form-control" placeholder="Info" style="width: 258px; display: inline;" /> <br />
+
+            <label style="width: 50px; margin-top: 20px;">Modell</label>
+
+            <div id="TemplateIcons" class="panel" style="width: 520px; height: 230px; background-color: #111; overflow-x: scroll; overflow-y: hidden; white-space: nowrap; padding-right: 10px;">
+                
+            </div>
+
+            <canvas id="TemplateCanvas" width="534" height="400" style="display: none;">
+                Your browser doesn't support HTML5 canvas tag.
+            </canvas>
+
+            <button id="btnCancel" type="button" class="btn btn-default" style="width: 120px; margin-left: 260px; margin-top: 10px; vertical-align: top;">Avbryt</button>
+            <button id="btnSave" type="button" class="btn btn-default" style="width: 120px; margin-left: 17px; margin-top: 10px; vertical-align: top;">Spara</button>
+
+            <div id="alertSuccessMessage" class="alert alert-success" style="width: 520px; margin-top: 10px; padding: 5px; visibility: visible; display: inline-block;">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                <span>Fönstret har sparats! </span>
+                <!-- Needs to be updated once more functionality has been added ### ### ### ### ### ### ### ### ### ### -->
+                <a href="/Order/Edit/@Model.id" style="float: right; padding-right: 10px;"><span>Tillbaks till Order</span></a>
+            </div>
+
+            <div id="alertErrorMessage" class="alert alert-danger" role="alert" style="margin-top: 10px; padding: 5px; visibility: hidden;">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                <span id="alertErrorMessageParagraph">Modellen kunde inte sparas!</span>
+            </div>
+
+        </div>
+    </div> 
+</div>
+
+
+<script src="~/ScriptsLeiab/TemplateConstants.js"></script>     <!-- Template constants -->
+
+<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic object constructors -->
+<script src="~/ScriptsLeiab/TemplateObjects.js"></script> 		<!-- Template object constructors -->
+
+<script src="~/ScriptsLeiab/TemplateGraphics.js"></script> 		<!-- Template 2D render functions -->
+<script src="~/ScriptsLeiab/TemplateUpdate.js"></script> 		<!-- Template functions -->
+<script src="~/ScriptsLeiab/TemplateIconInit.js"></script>      <!-- Template initiation -->
+
+
+
+<script>
+
+
+    //alert("Res: " + (10 + 10 - 10 + 10 + 10 - 10 - 10 - 10 + 10 + 10 - 10 + 10 - 10 - 10 + 10 - 10 - 10 - 10 + 10 + 10 + 10 + 10 - 10 + 10));
+    function lbValidateInput() {
+
+        var valid = true;
+
+        if (isNaN(parseFloat($("#txtWidth").val().replace(",", "."))) || parseFloat($("#txtWidth").val().replace(",", ".")) < 0.0) {
+            valid = false;
+        }
+
+        if (isNaN(parseFloat($("#txtHeight").val().replace(",", "."))) || parseFloat($("#txtHeight").val().replace(",", ".")) < 0.0) {
+            valid = false;
+        }
+
+        // Implement width/height bounds here
+
+        if (valid) {
+            $("#btnSave").removeClass("btn-danger");
+            $("#btnSave").removeClass("btn-default");
+            $("#btnSave").addClass("btn-success");
+        } else {
+            $("#btnSave").removeClass("btn-default");
+            $("#btnSave").removeClass("btn-success");
+            $("#btnSave").addClass("btn-danger");
+        }
+
+        return valid;
+    }
+
+
+    function lbNewWindow() {
+        this.orderId = 0;
+        this.width = 0;
+        this.height = 0;
+        this.info = "";
+        this.modelId = 0;
+    }
+
+    function lbSave() {
+
+        if(!lbValidateInput()) { return; }      // Validate input
+        //alert("Id: " + selectedTemplateId); return;
+        var w = new lbNewWindow();
+        w.orderId = @Model.id;
+        w.width = parseFloat($("#txtWidth").val().replace(",", "."));
+        w.height = parseFloat($("#txtHeight").val().replace(",", "."));
+        w.info = $("#txtInfo").val();
+        w.modelId = selectedTemplateId;
+
+        var j = JSON.stringify(w);
+        
+        $.getJSON("/Order/SaveWindow?json=" + j, function (data) {
+            
+            if (data == "ok") {        // data after ok is new modified date string
+                alert("SUCCESS!");
+            } else {
+                alert("SUPER FAIL!");
+            }
+        });
+    }
+
+    $(function () {
+
+        $.getJSON("/Template/GetTemplates/", function (data) {
+
+            //alert(data.length);
+
+            templateIconData = data;
+            templates = data;
+
+            lbGenerateIcons(data);
+            //lbRenderIcon(data);
+
+
+            lbTemplateUpdateAndRender("");
+
+            // Update initial template selection
+            selectedTemplateId = 0;
+            lbUpdateSelectedTemplateData(0);
+
+            for (var i = 0; i < templates.length; i++) {
+                //lbRenderTemplateIcon(0);
+                lbRenderTemplateIcon(i);
+            }
+
+            //lbRenderTemplateIcon(0);
+        });
+
+    });
+
+    $("#btnSave").click(function() { lbSave(); });
+    $("#btnCancel").click(function () { window.location.replace("/Order/Edit/" + @Model.id); });
+
+    setInterval(function () { lbValidateInput(); }, 100);
+
+</script>
+
+

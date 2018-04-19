@@ -82,19 +82,36 @@
                 <span id="alertErrorMessageParagraph">Ordern kunde inte uppdateras!</span>
             </div>
             
-            <button id="" type="button" class="btn btn-success" style="width: 120px; margin-left: 50px; margin-top: 10px;">Nytt Fönster</button>
+            <button id="btnNewWindow" type="button" class="btn btn-success" style="width: 120px; margin-left: 50px; margin-top: 10px;">Nytt Fönster</button>
             <button id="" type="button" class="btn btn-success" style="width: 120px; margin-left: 18px; margin-top: 10px; ">Ny Dörr</button>
 
         </div>
 
         <div class="col-md-8">
             <label style="color: #ccc; width: 50px;">Fönsterlista</label>
-            
-            <br />
+            <table id="lstWindows" class="table" style="color: #ccc;">  <!-- Window list -->
+             <!--   <tr style="background-color: #444;">
+                    <th>
+                        Info
+                    </th>
+                    <th>
+                        Bredd
+                    </th>
+                    <th>
+                        Höjd
+                    </th>
+                    <th>
+                        <a>Redigera</a>
+                    </th>
+                </tr>
+            -->
 
-            <label style="color: #ccc; width: 50px;">Dörrlista</label>
-            
-            <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
+            </table>
+                    <br />
+
+                    <label style="color: #ccc; width: 50px;">Dörrlista</label>
+
+                    <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
         </div>
     </div>
 </div>
@@ -102,6 +119,39 @@
 
 <!-- Javascript Init -->
 <script type="text/javascript">
+
+    function lbUpdateWindowList() {
+
+        // Set table headers
+        var output =  "<tr style=\"background-color: #444;\"><th>Info</th><th>Bredd</th><th>Höjd</th>0<th><a>Redigera</a></th></tr>";
+        $("#lstWindows").append(output);
+
+        // Get orderentry windows
+        $.getJSON("/Order/GetWindows/?orderId=" + @Model.id, function (data) {
+            
+
+            for(var i = 0; i < data.length; i++) {
+                //alert("Data: " + data[i].info);
+
+                output = "<tr style=\"background-color: #444;\"><td>" + data[i].info + "</td><td>" + data[i].mmFrameWidth + "</td><td>" + data[i].mmFrameHeight + "</td>0<td><a>Redigera</a></td></tr>";
+                $("#lstWindows").append(output);
+            }
+
+            /*
+            id = d.id,
+            window = d.window,
+            info = d.info,
+            columns = d.columns,
+            rows = d.rows,
+            mmFrameWidth = d.mmFrameWidth,
+            mmFrameHeight = d.mmFrameHeight*/
+            /*if(data != null) {
+                alert("Data!: ");
+            } else {
+                alert("No data!");
+            }*/
+        });
+    }
 
     function lbValidateInput() {
 
@@ -196,6 +246,10 @@
 
     $("#btnUpdateOrder").click(function () { saveOrder(); });
     $("#btnDeleteOrder").click(function () { deleteOrder(); });
+
+    $("#btnNewWindow").click(function () { window.location.replace("/Order/NewWindow/" + @Model.id); });
+
+    lbUpdateWindowList();
 
     setInterval(function () { lbValidateInput(); }, 100);
 
