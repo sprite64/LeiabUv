@@ -89,8 +89,13 @@
 
         <div class="col-md-8">
             <label style="color: #ccc; width: 50px;">Fönsterlista</label>
-            <table id="lstWindows" class="table" style="color: #ccc;">  <!-- Window list -->
-             <!--   <tr style="background-color: #444;">
+
+            <div id="lstWindows"></div>
+
+            <!-- Window list -->
+            <!--
+            <table id="lstWindows" class="table" style="color: #ccc;"> 
+                <tr style="background-color: #444;">
                     <th>
                         Info
                     </th>
@@ -104,14 +109,19 @@
                         <a>Redigera</a>
                     </th>
                 </tr>
-            -->
-
+                <tr>
+                    <td>x</td>
+                    <td>y</td>
+                    <td>z</td>
+                    <td>w</td>
+                </tr>
             </table>
-                    <br />
+            -->
+            <br />
 
-                    <label style="color: #ccc; width: 50px;">Dörrlista</label>
+            <label style="color: #ccc; width: 50px;">Dörrlista</label>
 
-                    <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
+            <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
         </div>
     </div>
 </div>
@@ -123,19 +133,26 @@
     function lbUpdateWindowList() {
 
         // Set table headers
-        var output =  "<tr style=\"background-color: #444;\"><th>Info</th><th>Bredd</th><th>Höjd</th>0<th><a>Redigera</a></th></tr>";
+
+        var output = "<table id=\"lstWindows\" class=\"table\" style=\"color: #ccc;\">";
+
+        output = output + "<tr style=\"background-color: #444;\"><th>Info</th><th>Bredd</th><th>Höjd</th>0<th><a>Redigera</a></th></tr>";
         $("#lstWindows").append(output);
+        //var output = "";
+        //$("#lstWindows").html("");
 
         // Get orderentry windows
         $.getJSON("/Order/GetWindows/?orderId=" + @Model.id, function (data) {
             
-
+            // This is good but doesnt work with bootstrap table styling
             for(var i = 0; i < data.length; i++) {
                 //alert("Data: " + data[i].info);
 
                 output = "<tr style=\"background-color: #444;\"><td>" + data[i].info + "</td><td>" + data[i].mmFrameWidth + "</td><td>" + data[i].mmFrameHeight + "</td>0<td><a>Redigera</a></td></tr>";
                 $("#lstWindows").append(output);
             }
+
+
 
             /*
             id = d.id,
@@ -151,6 +168,9 @@
                 alert("No data!");
             }*/
         });
+
+        output = "</table>"
+        $("#lstWindows").append(output);
     }
 
     function lbValidateInput() {
