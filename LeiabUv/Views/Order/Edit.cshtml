@@ -88,12 +88,9 @@
         </div>
 
         <div class="col-md-8">
-            <label style="color: #ccc; width: 50px;">Fönsterlista</label>
-
-            <div id="lstWindows"></div>
+            <label style="color: #ccc; width: 80px;">Fönster (2)</label>
 
             <!-- Window list -->
-            <!--
             <table id="lstWindows" class="table" style="color: #ccc;"> 
                 <tr style="background-color: #444;">
                     <th>
@@ -106,20 +103,15 @@
                         Höjd
                     </th>
                     <th>
-                        <a>Redigera</a>
+                        
                     </th>
                 </tr>
-                <tr>
-                    <td>x</td>
-                    <td>y</td>
-                    <td>z</td>
-                    <td>w</td>
-                </tr>
+
             </table>
-            -->
+            
             <br />
 
-            <label style="color: #ccc; width: 50px;">Dörrlista</label>
+            <label style="color: #ccc; width: 80px;">Dörrar (0)</label>
 
             <button id="btnDeleteOrder" type="button" class="btn btn-danger" style="width: 120px; margin-left: 10px; margin-top: 10px; vertical-align: top; float: right;">Radera Order</button>
         </div>
@@ -134,10 +126,10 @@
 
         // Set table headers
 
-        var output = "<table id=\"lstWindows\" class=\"table\" style=\"color: #ccc;\">";
+        //var output = "<table id=\"lstWindows\" class=\"table\" style=\"color: #ccc;\">";
 
-        output = output + "<tr style=\"background-color: #444;\"><th>Info</th><th>Bredd</th><th>Höjd</th>0<th><a>Redigera</a></th></tr>";
-        $("#lstWindows").append(output);
+        var output = "<tr style=\"background-color: #444;\"><th>Info</th><th>Bredd</th><th>Höjd</th>0<th><a>Redigera</a></th></tr>";
+        //$("#lstWindows").append(output);
         //var output = "";
         //$("#lstWindows").html("");
 
@@ -169,8 +161,8 @@
             }*/
         });
 
-        output = "</table>"
-        $("#lstWindows").append(output);
+        //output = "</table>"
+        //$("#lstWindows").append(output);
     }
 
     function lbValidateInput() {
