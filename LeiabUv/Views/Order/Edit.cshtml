@@ -140,7 +140,7 @@
             for(var i = 0; i < data.length; i++) {
                 //alert("Data: " + data[i].info);
 
-                output = "<tr style=\"background-color: #444;\"><td>" + data[i].info + "</td><td>" + data[i].mmFrameWidth + "</td><td>" + data[i].mmFrameHeight + "</td>0<td><a>Redigera</a></td></tr>";
+                output = "<tr style=\"background-color: #444;\"><td>" + data[i].info + "</td><td>" + data[i].mmFrameWidth + "</td><td>" + data[i].mmFrameHeight + "</td>0<td><a href=\"/OrderEntry/Edit/" + data[i].id + "\">Redigera</a></td></tr>";
                 $("#lstWindows").append(output);
             }
 

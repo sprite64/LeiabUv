@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "CreateFromTemplate";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,7 +6,6 @@
 
 
 <!-- Init elements  -->
-
 <!--div style="width: 1200px; background-color: #333;" -->
 <div class="container" style="background-color: #333;">
 
@@ -16,145 +14,41 @@
         <!-- Project menu -->
         <div class="col-md-2">
             <h3 style="color: #ccc;">Meny</h3>
-
-            @if (Model.window == true)
-            {
-                @Html.Raw("<h4 style=\"color: #ccc;\">Fönster</h4>");
-            }
-            else
-            {
-                @Html.Raw("<h4 style=\"color: #ccc;\">Dörr</h4>");
-            }
-            
-
-            <div id="pnlWindowEntries" class="panel" style="height: 120px; overflow-y: scroll;">
-                <!--a href="#" style="margin-left: 10px; display: block;">Fönster 1</!--a>
-                <a href="#" style="margin-left: 10px; display: block;">Fönster 2</a>
-                <a href="#" style="margin-left: 10px; display: block;">Fönster 3</a-->
-            </div>
-
-            <button id="btnNewWindow" class="btn btn-default" style="width: 120px; float: right;">Nytt fönster</button> <br /><br />
-
-            <h4 style="color: #ccc;">Dörrar</h4>
-
-            <div id="pnlDoorEntries" class="panel" style="height: 120px; overflow-y: scroll;">
-                <!--a href="#" style="margin-left: 10px; display: block;">Dörr 1</!--a>
-                <a href="#" style="margin-left: 10px; display: block;">Dörr 2</a>
-                <a href="#" style="margin-left: 10px; display: block;">Dörr 3</a -->
-            </div>
-            
-            <button id="btnNewDoor" class="btn btn-default" style="width: 120px; float: right;">Ny dörr</button>
-
-            <br />
-            <br />
-            
-            <h4 style="color: #ccc;">Projekt</h4>
-
-            <label style="color: #ccc; width: 50px;">OrderNr</label>
-            <input id="" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" />
-            
-            <label style="color: #ccc; width: 50px;">Kund</label>
-            <input id="" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" />
-
-            <br />
-            <br />
-
-            <button id="btnSaveProject" class="btn btn-default" style="width: 120px; float: right;">Spara projekt</button>
-
-            <br />
-            <br />
-            <br />
-            <br />
         </div>
 
         <!-- Midd section -->
         <div class="col-md-6">
-            
-            <div class="col-md-12" id="TemplateSelect" style="display: none;">
-
-                
-                <h3 style="color: #ccc;">Välj modell</h3>
-
-                <label style="color: #ccc; width: 50px;">Namn</label>
-                <input id="TemplateEntryName" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" value=""/>
-
-                <div id="TemplateIcons" class="panel" style="height: 512px; overflow-y: scroll;">
-                    <!--h4 style="color: #000;">Modeller</h4-->
-
-                    
-                    <!-- Test template items -->
-                    <!--
-                    <div class="panel" style="width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #ccc; display: inline-block;">
-                        <a href="javascript:void(0);">
-                            <div id="" style="width: 140; height: 140px; margin: 5px; background-color: #fff;">
-
-                            </div>
-                            <p style="margin-left: 10px;">ABC</p>
-                        </a>
-                    </div>
-
-                    <div class="panel" style="width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #8f8; display: inline-block;">
-                        <a href="javascript:void(0);">
-                            <div id="" style="width: 140; height: 140px; margin: 5px; background-color: #fff;">
-
-                            </div>
-                            <p style="margin-left: 10px;">ABC</p>
-                        </a>
-                    </div>
-
-                    <div class="panel" style="width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #ccc; display: inline-block;">
-                        <a href="javascript:void(0);">
-                            <canvas id="" width="140" height="140" style="margin: 4px; background-color: #fff;"></canvas>
-                            <p style="margin-left: 10px;">ABC</p>
-                        </a>
-                    </div>
-                    -->
-
-                    <!--
-                    <a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">
-                        <p>ABC</p>
-                        output += '<canvas id="IconCanvas' + data[i].Id + '" width="140" height="120" style=""></canvas>';
-                        output += '
-                    </a>';-->
-
-                </div>
-
-                <button id="btnNewEntryCancel" class="btn" style="width: 120px; float: left;">Avbryt</button>
-
-                <button id="btnNewEntryDone" class="btn btn-success" style="width: 120px; float: right;">Klar!</button>
-
-            </div>
 
             <!-- First midd column -->
-            <div class="col-md-6" id="PaneColumn" style="display: none;">
-                
-                <h4 id="titleProject" style="color: #ccc;">Luft</h4>
+            <div class="col-md-6">
+
+                <h4 id="titleProject" style="color: #ccc;"></h4>
 
                 <!-- Parts information -->
                 <table style="color: #ccc; display: inline-block;">
-                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Total Area</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="totalArea"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Glas Area</td> <td style="text-align: right; padding-right: 5px;" id="paneArea"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Total omkrets</td> <td style="text-align: right; padding-right: 5px;" id="totalCircum"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Karm omkrets</td> <td style="text-align: right; padding-right: 5px;" id="frameCircum"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Post omkrets</td> <td style="text-align: right; padding-right: 5px;" id="postCircum"></td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Total Area</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="totalArea">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Glas Area</td> <td style="text-align: right; padding-right: 5px;" id="paneArea">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Total omkrets</td> <td style="text-align: right; padding-right: 5px;" id="totalCircum">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Karm omkrets</td> <td style="text-align: right; padding-right: 5px;" id="frameCircum">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Post omkrets</td> <td style="text-align: right; padding-right: 5px;" id="postCircum">0</td> </tr>
                 </table>
 
                 <h4 style="color: #ccc;">Karm</h4>
                 <table style="color: #ccc; display: inline-block;">
-                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Övre</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="frameTop"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Nedre</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameBottom"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Vänstra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameLeft"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Högra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameRight"></td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Övre</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="frameTop">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Nedre</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameBottom">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Vänstra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameLeft">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Högra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="frameRight">0</td> </tr>
                 </table>
 
                 <h4 style="color: #ccc;">Post</h4>
                 <table style="color: #ccc; display: inline-block;">
-                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Övre</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="postTop"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Nedre</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postBottom"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Vänstra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postLeft"></td> </tr>
-                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Högra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postRight"></td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="width: 120px; border-right: 1px solid #ccc;">Övre</td> <td style="width: 140px; text-align: right; padding-right: 5px;" id="postTop">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Nedre</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postBottom">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Vänstra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postLeft">0</td> </tr>
+                    <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Högra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postRight">0</td> </tr>
                 </table>
-                
+
                 <br />
                 <br />
                 <br />
@@ -183,9 +77,9 @@
                 </div>
 
             </div>
-            
+
             <!-- Second midd column -->
-            <div class="col-md-6" id="ProductColumn" style="display: none;">
+            <div class="col-md-6">
                 <h4 style="color: #ccc;">Produkt</h4>
 
                 <!-- Top product values -->
@@ -338,7 +232,7 @@
         </div>
 
         <!-- Pane selection, frame and pane dimensions -->
-        <div class="col-md-3" id="SelectorColumn" style="display: none;">
+        <div class="col-md-3">
             <h3 style="color: #ccc;">Luft & Karm</h3>
 
             <canvas id="PaneSelectCanvas" width="350" height="370"></canvas>
@@ -361,9 +255,7 @@
             <br />
         </div>
 
-        <div class="col-md-3" id="SelectorColumnSpacer" style="display: none;">
-
-        </div>
+    </div>
 
 </div>
 
@@ -382,9 +274,6 @@
 <script>
 
     $(function () {
-
-        project = new lbProject();
-        editor = new lbEditor();
 
         // This getJSON thing initiates project/entry ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
         // But it should be handled in another manner
@@ -405,10 +294,10 @@
 
             //$("#paneUg").val(lbGetSelectedUg());
         //});
-        
+
 
         // Update project title
-        
+
         //if(@ViewBag.ProjectType == 1) {
         //    $("#titleProject").text("Fönster");
         //} else {
@@ -426,14 +315,12 @@
 
             /*
             for(var i = 0; i < data.length; i ++) {
-
                 $("#productList").append(
                     $('<option/>', {
                         value: data[i].Id,      // Need to find out how to get this value on select list change
                         text: "[" + data[i].Name + "], [" + data[i].Glass + "]"
                         //text: "[" + data[i].Name + "], [" + data[i].Glass + "]" + " Ug: " + data[i].Ug
                     }));
-
                 //alert("Val: " + data[i].Id);
                 //alert("Name: " + data[i].Name);
             }*/

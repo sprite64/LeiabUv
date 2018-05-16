@@ -1,13 +1,21 @@
-﻿
-@{
-    ViewBag.Title = "CreateFromTemplate";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model LeiabUv.Models.OrderEntry
+
+    @{
+        ViewBag.Title = "CreateFromTemplate";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
 
+<!-- 
+<div class="container" style="color: #ccc; background-color: #333; min-height: 600px;">
+
+    <div class="row">
+
+        
+        <div class="col-md-2">
+    -->
 
 <!-- Init elements  -->
-
 <!--div style="width: 1200px; background-color: #333;" -->
 <div class="container" style="background-color: #333;">
 
@@ -25,7 +33,7 @@
             {
                 @Html.Raw("<h4 style=\"color: #ccc;\">Dörr</h4>");
             }
-            
+
 
             <div id="pnlWindowEntries" class="panel" style="height: 120px; overflow-y: scroll;">
                 <!--a href="#" style="margin-left: 10px; display: block;">Fönster 1</!--a>
@@ -42,17 +50,17 @@
                 <a href="#" style="margin-left: 10px; display: block;">Dörr 2</a>
                 <a href="#" style="margin-left: 10px; display: block;">Dörr 3</a -->
             </div>
-            
+
             <button id="btnNewDoor" class="btn btn-default" style="width: 120px; float: right;">Ny dörr</button>
 
             <br />
             <br />
-            
+
             <h4 style="color: #ccc;">Projekt</h4>
 
             <label style="color: #ccc; width: 50px;">OrderNr</label>
             <input id="" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" />
-            
+
             <label style="color: #ccc; width: 50px;">Kund</label>
             <input id="" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" />
 
@@ -69,19 +77,17 @@
 
         <!-- Midd section -->
         <div class="col-md-6">
-            
+
             <div class="col-md-12" id="TemplateSelect" style="display: none;">
 
-                
+
                 <h3 style="color: #ccc;">Välj modell</h3>
 
                 <label style="color: #ccc; width: 50px;">Namn</label>
-                <input id="TemplateEntryName" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" value=""/>
+                <input id="TemplateEntryName" type="text" class="form-control" style="width: 160px; display: inline-block; margin-top: 0px; margin-bottom: 10px;" value="" />
 
                 <div id="TemplateIcons" class="panel" style="height: 512px; overflow-y: scroll;">
                     <!--h4 style="color: #000;">Modeller</h4-->
-
-                    
                     <!-- Test template items -->
                     <!--
                     <div class="panel" style="width: 150px; height: 180px; margin-left: 10px; margin-top: 10px; background-color: #ccc; display: inline-block;">
@@ -109,7 +115,6 @@
                         </a>
                     </div>
                     -->
-
                     <!--
                     <a href="javascript:void(0);" style="width: 140px; height: 120px; display: inline-block; margin-right: 10px;">
                         <p>ABC</p>
@@ -126,8 +131,8 @@
             </div>
 
             <!-- First midd column -->
-            <div class="col-md-6" id="PaneColumn" style="display: none;">
-                
+            <div class="col-md-6" id="PaneColumn" style="">
+
                 <h4 id="titleProject" style="color: #ccc;">Luft</h4>
 
                 <!-- Parts information -->
@@ -154,7 +159,7 @@
                     <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Vänstra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postLeft"></td> </tr>
                     <tr style="border: 1px solid #ccc;"> <td style="border-right: 1px solid #ccc;">Högra</td> <td style="width: 60px; text-align: right; padding-right: 5px;" id="postRight"></td> </tr>
                 </table>
-                
+
                 <br />
                 <br />
                 <br />
@@ -183,9 +188,9 @@
                 </div>
 
             </div>
-            
+
             <!-- Second midd column -->
-            <div class="col-md-6" id="ProductColumn" style="display: none;">
+            <div class="col-md-6" id="ProductColumn" >
                 <h4 style="color: #ccc;">Produkt</h4>
 
                 <!-- Top product values -->
@@ -338,12 +343,12 @@
         </div>
 
         <!-- Pane selection, frame and pane dimensions -->
-        <div class="col-md-3" id="SelectorColumn" style="display: none;">
+        <div class="col-md-3" id="SelectorColumn">
             <h3 style="color: #ccc;">Luft & Karm</h3>
 
             <canvas id="PaneSelectCanvas" width="350" height="370"></canvas>
 
-            <label id="paneLabel" style="display: none; color: #ccc;">Postplacering</label><br />
+            <label id="paneLabel" style="color: #ccc;">Postplacering</label><br />
             <span id="paneX" style="display: none;"><label style="color: #ccc; width: 50px;">X: </label><input id="paneWidth" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label id="lblPaneWidth" style="margin-left: 10px; color: #ccc;"> mm</label></span><br id="paneBrX" style="display: none;" />
             <span id="paneY" style="display: none;"><label style="color: #ccc; width: 50px;">Y: </label><input id="paneHeight" type="text" class="form-control" style="width: 160px; text-align: right; display: inline-block; margin-top: 0px; margin-bottom: 10px;" /><label id="lblPaneHeight" style="margin-left: 10px; color: #ccc;"> mm</label></span><br id="paneBrY" style="display: none;" />
             <button id="btnPaneDimensionsUpdate" style="display: none; " class="btn btn-default">Uppdatera</button>
@@ -365,21 +370,21 @@
 
         </div>
 
-</div>
+    </div>
 
 
-<script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
+    <script src="~/ScriptsLeiab/ProjectConstants.js"></script>      <!-- Project constants -->
 
-<script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->
-<script src="~/ScriptsLeiab/ProjectObjects.js"></script>        <!-- Project objects constructors -->
+    <script src="~/ScriptsLeiab/GenericObjects.js"></script>        <!-- Generic objects constructors -->
+    <script src="~/ScriptsLeiab/ProjectObjects.js"></script>        <!-- Project objects constructors -->
 
-<script src="~/ScriptsLeiab/ProjectGraphics.js"></script>       <!-- Project graphics functions -->
-<script src="~/ScriptsLeiab/ProjectUpdate.js"></script>         <!-- Project update functions -->
+    <script src="~/ScriptsLeiab/ProjectGraphics.js"></script>       <!-- Project graphics functions -->
+    <script src="~/ScriptsLeiab/ProjectUpdate.js"></script>         <!-- Project update functions -->
 
-<script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
+    <script src="~/ScriptsLeiab/ProjectInit.js"></script>          <!-- Project initiation -->
 
 
-<script>
+    <script>
 
     $(function () {
 
@@ -405,10 +410,10 @@
 
             //$("#paneUg").val(lbGetSelectedUg());
         //});
-        
+
 
         // Update project title
-        
+
         //if(@ViewBag.ProjectType == 1) {
         //    $("#titleProject").text("Fönster");
         //} else {
@@ -440,5 +445,84 @@
         });
     });
 
-</script>
+    </script>
+
+
+
+    <!--
+                    @using (Html.BeginForm())
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            <h4>OrderEntry</h4>
+                            <hr />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.id)
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.window, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        @Html.EditorFor(model => model.window)
+                                        @Html.ValidationMessageFor(model => model.window, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.info, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.info, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.info, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.columns, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.columns, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.columns, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.rows, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.rows, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.rows, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.mmFrameWidth, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.mmFrameWidth, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.mmFrameWidth, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.mmFrameHeight, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.mmFrameHeight, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.mmFrameHeight, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div>
+                        @Html.ActionLink("Back to List", "Index")
+                    </div>
+
+                    @section Scripts {
+                        @Scripts.Render("~/bundles/jqueryval")
+                    }
+    -->
 

@@ -1681,8 +1681,8 @@ function lbReloadTemplates(entryType) {
             templates = data;           // Raw template data
             templates.selected = 0;
 
-            lbGenerateTemplates();      // Generate template icons
-            lbRenderTemplateIcons();      // Render template icons
+            //###lbGenerateTemplates();      // Generate template icons
+            //###lbRenderTemplateIcons();      // Render template icons
 
             templates.entryType = entryType;    // Update new entry type
 
